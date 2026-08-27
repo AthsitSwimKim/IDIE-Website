@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 800" width="1200" height="800" role="img" aria-label="">
+  <!--
+    ภาพสำรองสำหรับข่าวหรือผลงานที่ยังไม่ได้อัปโหลดปก
+
+    ใช้ลายเส้นแบบแบบแปลนตามภาษาภาพของเว็บ ไม่ใช่ไอคอนรูปภูเขาแบบทั่วไป —
+    ช่องที่ยังไม่มีภาพจะได้ดูเหมือนพื้นที่ที่ตั้งใจเว้นไว้ ไม่ใช่รูปที่โหลดไม่ขึ้น
+  -->
+  <rect width="1200" height="800" fill="#f5f7fb" />
+  <g stroke="#e2e8f2" stroke-width="2">
+    <path d="M0 200h1200M0 400h1200M0 600h1200M200 0v800M400 0v800M600 0v800M800 0v800M1000 0v800" />
+  </g>
+  <g fill="none" stroke="#b8ccff" stroke-width="4">
+    <rect x="450" y="310" width="300" height="180" rx="8" />
+    <path d="M450 430l70-60 60 50 80-90 90 100" stroke-linecap="round" stroke-linejoin="round" />
+  </g>
+  <circle cx="530" cy="360" r="16" fill="#b8ccff" />
+</svg>

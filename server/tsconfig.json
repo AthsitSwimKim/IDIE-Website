@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": false,
+
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": ["node"]
+  },
+  /**
+   * รวมไฟล์ type ของฝั่งหน้าเว็บเข้ามาด้วยโดยตั้งใจ — สัญญาระหว่าง API กับ frontend
+   * ต้องมาจาก `src/types/content.ts` แหล่งเดียว ถ้าเซิร์ฟเวอร์ประกาศ type ของตัวเอง
+   * แล้ววันหนึ่งฝั่งหน้าเว็บแก้ฟิลด์ จะไม่มีอะไรฟ้องจนกว่าจะเจอหน้าเว็บพัง
+   *
+   * รันด้วย tsx (ไม่ compile) จึง import ข้ามโฟลเดอร์ได้โดยไม่ติดปัญหา rootDir
+   */
+  "include": ["src/**/*.ts", "scripts/**/*.ts", "../src/types/content.ts"]
+}

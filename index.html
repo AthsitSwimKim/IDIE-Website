@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!--
+      ไอคอนทุกขนาดสร้างจาก /images/brand/idie-icon-tile.png
+      ซึ่งครอปกลางภาพจาก idie-icon-source.png (ตราที่ IDIE ส่งมา ส.ค. 2026) ให้เป็นจัตุรัส
+
+      **ต้องทึบทั้งภาพ ห้ามมีพื้นโปร่ง** — เดิมวางตราแนวนอนกลางกรอบจัตุรัสแล้วเหลือ
+      พื้นโปร่ง 34% ผลคือ iOS ถมพื้นโปร่งของ apple-touch-icon ด้วยสีดำ ตราจึงมีแถบดำ
+      คาดบน-ล่างบนหน้าจอโฮม ส่วน manifest ประกาศพื้นหลังขาวจึงได้แถบขาวคนละสีกันอีก
+      การครอปให้เต็มขอบแก้ทั้งสองอย่าง และยังทำให้ตัวอักษรใหญ่ขึ้นในกรอบเท่าเดิมด้วย
+
+      ครอปกลางได้เพราะอาร์ตเวิร์กอยู่กลางภาพ (x 195–600 จากความกว้าง 817)
+      กรอบจัตุรัสเก็บ x 133–683 จึงไม่โดนตัด — ถ้าเปลี่ยนตราใหม่ต้องวัดซ้ำก่อน
+      ระบบปฏิบัติการเป็นคนใส่ขอบมนให้เองอยู่แล้ว เราจึงไม่ต้องเว้นขอบมาให้
+
+      ขนาด 48 มีไว้ให้จอความละเอียดสูงที่วาดแท็บที่ 2x จะได้ไม่เบลอ
+    -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#0435b9" />
+    <title>ID Industrial Engineering Co.,Ltd.</title>
+    <meta
+      name="description"
+      content="ID Industrial Engineering Co.,Ltd. — ระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด สำหรับโรงงานอุตสาหกรรมและพื้นที่อันตราย"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

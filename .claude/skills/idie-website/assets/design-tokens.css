@@ -1,0 +1,206 @@
+/* ============================================================================
+ * IDIE Design Tokens — Tailwind CSS v4
+ * คัดลอกไฟล์นี้ไป src/styles/theme.css แล้ว import ใน src/main.tsx
+ *
+ * ⚠️ ค่าสีสกัดจาก assets/idie-logo-reference.png และ assets/idie-mockup-reference.png
+ *    ที่ลูกค้าให้มา — ยังไม่ใช่ brand guideline ทางการ
+ *    TODO: ขอ brand guideline (hex code, font license, logo clear space) จาก IDIE เพื่อยืนยัน
+ * ========================================================================== */
+
+@import "tailwindcss";
+
+/* self-host font — npm i @fontsource/ibm-plex-sans-thai @fontsource/ibm-plex-sans */
+@import "@fontsource/ibm-plex-sans-thai/400.css";
+@import "@fontsource/ibm-plex-sans-thai/500.css";
+@import "@fontsource/ibm-plex-sans-thai/600.css";
+@import "@fontsource/ibm-plex-sans-thai/700.css";
+
+@theme {
+  /* --- IDIE Blue (primary) — anchor #0435B9 จากปุ่ม CTA ใน mockup ------------ */
+  --color-primary-50:  #eef3ff;
+  --color-primary-100: #d9e4ff;
+  --color-primary-200: #b8ccff;
+  --color-primary-300: #8aa9f5;
+  --color-primary-400: #4e76e0;
+  --color-primary-500: #1e4fcc;
+  --color-primary-600: #0435b9;  /* IDIE Blue — CTA, link, active, eyebrow */
+  --color-primary-700: #032b95;
+  --color-primary-800: #052274;
+  --color-primary-900: #061c5a;
+
+  /* --- Deep Navy — anchor #001B48 จาก hero ใน mockup ----------------------- */
+  --color-navy-700: #002a68;
+  --color-navy-800: #002458;
+  --color-navy-900: #001b48;  /* Hero, Statistics, Footer */
+  --color-navy-950: #00112f;
+
+  /* --- Neutral / Industrial Gray ------------------------------------------- */
+  --color-ink:        #010e36;  /* body text บนพื้นสว่าง */
+  --color-ink-muted:  #4a5568;
+  --color-surface:     #ffffff;
+  --color-surface-alt: #f5f7fb;  /* พื้นหลัง section สลับ */
+  --color-line:        #e2e8f2;  /* border, divider */
+  --color-steel:       #6b7280;  /* industrial gray */
+
+  /* --- Accent — ใช้ได้ไม่เกิน ~2% ของพื้นที่หน้า และเฉพาะบนพื้น dark ------------ */
+  --color-accent-cyan: #22d3ee;
+  --color-accent-glow: #4cc9f0;
+
+  /* --- Semantic ------------------------------------------------------------ */
+  --color-success: #12805c;
+  --color-warning: #a16207;
+  --color-danger:  #b42318;
+
+  /* --- Typography ---------------------------------------------------------- */
+  --font-sans: "IBM Plex Sans Thai", "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1.2;
+  --text-eyebrow--letter-spacing: 0.12em;
+  --text-eyebrow--font-weight: 600;
+
+  --text-display: clamp(2.5rem, 5.5vw, 4.5rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+
+  --text-h1: clamp(2rem, 4vw, 3.25rem);
+  --text-h1--line-height: 1.12;
+  --text-h2: clamp(1.625rem, 3vw, 2.5rem);
+  --text-h2--line-height: 1.18;
+  --text-h3: clamp(1.25rem, 2vw, 1.625rem);
+  --text-h3--line-height: 1.3;
+
+  /* --- Radius / Shadow ----------------------------------------------------- */
+  --radius-card: 0.75rem;
+  --radius-pill: 999px;
+
+  --shadow-card:  0 1px 2px rgb(1 14 54 / 0.04), 0 8px 24px rgb(1 14 54 / 0.06);
+  --shadow-lift:  0 4px 8px rgb(1 14 54 / 0.06), 0 16px 40px rgb(1 14 54 / 0.12);
+  --shadow-float: 0 24px 64px rgb(1 14 54 / 0.18);
+
+  /* --- Motion — easing กลาง ๆ ไม่มี bounce (corporate credibility) ----------- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --duration-micro: 180ms;
+  --duration-ui: 260ms;
+  --duration-reveal: 620ms;
+
+  /* --- Layout -------------------------------------------------------------- */
+  --container-narrow: 48rem;
+  --container-default: 80rem;
+  --container-wide: 96rem;
+}
+
+/* ============================================================================
+ * Base
+ * ========================================================================== */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* กัน header ทึบบังเนื้อหาตอนกระโดดไป anchor */
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    background: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ภาษาไทยต้องการที่หายใจสำหรับสระบน-ล่างมากกว่าอังกฤษ */
+  :lang(th) {
+    line-height: 1.75;
+    word-break: normal;
+    overflow-wrap: anywhere; /* คำไทยไม่มีช่องว่าง — กันล้นกล่อง */
+  }
+
+  /* focus ring เดียวทั้งเว็บ — ห้าม outline:none ที่ไหนโดยไม่มีตัวแทน */
+  :focus-visible {
+    outline: 2px solid var(--color-primary-600);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+  .on-dark :focus-visible,
+  [data-tone="dark"] :focus-visible {
+    outline-color: var(--color-accent-glow);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* ============================================================================
+ * IDIE Visual Motif — utility ที่ทำให้เว็บนี้ไม่เหมือน template ทั่วไป
+ * ========================================================================== */
+
+@utility blueprint-grid {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.045) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+}
+
+/* เส้น engineering ที่มี node เล็ก ๆ ที่ปลาย — ใช้คั่นองค์ประกอบ */
+@utility engineering-line {
+  position: relative;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    var(--color-primary-600) 0%,
+    var(--color-line) 60%,
+    transparent 100%
+  );
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset-block-start: -2px;
+    inset-inline-start: 0;
+    width: 5px;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--color-primary-600);
+  }
+}
+
+/* มุมตัดแบบ technical drawing — ใส่บนภาพหรือ card */
+@utility corner-bracket {
+  position: relative;
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border-color: var(--color-primary-600);
+    border-style: solid;
+    border-width: 0;
+  }
+  &::before {
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    border-top-width: 2px;
+    border-left-width: 2px;
+  }
+  &::after {
+    inset-block-end: 0;
+    inset-inline-end: 0;
+    border-bottom-width: 2px;
+    border-right-width: 2px;
+  }
+}
+
+/* ตัวเลขสถิติ — กันตัวเลขเต้นตอน count-up */
+@utility stat-figure {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+}

@@ -1,0 +1,45 @@
+{
+  "name": "idie-website-server",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "IDIE Website — admin API (news + projects) on Node, TypeScript and MySQL",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "start": "tsx src/index.ts",
+    "typecheck": "tsc --noEmit",
+    "create-user": "tsx scripts/create-user.ts"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "express-mysql-session": "^3.0.3",
+    "express-session": "^1.18.2",
+    "multer": "^2.0.2",
+    "mysql2": "^3.15.3",
+    "sharp": "^0.35.4",
+    "tsx": "^4.20.6",
+    "zod": "^4.1.12"
+  },
+  "//overrides": [
+    "express-mysql-session ผูก mysql2 เวอร์ชันเก่ากว่าไว้ ทำให้ npm ติดตั้ง driver ซ้อนมาอีกชุด",
+    "ผลคือมี MySQL driver สองตัวในโปรเซสเดียว (เซสชันใช้ตัวเก่า ข้อมูลใช้ตัวใหม่)",
+    "และ TypeScript มองว่า Pool ของสองชุดเป็นคนละชนิดกัน จนส่ง pool ให้ session store ไม่ได้",
+    "บังคับให้เหลือชุดเดียวตรงนี้ แทนการแคสต์ทับที่จุดเรียกซึ่งแค่ปิดปาก type checker",
+    "ไม่ได้แก้ปัญหาที่มี driver สองตัวจริง ๆ"
+  ],
+  "overrides": {
+    "mysql2": "$mysql2"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.3",
+    "@types/express-mysql-session": "^3.0.8",
+    "@types/express-session": "^1.18.2",
+    "@types/multer": "^2.2.0",
+    "@types/node": "^24.13.3",
+    "typescript": "~6.0.2"
+  },
+  "//tsx": "tsx อยู่ใน dependencies ไม่ใช่ devDependencies โดยตั้งใจ — เซิร์ฟเวอร์นี้ รัน TypeScript ตรง ๆ ไม่มีขั้น build ตัว tsx จึงเป็นของที่ต้องมีตอน runtime จริง ถ้าปล่อยไว้ใน devDependencies เครื่อง production ที่ติดตั้งด้วย npm ci --omit=dev จะไม่มี tsx แล้ว npm start ล้มทันที",
+  "engines": {
+    "node": ">=20.11.0"
+  }
+}
