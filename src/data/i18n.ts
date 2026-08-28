@@ -31,10 +31,6 @@ export const ui = {
     contactHeading: { th: 'ติดต่อ', en: 'Get in touch' },
     fax: { th: 'แฟกซ์', en: 'Fax' },
     rights: { th: 'สงวนลิขสิทธิ์', en: 'All rights reserved.' },
-    prototypeNote: {
-      th: 'เว็บไซต์ต้นแบบ — เนื้อหาบางส่วนยังรอข้อมูลจากบริษัท',
-      en: 'Prototype site — some content is still awaiting company data.',
-    },
   },
 
   brandsPage: {
@@ -56,9 +52,10 @@ export const ui = {
      * แยกเป็น key แบนสี่ตัวแทนการซ้อน object ตาม `doc.type` เพราะ `ui` ทั้งก้อน
      * ถูกบังคับด้วย `satisfies Record<string, Record<string, LocalizedText>>` ท้ายไฟล์ —
      * โครงสองชั้นนี้คือสิ่งที่ทำให้ไล่นับคู่ th/en ทั้งเว็บได้ในครั้งเดียว
+     *
+     * หมายเหตุ: ไทยกับอังกฤษของ `documentCatalog` ไม่ตรงกันโดยตั้งใจ —
+     * IDIE เลือกถ้อยคำนี้เอง (ส.ค. 2026)
      */
-
-    // ไทยกับอังกฤษไม่ตรงกันโดยตั้งใจ — IDIE เลือกถ้อยคำนี้เอง (ส.ค. 2026)
     documentCatalog: { th: 'รายละเอียดสินค้า (PDF)', en: 'Datasheet (PDF)' },
     documentDatasheet: { th: 'ดาต้าชีต', en: 'Datasheet' },
     documentManual: { th: 'คู่มือการใช้งาน', en: 'User manual' },
@@ -255,6 +252,21 @@ export const ui = {
     overviewHeading: { th: 'ภาพรวมงาน', en: 'Overview' },
     scopeHeading: { th: 'ขอบเขตงาน', en: 'Scope of work' },
     applicationsHeading: { th: 'ตัวอย่างการใช้งาน', en: 'Typical applications' },
+    processHeading: { th: 'ขั้นตอนการทำงาน', en: 'How we work' },
+    processLead: {
+      th: 'ลำดับงานตั้งแต่รับโจทย์จนส่งมอบ — แต่ละโครงการอาจปรับตามเงื่อนไขหน้างาน',
+      en: 'From brief to handover. Individual projects adapt to site conditions.',
+    },
+    checklistHeading: { th: 'ข้อมูลที่ใช้ในการเสนอราคา', en: 'What we need to quote' },
+    checklistLead: {
+      th: 'เตรียมข้อมูลเหล่านี้มาให้ครบ จะช่วยให้เสนอราคาได้ตรงและเร็วขึ้นมาก',
+      en: 'Having these ready lets us quote accurately and far more quickly.',
+    },
+    notesHeading: { th: 'ประเด็นทางเทคนิคที่ควรรู้ก่อนออกแบบ', en: 'Technical points worth settling early' },
+    notesLead: {
+      th: 'เรื่องที่มักถูกมองข้ามตอนกำหนดสเปก แล้วกลายเป็นปัญหาตอนติดตั้งหรือตรวจรับ',
+      en: 'Points often missed at specification stage that turn into problems at installation or acceptance.',
+    },
     relatedProductsHeading: { th: 'สินค้าที่เกี่ยวข้อง', en: 'Related products' },
     backToServices: { th: 'กลับไปหน้าบริการ', en: 'Back to services' },
     ctaTitle: { th: 'มีงานที่อยากให้เราช่วยดูไหม', en: 'Have a project for us to look at?' },
@@ -296,8 +308,8 @@ export const ui = {
   projects: {
     title: { th: 'ผลงาน', en: 'Projects' },
     lead: {
-      th: 'ผลงานจริงของ IDIE — ต่างจากหน้าลูกค้าอ้างอิงที่บอกว่า "ลูกค้าคือใคร" หน้านี้บอกว่า "เราทำอะไรให้"',
-      en: 'Delivered work. Where Reference answers “who our clients are”, this page answers “what we did for them”.',
+      th: 'รวมโครงการและผลงานความสำเร็จทางวิศวกรรม ที่เราส่งมอบโซลูชันคุณภาพและได้มาตรฐานให้กับภาคอุตสาหกรรม',
+      en: 'Engineering projects and successful deliveries — quality solutions, built to standard, for the industrial sector.',
     },
     pendingHeading: { th: 'กำลังรวบรวมผลงานเพื่อเผยแพร่', en: 'We are compiling projects for publication' },
     pendingNeed: {
@@ -397,14 +409,17 @@ export const ui = {
     required: { th: 'กรุณากรอกข้อมูลนี้', en: 'This field is required' },
     invalidEmail: { th: 'รูปแบบอีเมลไม่ถูกต้อง', en: 'Enter a valid email address' },
     productContext: { th: 'สอบถามเกี่ยวกับสินค้า', en: 'Inquiry about product' },
-    submittedTitle: { th: 'บันทึกข้อมูลในหน้าเว็บแล้ว', en: 'Captured in the browser' },
+    submittedTitle: { th: 'ส่งคำถามเรียบร้อยแล้ว', en: 'Your inquiry has been sent' },
     submittedBody: {
-      th: 'ระบบส่งอีเมลจริงยังไม่ได้เชื่อมต่อในเวอร์ชันนี้ ข้อมูลจึงยังไม่ถูกส่งไปถึงบริษัท กรุณาติดต่อทางอีเมลหรือโทรศัพท์โดยตรงไปก่อน',
-      en: 'Email delivery is not connected in this version, so nothing has been sent to the company yet. Please use email or telephone directly for now.',
+      th: 'ทีมงานได้รับคำถามของคุณแล้ว และจะติดต่อกลับทางอีเมลที่ให้ไว้ หากเป็นเรื่องเร่งด่วนโทรหาเราได้โดยตรง',
+      en: 'We have received your inquiry and will reply to the email address you gave. For anything urgent, please call us directly.',
     },
-    notConnectedNotice: {
-      th: 'แบบฟอร์มนี้ยังไม่ได้ต่อระบบส่งอีเมล — เป็นส่วนหน้าเว็บเท่านั้น',
-      en: 'This form is not connected to email delivery yet — front-end only.',
+    sendAnother: { th: 'ส่งคำถามอีกข้อ', en: 'Send another inquiry' },
+    sending: { th: 'กำลังส่ง…', en: 'Sending…' },
+    /** ใช้เมื่อ API ตอบกลับว่าล้มเหลว — ต้องบอกทางออกอื่นเสมอ ไม่ใช่แค่บอกว่าพัง */
+    sendFailed: {
+      th: 'ส่งคำถามไม่สำเร็จ กรุณาลองใหม่อีกครั้ง หรือติดต่อเราทางโทรศัพท์หรืออีเมลโดยตรง',
+      en: 'We could not send your inquiry. Please try again, or contact us by phone or email directly.',
     },
   },
 
@@ -412,8 +427,21 @@ export const ui = {
   pages: {
     servicesTitle: { th: 'บริการของ IDIE', en: 'Our services' },
     servicesLead: {
-      th: 'ครอบคลุมตั้งแต่การออกแบบและงานวิศวกรรม การจัดหาอุปกรณ์ ไปจนถึงการติดตั้งและบริการหลังการขาย',
-      en: 'From design and engineering through procurement to installation and after-sales service.',
+      th: 'ครอบคลุมตั้งแต่การออกแบบและงานวิศวกรรม การจัดหาอุปกรณ์ ไปจนถึงการติดตั้งและบริการหลังการขาย ทุกกลุ่มงานอยู่บนโจทย์เดียวกัน คือระบบต้องทำงานได้ในวันที่เกิดเหตุจริง ไม่ใช่แค่วันที่ตรวจรับ',
+      en: 'From design and engineering through procurement to installation and after-sales service. Every one of them answers the same brief: the system has to work on the day something happens, not only on the day it is accepted.',
+    },
+    /** ป้ายบอกว่าหน้ารายละเอียดมีอะไรให้อ่านต่อ — แสดงเฉพาะบริการที่เขียนเนื้อหาส่วนลึกไว้แล้ว */
+    servicesDepthHint: {
+      th: 'รายละเอียดขั้นตอนการติดตั้งและมาตรฐานความปลอดภัย',
+      en: 'Installation process and safety standards in detail',
+    },
+    servicesCtaTitle: {
+      th: 'ไม่แน่ใจว่างานของคุณอยู่ในกลุ่มไหน',
+      en: 'Not sure which of these your project falls under?'
+    },
+    servicesCtaLead: {
+      th: 'ส่งผังหน้างานหรือเอกสารจำแนกพื้นที่มาให้เรา ทีมวิศวกรจะช่วยดูว่าต้องใช้ระบบแบบไหนและอุปกรณ์ระดับไหน — หลายโครงการต้องใช้มากกว่าหนึ่งกลุ่มร่วมกันอยู่แล้ว',
+      en: 'Send us a site layout or your area classification drawings and our engineers will work out which systems and equipment grades apply. Most projects need more than one of these working together anyway.',
     },
     referenceTitle: { th: 'องค์กรที่เคยร่วมงานกับเรา', en: 'Companies we have worked with' },
     referenceLead: {

@@ -9,6 +9,7 @@ import { assertDatabaseReachable, closePool, pool } from './db.ts'
 import { env } from './env.ts'
 import { errorHandler, notFound } from './http.ts'
 import { authRouter, uploadRouter } from './routes/auth.ts'
+import { contactRouter } from './routes/contact.ts'
 import { adminNewsRouter, publicNewsRouter } from './routes/news.ts'
 import { adminProjectsRouter, publicProjectsRouter } from './routes/projects.ts'
 
@@ -102,6 +103,9 @@ app.get('/api/health', (_req, res) => {
 })
 
 app.use('/api/auth', authRouter)
+// สาธารณะโดยตั้งใจ — ผู้เข้าชมเว็บต้องส่งคำถามได้โดยไม่ต้องล็อกอิน
+// การกันสแปมอยู่ในตัว router เอง (ช่องล่อบอต + จำกัดจำนวนครั้งต่อ IP)
+app.use('/api/contact', contactRouter)
 app.use('/api/news', publicNewsRouter)
 app.use('/api/projects', publicProjectsRouter)
 

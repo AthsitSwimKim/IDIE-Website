@@ -1,10 +1,18 @@
 import { useEffect, useId, useState } from 'react'
 import { useSearchParams } from 'react-router-dom'
-import { Badge, Button, Heading, Lightbox, Section } from '@/components/ui'
+import { Button, Heading, Lightbox, Section } from '@/components/ui'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
-import { companyFax, contactPerson, getCompany, getProductCategories, getServices, ui } from '@/data'
+import {
+  companyFax,
+  contactPerson,
+  getCompany,
+  getProductCategories,
+  getServices,
+  submitInquiry,
+  ui,
+} from '@/data'
 import { cn } from '@/utils/cn'
 
 type Field = 'name' | 'company' | 'email' | 'phone' | 'subject' | 'message'
@@ -16,15 +24,20 @@ const REQUIRED: Field[] = ['name', 'email', 'subject', 'message']
 /**
  * Contact — Phase 4
  *
- * ฟอร์มเป็น frontend อย่างเดียวตามขอบเขตโครงการ — validate ครบแต่ยังไม่ส่งอีเมลจริง
- * และ **บอกผู้ใช้ตรง ๆ ว่ายังไม่ส่ง** ทั้งก่อนกดและหลังกด
+ * ฟอร์มส่งอีเมลถึงบริษัทจริงแล้ว (ส.ค. 2026) ผ่าน `POST /api/contact`
+ *
+ * ตรวจข้อมูลสองชั้นโดยตั้งใจ — ที่นี่เพื่อบอกผู้ใช้ทันทีโดยไม่ต้องรอเครือข่าย
+ * และที่เซิร์ฟเวอร์อีกครั้งเพราะใครก็ยิง POST ตรงมาได้โดยไม่ผ่านฟอร์มนี้
+ *
+ * **ถ้าส่งไม่สำเร็จต้องบอกให้ชัด** ไม่แสดงหน้าขอบคุณ — ผู้ใช้ที่เดินจากไปโดยคิดว่า
+ * บริษัทได้รับคำถามแล้วทั้งที่ไม่ได้รับ คือความเสียหายที่แก้ทีหลังไม่ได้
  * UI ที่ทำให้ผู้ใช้เข้าใจว่าส่งข้อความไปแล้วทั้งที่ไม่ได้ส่ง เป็นความเสียหายที่แก้ทีหลังไม่ได้
  *
  * รองรับ ?product= และ ?service= เพื่อเติมหัวข้อให้อัตโนมัติ — ผู้ใช้ที่กดมาจาก
  * หน้าสินค้าหรือหน้าบริการไม่ต้องพิมพ์ซ้ำว่ากำลังถามเรื่องอะไร
  */
 export default function Contact() {
-  const { t } = useLocale()
+  const { t, locale } = useLocale()
   const [params] = useSearchParams()
   const formId = useId()
 
@@ -35,6 +48,15 @@ export default function Contact() {
   const [values, setValues] = useState<Values>(EMPTY)
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
   const [submitted, setSubmitted] = useState(false)
+  const [sending, setSending] = useState(false)
+  const [sendError, setSendError] = useState<string | null>(null)
+
+  /**
+   * ช่องล่อบอต — ซ่อนจากสายตาและจากโปรแกรมอ่านหน้าจอ ผู้ใช้จริงจึงไม่มีวันกรอก
+   * ใช้ตำแหน่ง absolute ออกนอกจอแทน `display:none` เพราะบอตที่ฉลาดขึ้นจะข้าม
+   * ช่องที่ถูกซ่อนด้วย CSS ตรง ๆ
+   */
+  const [honeypot, setHoneypot] = useState('')
 
   /** ป๊อปอัปแผนที่ขนาดใหญ่ — แยก state จากฟอร์มเพราะไม่เกี่ยวกัน */
   const [mapOpen, setMapOpen] = useState(false)
@@ -56,7 +78,7 @@ export default function Contact() {
     if (errors[field]) setErrors((prev) => ({ ...prev, [field]: undefined }))
   }
 
-  function onSubmit(event: React.FormEvent) {
+  async function onSubmit(event: React.FormEvent) {
     event.preventDefault()
     const next: Partial<Record<Field, string>> = {}
     REQUIRED.forEach((field) => {
@@ -70,8 +92,29 @@ export default function Contact() {
       document.getElementById(`${formId}-${Object.keys(next)[0]}`)?.focus()
       return
     }
-    // TODO: ต่อ backend / email service ใน phase ถัดไป — ตอนนี้หยุดที่ฝั่ง browser เท่านั้น
-    setSubmitted(true)
+
+    setSending(true)
+    setSendError(null)
+    try {
+      await submitInquiry({
+        name: values.name.trim(),
+        company: values.company.trim(),
+        email: values.email.trim(),
+        phone: values.phone.trim(),
+        subject: values.subject.trim(),
+        message: values.message.trim(),
+        locale,
+        website: honeypot,
+      })
+      setSubmitted(true)
+      setValues(EMPTY)
+    } catch (cause) {
+      // ข้อความจากเซิร์ฟเวอร์อธิบายตรงกว่าเมื่อมี (ส่งถี่เกินไป / ระบบเมลยังไม่พร้อม)
+      const detail = cause instanceof Error ? cause.message : ''
+      setSendError(detail || t(ui.contact.sendFailed))
+    } finally {
+      setSending(false)
+    }
   }
 
   return (
@@ -206,27 +249,44 @@ export default function Contact() {
           <div>
             <Heading level={2}>{t(ui.contact.formHeading)}</Heading>
 
-            <p className="mt-4">
-              <Badge tone="warning">{t(ui.contact.notConnectedNotice)}</Badge>
-            </p>
 
             {submitted ? (
-              <output className="border-warning/40 bg-warning/5 rounded-card mt-6 block border p-6">
+              <output className="border-success/40 bg-success/5 rounded-card mt-6 block border p-6">
                 <h3 className="font-semibold">{t(ui.contact.submittedTitle)}</h3>
                 <p className="text-ink-muted mt-2 text-sm">{t(ui.contact.submittedBody)}</p>
                 <div className="mt-5 flex flex-wrap gap-3">
-                  {company?.email[0] && (
-                    <Button href={`mailto:${company.email[0]}`} size="sm">
-                      {company.email[0]}
-                    </Button>
-                  )}
+                  {/*
+                    ใช้ `contactPerson.email` ไม่ใช่ `company.email[0]` — ต้องเป็น
+                    ที่อยู่**เดียวกับที่ฟอร์มส่งไปถึง** (`MAIL_TO` ใน server/.env)
+                    ไม่งั้นผู้ใช้ที่กดปุ่มนี้เพราะฟอร์มมีปัญหา จะส่งไปคนละกล่อง
+                    กับคำถามที่ส่งผ่านฟอร์มสำเร็จ แล้วสองทางนั้นไม่มีใครเห็นพร้อมกัน
+                  */}
+                  <Button href={`mailto:${contactPerson.email}`} size="sm">
+                    {contactPerson.email}
+                  </Button>
                   <Button variant="ghost" size="sm" onClick={() => setSubmitted(false)}>
-                    {t(ui.contact.formHeading)}
+                    {t(ui.contact.sendAnother)}
                   </Button>
                 </div>
               </output>
             ) : (
-              <form onSubmit={onSubmit} noValidate className="mt-6 space-y-5">
+              <form
+                onSubmit={(event) => void onSubmit(event)}
+                noValidate
+                className="mt-6 space-y-5"
+              >
+                {/* ช่องล่อบอต — อยู่นอกจอ ไม่อยู่ในลำดับ Tab และ screen reader ข้าม */}
+                <input
+                  type="text"
+                  name="website"
+                  value={honeypot}
+                  onChange={(event) => setHoneypot(event.target.value)}
+                  tabIndex={-1}
+                  autoComplete="off"
+                  aria-hidden="true"
+                  className="pointer-events-none absolute -left-[9999px] size-0 opacity-0"
+                />
+
                 {productSlug && (
                   <p className="text-ink-muted text-sm">
                     {t(ui.contact.productContext)}: <strong className="text-ink">{productSlug}</strong>
@@ -285,8 +345,14 @@ export default function Contact() {
                   onChange={(v) => update('message', v)}
                 />
 
-                <Button type="submit" size="lg" withArrow>
-                  {t(ui.contact.submit)}
+                {sendError && (
+                  <p role="alert" className="text-danger text-sm">
+                    {sendError}
+                  </p>
+                )}
+
+                <Button type="submit" size="lg" withArrow disabled={sending}>
+                  {sending ? t(ui.contact.sending) : t(ui.contact.submit)}
                 </Button>
               </form>
             )}

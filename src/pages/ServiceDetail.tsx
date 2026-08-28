@@ -1,10 +1,11 @@
 import { useParams } from 'react-router-dom'
-import { Badge, Button, Heading, ImagePlaceholder, Section } from '@/components/ui'
+import { Badge, Button, Heading, Section } from '@/components/ui'
+import { CheckIcon } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
-import { getProductCategories, getServiceBySlug, ui } from '@/data'
+import { getProductCategories, getServiceBySlug, serviceDepth, ui } from '@/data'
 
 /**
  * Service Detail — Phase 4
@@ -20,6 +21,10 @@ export default function ServiceDetail() {
 
   if (loading) return null
   if (!service) return <NotFound />
+
+  // เนื้อหาเชิงลึกเป็น optional — บริการที่ยังไม่ได้เขียนส่วนนี้จะข้ามสาม section ไปเลย
+  // ดีกว่าแสดงหัวข้อที่ไม่มีเนื้อหาอยู่ข้างใน
+  const depth = serviceDepth[service.slug]
 
   const related = (service.relatedProductCategorySlugs ?? [])
     .map((s) => categories?.find((c) => c.slug === s))
@@ -45,9 +50,36 @@ export default function ServiceDetail() {
         <div className="grid items-start gap-10 lg:grid-cols-2 lg:gap-16">
           <div>
             <Heading level={2}>{t(ui.serviceDetail.overviewHeading)}</Heading>
-            <p className="text-ink-muted mt-5">{t(service.overview)}</p>
+
+            {/*
+              ย่อหน้าแรกเป็นบทสรุปหนึ่งประโยคจาก `service.overview` ซึ่งใช้เป็น
+              meta description ของหน้าด้วย จึงเน้นให้ต่างจากย่อหน้าที่เหลือ
+              ส่วนที่ตามมาคือเนื้อหาเต็มจาก `serviceDepth.overviewDetail`
+            */}
+            <p className="text-ink mt-5 text-lg leading-relaxed">{t(service.overview)}</p>
+
+            {depth?.overviewDetail.map((paragraph) => (
+              <p key={paragraph.en} className="text-ink-muted mt-4 leading-relaxed">
+                {t(paragraph)}
+              </p>
+            ))}
           </div>
-          <ImagePlaceholder aspect="aspect-[4/3]" label={t(service.cover.alt)} size="1600 × 1200" />
+          {/*
+            ครอบเป็น 4:3 ด้วย object-cover เพื่อให้ทั้งสี่หน้าบริการมีสัดส่วนเท่ากัน
+            ภาพต้นฉบับที่ IDIE ส่งมามีสัดส่วนต่างกัน (จตุรัส · 16:10 · 3:2)
+            ถ้าปล่อยตามสัดส่วนจริง ความสูงของบล็อกจะไม่เท่ากันในแต่ละหน้า
+            แล้วเว็บจะดูเหมือนแต่ละหน้าถูกทำคนละครั้งโดยคนละคน
+          */}
+          <img
+            src={service.cover.src}
+            srcSet={service.cover.srcSet}
+            alt={t(service.cover.alt)}
+            width={service.cover.width}
+            height={service.cover.height}
+            loading="lazy"
+            decoding="async"
+            className="border-line rounded-card bg-surface-alt aspect-[4/3] w-full border object-cover"
+          />
         </div>
       </Section>
 
@@ -85,8 +117,87 @@ export default function ServiceDetail() {
         </div>
       </Section>
 
+      {depth && (
+        <>
+          <Section>
+            <div className="grid gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16">
+              <div>
+                <Heading level={2}>{t(ui.serviceDetail.processHeading)}</Heading>
+                <p className="text-ink-muted mt-4 max-w-prose">
+                  {t(ui.serviceDetail.processLead)}
+                </p>
+              </div>
+
+              {/*
+                `<ol>` ไม่ใช่ `<ul>` — ลำดับมีความหมายจริงตรงนี้ (สำรวจก่อนออกแบบ
+                ออกแบบก่อนสั่งของ) โปรแกรมอ่านหน้าจอจะบอกผู้ฟังว่า "ข้อ 3 จาก 6"
+                ซึ่งเป็นข้อมูลที่หายไปถ้าใช้รายการแบบไม่เรียงลำดับ
+              */}
+              <ol className="border-line divide-line divide-y border-t border-b">
+                {depth.process.map((step, index) => (
+                  <li key={step.en} className="flex gap-4 py-4">
+                    <span
+                      aria-hidden="true"
+                      className="stat-figure text-primary-600 w-6 shrink-0 text-sm font-bold"
+                    >
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <span className="text-sm">{t(step)}</span>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Section>
+
+          <Section tone="alt">
+            <div className="grid gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16">
+              <div>
+                <Heading level={2}>{t(ui.serviceDetail.checklistHeading)}</Heading>
+                <p className="text-ink-muted mt-4 max-w-prose">
+                  {t(ui.serviceDetail.checklistLead)}
+                </p>
+                <div className="mt-6">
+                  <Button to={`/contact?service=${service.slug}`} variant="outline" size="sm" withArrow>
+                    {t(ui.actions.contactInquiry)}
+                  </Button>
+                </div>
+              </div>
+
+              <ul className="grid gap-3 sm:grid-cols-2">
+                {depth.quoteChecklist.map((item) => (
+                  <li
+                    key={item.en}
+                    className="border-line bg-surface rounded-card flex gap-3 border p-4 text-sm"
+                  >
+                    <CheckIcon
+                      aria-hidden="true"
+                      className="text-primary-600 mt-0.5 size-4 shrink-0"
+                    />
+                    <span>{t(item)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </Section>
+
+          <Section>
+            <Heading level={2}>{t(ui.serviceDetail.notesHeading)}</Heading>
+            <p className="text-ink-muted mt-4 max-w-prose">{t(ui.serviceDetail.notesLead)}</p>
+
+            <div className="mt-8 grid gap-6 lg:grid-cols-3">
+              {depth.technicalNotes.map((note) => (
+                <article key={note.title.en} className="border-line rounded-card border p-6">
+                  <h3 className="font-semibold">{t(note.title)}</h3>
+                  <p className="text-ink-muted mt-3 text-sm leading-relaxed">{t(note.body)}</p>
+                </article>
+              ))}
+            </div>
+          </Section>
+        </>
+      )}
+
       {related.length > 0 && (
-        <Section>
+        <Section tone="alt">
           <Heading level={2} eyebrow="PRODUCTS">
             {t(ui.serviceDetail.relatedProductsHeading)}
           </Heading>

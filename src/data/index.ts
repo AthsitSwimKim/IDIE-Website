@@ -33,6 +33,7 @@ import {
   valueProps,
 } from '@/data/company'
 import { capabilities, services } from '@/data/services'
+import { serviceDepth } from '@/data/service-content'
 import { industries } from '@/data/industries'
 import {
   brandBlurbs,
@@ -49,6 +50,8 @@ import { filterProducts } from '@/utils/filterProducts'
 
 export { ui } from '@/data/i18n'
 export { capabilities, companyFax, contactPerson, careersEmail, productAreas }
+export { serviceDepth }
+export type { ServiceDepth } from '@/data/service-content'
 export { brandBlurbs, brandCategories, brandDocuments, sourcingStatement }
 
 /* -------------------------------------------------------------------------- */
@@ -261,4 +264,50 @@ export async function getLatestNews(limit = 3): Promise<NewsArticle[]> {
 
 export async function getNewsBySlug(slug: string): Promise<NewsArticle | null> {
   return fetchContent<NewsArticle | null>(`/api/news/${encodeURIComponent(slug)}`, null)
+}
+
+/* -------------------------------------------------------------------------- */
+/* แบบฟอร์มติดต่อ                                                               */
+/* -------------------------------------------------------------------------- */
+
+export interface InquiryPayload {
+  name: string
+  company?: string
+  email: string
+  phone?: string
+  subject: string
+  message: string
+  locale: 'th' | 'en'
+  /** ช่องล่อบอต — ฟอร์มซ่อนไว้ ผู้ใช้จริงส่งค่าว่างเสมอ */
+  website?: string
+}
+
+/**
+ * ส่งคำถามจากแบบฟอร์มติดต่อ
+ *
+ * อยู่ในไฟล์นี้เหมือน accessor ตัวอื่นเพราะกติกาเดียวกัน — **component ไม่เรียก
+ * `fetch` เอง** ต่างกันแค่ตัวนี้เป็นการ "ส่งออก" ไม่ใช่ "อ่านเข้า"
+ *
+ * ไม่กลืน error เหมือน `fetchContent` โดยตั้งใจ — ถ้าส่งไม่สำเร็จ ผู้ใช้**ต้องรู้**
+ * ไม่งั้นเขาจะเดินจากไปโดยคิดว่าบริษัทได้รับคำถามแล้ว ซึ่งเป็นความเสียหาย
+ * ที่แก้ทีหลังไม่ได้ (ต่างจากข่าวที่โหลดไม่ขึ้น ซึ่งแค่หน้าว่าง)
+ */
+export async function submitInquiry(payload: InquiryPayload): Promise<void> {
+  let response: Response
+  try {
+    response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    })
+  } catch {
+    throw new Error('ติดต่อเซิร์ฟเวอร์ไม่ได้')
+  }
+
+  if (!response.ok) {
+    // ข้อความจากเซิร์ฟเวอร์อธิบายสาเหตุได้ตรงกว่า (ส่งถี่เกินไป · ระบบเมลยังไม่พร้อม)
+    // จึงใช้ของเซิร์ฟเวอร์ก่อน แล้วค่อยตกไปที่ข้อความกลาง ๆ ของหน้าเว็บ
+    const body = (await response.json().catch(() => null)) as { error?: string } | null
+    throw new Error(body?.error ?? '')
+  }
 }

@@ -7,6 +7,22 @@ import { useLocale } from '@/hooks/useLocale'
 import { companyFax, getCompany, ui } from '@/data'
 
 /**
+ * ลิงก์ในท้ายหน้า — พื้นที่กด 44×44 **เฉพาะอุปกรณ์สัมผัส**
+ *
+ * เกณฑ์ 44×44 มีไว้สำหรับนิ้วมือ ไม่ใช่เมาส์ ตอนที่บังคับใช้กับทุกอุปกรณ์
+ * ลิงก์แต่ละอันสูง 44px โดยที่ตัวอักษรสูงแค่ ~20px ท้ายหน้าจึงดูโหรงเหรง
+ * เหมือนเว้นบรรทัดคู่ทั้งที่เป็นรายการต่อเนื่อง
+ *
+ * `pointer-coarse:` ผูกกับ media query `(pointer: coarse)` ซึ่งเป็นตัวบอกว่า
+ * อุปกรณ์ชี้ตำแหน่งหลักหยาบ (นิ้ว) หรือละเอียด (เมาส์) — ตรงกับเจตนาของเกณฑ์
+ * มากกว่าการเดาจากความกว้างจอ เพราะแท็บเล็ตจอใหญ่ก็ยังใช้นิ้วกด
+ *
+ * บนเมาส์เหลือ 32px ซึ่งยังสูงกว่าเกณฑ์ขั้นต่ำของ pointer ที่ละเอียด (24×24)
+ */
+const FOOTER_LINK =
+  'inline-flex min-h-8 items-center text-sm transition-colors duration-(--duration-ui) hover:text-white pointer-coarse:min-h-11 pointer-coarse:min-w-11'
+
+/**
  * Footer
  *
  * เนื้อหาทั้งหมดมาจาก data layer — ไม่ hardcode ที่อยู่หรือเบอร์โทรลงใน component
@@ -34,15 +50,7 @@ export function Footer() {
               <ul className="mt-3">
                 {column.items.map((item) => (
                   <li key={item.to}>
-                    {/*
-                      min-w-11 คู่กับ min-h-11 — เดิมมีแต่ความสูง พื้นที่กดจึงกว้างเท่าตัวอักษร
-                      ลิงก์ชื่อสั้นอย่าง "สินค้า" เหลือกว้างแค่ 33px ต่ำกว่าเกณฑ์ 44×44
-                      ข้อความไทยสั้นกว่าอังกฤษมาก ปัญหานี้จึงโผล่เฉพาะภาษาไทย
-                    */}
-                    <Link
-                      to={item.to}
-                      className="inline-flex min-h-11 min-w-11 items-center text-sm transition-colors duration-(--duration-ui) hover:text-white"
-                    >
+                    <Link to={item.to} className={FOOTER_LINK}>
                       {t(item.label)}
                     </Link>
                   </li>
@@ -62,7 +70,7 @@ export function Footer() {
                   <p key={number}>
                     <a
                       href={`tel:${number.replace(/\s/g, '')}`}
-                      className="inline-flex min-h-11 items-center transition-colors duration-(--duration-ui) hover:text-white"
+                      className={FOOTER_LINK}
                     >
                       {number}
                     </a>
@@ -75,7 +83,7 @@ export function Footer() {
                   <p key={address}>
                     <a
                       href={`mailto:${address}`}
-                      className="inline-flex min-h-11 items-center break-all transition-colors duration-(--duration-ui) hover:text-white"
+                      className={`${FOOTER_LINK} break-all`}
                     >
                       {address}
                     </a>
@@ -90,7 +98,6 @@ export function Footer() {
           <p>
             © {new Date().getFullYear()} {COMPANY_NAME} · {t(ui.footer.rights)}
           </p>
-          <p className="mt-1">{t(ui.footer.prototypeNote)}</p>
         </div>
       </Container>
     </footer>

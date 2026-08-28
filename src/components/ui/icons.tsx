@@ -51,6 +51,15 @@ export function CloseIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
+/** เครื่องหมายถูก — ใช้กับรายการสิ่งที่ต้องเตรียม ไม่ใช่สถานะว่าทำเสร็จแล้ว */
+export function CheckIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="m5 12 5 5L20 7" />
+    </svg>
+  )
+}
+
 /** เอกสารที่ดาวน์โหลดได้ — แผ่นกระดาษพับมุมพร้อมลูกศรลง */
 export function DocumentIcon(props: SVGProps<SVGSVGElement>) {
   return (

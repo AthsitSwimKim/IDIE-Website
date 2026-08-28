@@ -106,6 +106,24 @@ export const env = {
     maxBytes: number('UPLOAD_MAX_MB', 12) * 1024 * 1024,
   },
 
+  /**
+   * SMTP สำหรับแบบฟอร์มติดต่อ
+   *
+   * **ไม่บังคับ** ต่างจากค่าฐานข้อมูล — ถ้าไม่ตั้ง เซิร์ฟเวอร์ยังรันได้ปกติ
+   * เพียงแต่ฟอร์มติดต่อจะตอบกลับว่าใช้ไม่ได้ชั่วคราวและบอกให้ติดต่อทางอื่นแทน
+   * เพราะการบังคับให้มีบัญชีอีเมลก่อนถึงจะเปิดเว็บดูในเครื่องตัวเองได้นั้นเกินจำเป็น
+   */
+  mail: {
+    host: optional('SMTP_HOST', ''),
+    port: number('SMTP_PORT', 587),
+    user: optional('SMTP_USER', ''),
+    password: process.env.SMTP_PASSWORD ?? '',
+    /** ผู้ส่งที่แสดงในจดหมาย — ต้องเป็นบัญชีของเราเอง ไม่ใช่อีเมลของผู้กรอกฟอร์ม */
+    from: optional('MAIL_FROM', optional('SMTP_USER', '')),
+    /** ปลายทางที่รับคำถามจากเว็บ */
+    to: optional('MAIL_TO', ''),
+  },
+
   /** โฟลเดอร์ผลลัพธ์ของ `npm run build` ฝั่งหน้าเว็บ — เสิร์ฟตอน production */
   webDist: resolve(SERVER_ROOT, '..', 'dist'),
 } as const
