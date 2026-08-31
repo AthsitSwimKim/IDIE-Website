@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { Badge, Button, Heading, Section } from '@/components/ui'
+import { Badge, Button, Heading, ImagePlaceholder, Section } from '@/components/ui'
 import { CheckIcon } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
@@ -70,16 +70,20 @@ export default function ServiceDetail() {
             ถ้าปล่อยตามสัดส่วนจริง ความสูงของบล็อกจะไม่เท่ากันในแต่ละหน้า
             แล้วเว็บจะดูเหมือนแต่ละหน้าถูกทำคนละครั้งโดยคนละคน
           */}
-          <img
-            src={service.cover.src}
-            srcSet={service.cover.srcSet}
-            alt={t(service.cover.alt)}
-            width={service.cover.width}
-            height={service.cover.height}
-            loading="lazy"
-            decoding="async"
-            className="border-line rounded-card bg-surface-alt aspect-[4/3] w-full border object-cover"
-          />
+          {service.cover ? (
+            <img
+              src={service.cover.src}
+              srcSet={service.cover.srcSet}
+              alt={t(service.cover.alt)}
+              width={service.cover.width}
+              height={service.cover.height}
+              loading="lazy"
+              decoding="async"
+              className="border-line rounded-card bg-surface-alt aspect-[4/3] w-full border object-cover"
+            />
+          ) : (
+            <ImagePlaceholder label={t(service.name)} size="1600 × 1200" />
+          )}
         </div>
       </Section>
 

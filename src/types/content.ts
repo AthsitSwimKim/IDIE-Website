@@ -132,7 +132,8 @@ export interface Service extends Placeholderable {
   scope: LocalizedText[];
   applications: LocalizedText[];
   icon: string;
-  cover: ImageAsset;
+  /** ไม่มี = ยังไม่ได้รับภาพจาก IDIE — UI จะแสดง ImagePlaceholder แทน */
+  cover?: ImageAsset;
   gallery?: ImageAsset[];
   featured?: boolean;
   order: number;

@@ -8,6 +8,7 @@ import { requireAuth } from './auth.ts'
 import { assertDatabaseReachable, closePool, pool } from './db.ts'
 import { env } from './env.ts'
 import { errorHandler, notFound } from './http.ts'
+import { legacyRedirects } from './redirects.ts'
 import { authRouter, uploadRouter } from './routes/auth.ts'
 import { contactRouter } from './routes/contact.ts'
 import { adminNewsRouter, publicNewsRouter } from './routes/news.ts'
@@ -139,6 +140,10 @@ app.use('/api', (_req, _res, next) => next(notFound('ไม่พบ endpoint �
  * ตอน dev ข้ามส่วนนี้ไป เพราะ Vite เป็นคนเสิร์ฟหน้าเว็บพร้อม hot reload
  */
 if (env.isProduction && existsSync(env.webDist)) {
+  // ต้องมาก่อน static และ SPA fallback — ไม่งั้น URL เก่าจะได้ index.html ไปเลย
+  // แล้วไม่มีโอกาสตอบ 301
+  app.use(legacyRedirects)
+
   /**
    * ไฟล์ใน `assets/` มี hash ของเนื้อหาอยู่ในชื่อ (`index-CvGL5Kts.js`)
    * เนื้อหาเปลี่ยน = ชื่อเปลี่ยน จึงแคชถาวรได้อย่างปลอดภัยและ**ควรทำ** —

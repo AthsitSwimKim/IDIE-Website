@@ -1,8 +1,11 @@
 import type { Service } from '@/types/content'
 
 /**
- * บริการจริง 4 กลุ่ม สกัดจากข้อความ business activities บนเว็บบริษัท
+ * บริการจริง สกัดจากข้อความ business activities บนเว็บบริษัท
  * ชื่อภาษาอังกฤษ = ของจริง · ชื่อและคำอธิบายภาษาไทย = ร่าง TODO: confirm with IDIE
+ *
+ * เว็บเดิมเขียนรวมเป็นสี่กลุ่ม ที่นี่แยก "Network & CCTV" ออกเป็นสองบริการ
+ * จึงกลายเป็นห้ารายการ — ดูเหตุผลที่คอมเมนต์เหนือรายการทั้งสองด้านล่าง
  *
  * ⚠️ รายการ Mechanical / Electrical / Automation & Control ในเอกสารโครงการต้นฉบับ
  *    ไม่ใช่บริการของ IDIE — เป็นตัวอย่างทั่วไปที่เขียนไว้ก่อนได้ข้อมูลจริง
@@ -45,7 +48,7 @@ export const services: Service[] = [
     },
     featured: true,
     order: 1,
-    relatedProductCategorySlugs: ['telephones', 'systems'],
+    relatedProductCategorySlugs: ['intercom-stations', 'systems'],
   },
   {
     slug: 'public-address-warning-alarm',
@@ -86,21 +89,55 @@ export const services: Service[] = [
     order: 2,
     relatedProductCategorySlugs: ['acoustic-signalling', 'optical-signalling', 'combination-units'],
   },
+  /*
+    เดิมสองรายการถัดไปนี้เป็นบริการเดียวชื่อ "Network & CCTV System" ตามที่เว็บเดิม
+    ของบริษัทเขียนไว้ แยกออกจากกันแล้วเพราะเป็นงานคนละแบบที่ลูกค้าถามคนละคำถาม —
+    ฝ่ายไอทีถามเรื่องโครงข่ายและแบนด์วิดท์ ส่วนฝ่ายความปลอดภัยถามเรื่องมุมกล้อง
+    และระยะเวลาเก็บภาพ การรวมไว้หน้าเดียวทำให้ทั้งสองฝ่ายต้องอ่านผ่านเรื่องที่
+    ไม่ใช่ของตัวเองก่อน (ทั้งสองงานยังทำร่วมกันในโครงการเดียวได้ตามปกติ)
+  */
   {
-    slug: 'network-cctv-system',
-    name: { th: 'ระบบเครือข่ายและกล้องวงจรปิด', en: 'Network & CCTV System' },
+    slug: 'network-system',
+    name: { th: 'ระบบเครือข่ายอุตสาหกรรม', en: 'Industrial Network System' },
     shortDescription: {
-      th: 'ระบบเครือข่ายและกล้องวงจรปิดสำหรับพื้นที่อุตสาหกรรมและพื้นที่เสี่ยง',
-      en: 'Network and CCTV systems for industrial and classified areas.',
+      th: 'โครงข่ายสื่อสารที่รองรับระบบอินเตอร์คอม ระบบประกาศ และกล้องวงจรปิดของทั้งโรงงาน',
+      en: 'The communication backbone that carries intercom, PA and CCTV traffic across the plant.',
     },
     overview: {
-      th: 'วางระบบเครือข่ายและกล้องวงจรปิดที่รองรับสภาพแวดล้อมอุตสาหกรรม ทั้งกล้องชนิดกันระเบิดและกันสภาพอากาศ พร้อมเชื่อมต่อเข้ากับระบบสื่อสารเดิมของโรงงาน',
-      en: 'Network and CCTV infrastructure built for industrial conditions — explosion-protected and weatherproof cameras, integrated with the plant’s existing communication systems.',
+      th: 'ออกแบบและวางโครงข่ายสื่อสารสำหรับพื้นที่อุตสาหกรรม ทั้งแกนหลักไฟเบอร์ระหว่างอาคาร สวิตช์ระดับอุตสาหกรรมในตู้สนาม และการจ่ายไฟผ่านสาย PoE ให้อุปกรณ์ปลายทาง โดยแยกภาระข้อมูลของระบบสื่อสารออกจากเครือข่ายที่ระบบควบคุมกระบวนการผลิตใช้อยู่',
+      en: 'Design and installation of the communication network for industrial sites — fibre backbone between buildings, industrial-grade switches in field cabinets, and PoE power to end devices — keeping communication traffic off the network the process control system depends on.',
     },
     scope: [
-      { th: 'ออกแบบเครือข่ายและตำแหน่งกล้อง', en: 'Network and camera layout design' },
+      { th: 'สำรวจเส้นทางสายและออกแบบผังเครือข่าย', en: 'Cable route survey and network topology design' },
+      { th: 'ประเมินแบนด์วิดท์และงบกำลังไฟ PoE', en: 'Bandwidth and PoE power budget sizing' },
+      { th: 'จัดหาสวิตช์อุตสาหกรรมและอุปกรณ์ตู้สนาม', en: 'Supply of industrial switches and field cabinet equipment' },
+      { th: 'เดินสาย ติดตั้ง และทดสอบพร้อมส่งมอบผังจริง', en: 'Cabling, installation and testing with as-built documentation' },
+    ],
+    applications: [
+      { th: 'แกนหลักเชื่อมอาคารสำนักงานกับพื้นที่ผลิต', en: 'Backbone linking offices and process areas' },
+      { th: 'เครือข่ายรองรับระบบ PA/GA และอินเตอร์คอมแบบ IP', en: 'Network for IP-based PA/GA and intercom systems' },
+      { th: 'เครือข่ายกล้องที่แยกออกจากระบบควบคุม', en: 'Camera network segregated from process control' },
+    ],
+    icon: 'network',
+    order: 3,
+    relatedProductCategorySlugs: ['systems'],
+  },
+  {
+    slug: 'cctv-system',
+    name: { th: 'ระบบกล้องวงจรปิด', en: 'CCTV & Video Surveillance System' },
+    shortDescription: {
+      th: 'ระบบกล้องวงจรปิดสำหรับพื้นที่อุตสาหกรรม พื้นที่กลางแจ้ง และพื้นที่จำแนกอันตราย',
+      en: 'CCTV systems for industrial, outdoor and classified areas.',
+    },
+    overview: {
+      th: 'ออกแบบ จัดหา และติดตั้งระบบกล้องวงจรปิดที่ทนสภาพแวดล้อมโรงงาน ทั้งกล้องกันสภาพอากาศและกล้องที่มีตัวถังผ่านการรับรองสำหรับพื้นที่เสี่ยงระเบิด พร้อมคำนวณพื้นที่จัดเก็บให้ตรงกับระยะเวลาเก็บภาพย้อนหลังที่โรงงานต้องการ',
+      en: 'Design, supply and installation of CCTV built for plant conditions — weatherproof cameras and certified enclosures for hazardous areas — with recording storage sized to the retention period the site actually requires.',
+    },
+    scope: [
+      { th: 'สำรวจจุดที่ต้องการเห็นภาพและออกแบบมุมกล้อง', en: 'Survey of required views and camera coverage design' },
       { th: 'จัดหากล้องกันระเบิดและกันสภาพอากาศ', en: 'Supply of Ex and weatherproof cameras' },
-      { th: 'ติดตั้งและเชื่อมระบบ', en: 'Installation and system integration' },
+      { th: 'คำนวณพื้นที่จัดเก็บตามระยะเวลาเก็บภาพ', en: 'Storage sizing against the retention period' },
+      { th: 'ติดตั้ง ตั้งค่าระบบบันทึก และทดสอบทั้งกลางวันกลางคืน', en: 'Installation, recorder setup and day/night verification' },
     ],
     applications: [
       { th: 'เฝ้าระวังพื้นที่ผลิต', en: 'Process area surveillance' },
@@ -109,7 +146,7 @@ export const services: Service[] = [
     ],
     icon: 'video',
     cover: {
-      src: '/images/services/network-cctv-system/cover.webp',
+      src: '/images/services/cctv-system/cover.webp',
       alt: {
         th: 'กล้องวงจรปิดชนิดกันระเบิดติดตั้งในพื้นที่โรงงาน',
         en: 'Explosion-protected CCTV camera station in a plant area',
@@ -117,7 +154,7 @@ export const services: Service[] = [
       width: 583,
       height: 360,
     },
-    order: 3,
+    order: 4,
     relatedProductCategorySlugs: ['systems'],
   },
   {
@@ -156,7 +193,7 @@ export const services: Service[] = [
       height: 500,
     },
     featured: true,
-    order: 4,
+    order: 5,
     relatedProductCategorySlugs: ['telephones', 'acoustic-signalling', 'optical-signalling'],
   },
 ]

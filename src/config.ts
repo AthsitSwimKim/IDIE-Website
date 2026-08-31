@@ -15,8 +15,13 @@ export const config = {
    */
   enable3d: false,
 
-  /** ปีก่อตั้ง — ข้อมูลจริงจากเว็บบริษัท ใช้คำนวณปีประสบการณ์แทนการ hardcode ตัวเลข */
-  foundedYear: 1996,
+  /**
+   * ปีก่อตั้ง — **2006 ยืนยันโดย IDIE เอง (ส.ค. 2026)**
+   *
+   * ก่อนหน้านี้ใช้ 1996 ที่อ่านจากหน้า Company Profile ของเว็บเดิม ซึ่งไม่ตรง
+   * ใช้คำนวณปีประสบการณ์ทุกจุดแทนการ hardcode ตัวเลข — แก้ที่นี่ที่เดียวพอ
+   */
+  foundedYear: 2006,
 
   defaultLocale: 'th' as const,
   localeStorageKey: 'idie.locale',

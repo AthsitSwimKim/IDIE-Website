@@ -9,6 +9,10 @@ import type { IndustronicSeed } from '@/data/products'
  *
  * ⚠️ ไฟล์นี้สร้างด้วยสคริปต์ — ถ้าผู้ผลิตเปลี่ยนรายการสินค้า ให้ดึงใหม่แล้ว generate ทับ
  *    อย่าแก้ทีละบรรทัดด้วยมือ เพราะจะหายตอน generate รอบถัดไป
+ *
+ * ⚠️ ตอน generate รอบถัดไป: รุ่นของ Industronic ทั้งหมดในหมวดนี้เป็น **สถานีอินเตอร์คอม
+ *    และอุปกรณ์ประกอบ** ไม่ใช่โทรศัพท์ จึงอยู่ในหมวด `intercom-stations`
+ *    ไม่ใช่ `telephones` (ซึ่งตอนนี้เหลือเฉพาะเครื่องโทรศัพท์จริงของ FHF)
  */
 export const industronicSeeds: IndustronicSeed[] = [
   {
@@ -527,7 +531,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-12-nib-001',
     model: '12 NIB 001',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมตั้งโต๊ะ IP',
     en: 'IP Desktop Intercom Station',
@@ -535,7 +539,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-ap-712',
     model: 'AP 712',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมตั้งโต๊ะ IP',
     en: 'IP Desktop Intercom Station',
@@ -544,7 +548,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-ncp-001',
     model: 'NCP 001',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมผ่านคอมพิวเตอร์',
     en: 'IP PC Intercom Station',
@@ -552,7 +556,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-10-ner-001',
     model: '10 NER 001',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'แผงควบคุมวิศวกรรม IP',
     en: 'IP Engineering Panel',
@@ -561,7 +565,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-nrc-001',
     model: 'NRC 001',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมขนาดกะทัดรัด IP',
     en: 'Robust IP Compact Intercom Station',
@@ -570,7 +574,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-dtm-01x',
     model: 'DTM 01x',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมตั้งโต๊ะแบบดิจิทัล',
     en: 'Digital Desktop Intercom Station',
@@ -578,7 +582,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-dt-dte-705',
     model: 'DT/ DTE 705',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมตั้งโต๊ะแบบดิจิทัล',
     en: 'Digital Desktop Intercom Station',
@@ -587,7 +591,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-de-705',
     model: 'DE 705',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมแบบฝังผนัง',
     en: 'Digital Flush-mounted Intercom Station',
@@ -595,7 +599,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-nro-xx2',
     model: 'NRO xx2',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     certs: ['IP66'],
     th: 'สถานีอินเตอร์คอมกลางแจ้ง IP',
@@ -605,7 +609,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-nro-xx2-de-dh',
     model: 'NRO xx2/DE /DH',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     certs: ['IP66'],
     th: 'สถานีอินเตอร์คอมกลางแจ้ง IP',
@@ -615,7 +619,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-6-12-noak-001',
     model: '6/12 NOAK 001',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     certs: ['IP66'],
     th: 'กล่องขยายปุ่มควบคุม',
@@ -625,7 +629,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-nso-001',
     model: 'NSO 001',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สถานีอินเตอร์คอมกลางแจ้งตัวถังสเตนเลส',
     en: 'IP Outdoor Intercom Station with Stainless Steel Housing',
@@ -634,7 +638,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-da-dae-7x5',
     model: 'DA/DAE 7x5',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     certs: ['IP66'],
     th: 'สถานีอินเตอร์คอมกลางแจ้งแบบดิจิทัล',
@@ -644,7 +648,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-6-12-daz-005',
     model: '6/12 DAZ 005',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     certs: ['IP66'],
     th: 'กล่องขยายปุ่มควบคุม',
@@ -654,7 +658,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-1-dah-02',
     model: '1 DAH 02',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     certs: ['IP66'],
     th: 'ชุดหูโทรศัพท์กลางแจ้งพร้อมแท่นวาง',
@@ -664,7 +668,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-3-hmi-05',
     model: '3 HMI 05',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'ไมโครโฟนมือถือ',
     en: 'Hand-held Microphone for Outdoor Intercom Stations',
@@ -672,7 +676,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-1-dhu-003',
     model: '1 DHU 003',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'ชุดหูฟังสำหรับสถานีกลางแจ้ง',
     en: 'Headset for Outdoor Intercom Station',
@@ -680,7 +684,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-1-fs-21',
     model: '1 FS 21',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial'],
     th: 'สวิตช์เท้า',
     en: 'Foot Switch',
@@ -689,7 +693,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-1-ah-001',
     model: '1 AH 001',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['industrial', 'marine-offshore', 'hazardous-area'],
     th: 'ครอบกันเสียง',
     en: 'Acoustic Hood',
@@ -698,7 +702,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-2-ssh-16',
     model: '2 SSH 16',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['hazardous-area', 'industrial'],
     th: 'ครอบกันเสียงสำหรับพื้นที่อันตราย',
     en: 'Acoustic Hood for Explosive (Hazardous) Areas',
@@ -707,7 +711,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-dx-dxe-7x5',
     model: 'DX/DXE 7x5',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['hazardous-area', 'industrial'],
     certs: ['ATEX', 'IECEx', 'IP66'],
     th: 'สถานีอินเตอร์คอมกันระเบิด',
@@ -717,7 +721,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-1-dxh-01',
     model: '1 DXH 01',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['hazardous-area', 'industrial'],
     certs: ['IP66'],
     th: 'ชุดหูโทรศัพท์กันระเบิดพร้อมแท่นวาง',
@@ -727,7 +731,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-1-dhux-01',
     model: '1 DHUX 01',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['hazardous-area'],
     th: 'ชุดหูฟังกันระเบิด',
     en: 'Ex Headset',
@@ -736,7 +740,7 @@ export const industronicSeeds: IndustronicSeed[] = [
   {
     slug: 'industronic-1-fsx-21',
     model: '1 FSX 21',
-    category: 'telephones',
+    category: 'intercom-stations',
     area: ['hazardous-area'],
     th: 'สวิตช์เท้ากันระเบิด',
     en: 'Explosion-proof Foot Switch',

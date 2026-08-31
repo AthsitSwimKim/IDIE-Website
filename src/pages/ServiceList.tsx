@@ -1,4 +1,4 @@
-import { Button, Heading, Section } from '@/components/ui'
+import { Button, Heading, ImagePlaceholder, Section } from '@/components/ui'
 import { ArrowRight } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -6,9 +6,9 @@ import { useLocale } from '@/hooks/useLocale'
 import { getServices, serviceDepth, ui } from '@/data'
 
 /**
- * Services — หน้ารวมบริการทั้งสี่กลุ่ม
+ * Services — หน้ารวมบริการทุกกลุ่ม
  *
- * เดิมเป็นการ์ดข้อความล้วนสี่ใบ ซึ่งอ่านแล้วยังไม่ต่างจากสารบัญ
+ * เดิมเป็นการ์ดข้อความล้วน ซึ่งอ่านแล้วยังไม่ต่างจากสารบัญ
  * ตอนนี้แต่ละใบมีภาพหน้างานจริงที่ IDIE ส่งมา ขอบเขตงาน และจำนวนประเด็นทางเทคนิค
  * ที่มีให้อ่านต่อ — ผู้อ่านจึงตัดสินใจได้ว่าจะกดเข้าไปหน้าไหนโดยไม่ต้องกดลองทีละหน้า
  *
@@ -53,16 +53,20 @@ export default function ServiceList() {
                 (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')
               }
             >
-              <img
-                src={service.cover.src}
-                srcSet={service.cover.srcSet}
-                alt={t(service.cover.alt)}
-                width={service.cover.width}
-                height={service.cover.height}
-                loading="lazy"
-                decoding="async"
-                className="border-line rounded-card bg-surface-alt aspect-[4/3] w-full border object-cover"
-              />
+              {service.cover ? (
+                <img
+                  src={service.cover.src}
+                  srcSet={service.cover.srcSet}
+                  alt={t(service.cover.alt)}
+                  width={service.cover.width}
+                  height={service.cover.height}
+                  loading="lazy"
+                  decoding="async"
+                  className="border-line rounded-card bg-surface-alt aspect-[4/3] w-full border object-cover"
+                />
+              ) : (
+                <ImagePlaceholder label={t(service.name)} size="1600 × 1200" />
+              )}
 
               <div>
                 <Heading level={2}>{t(service.name)}</Heading>

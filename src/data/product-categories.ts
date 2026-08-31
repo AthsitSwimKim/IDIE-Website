@@ -6,6 +6,10 @@ import type { LocalizedText, ProductArea, ProductCategory } from '@/types/conten
  * ⚠️ ใช้ได้เฉพาะ "โครงสร้างหมวดหมู่" เท่านั้น
  *    ห้ามคัดลอกสเปก ข้อความ หรือภาพจาก catalog เพราะเป็นลิขสิทธิ์ของผู้ผลิต
  *
+ * หมวด `telephones` กับ `intercom-stations` แยกจากกันที่นี่ แม้ catalog ของผู้ผลิต
+ * จะรวมไว้ด้วยกัน — เพราะสินค้าสองกลุ่มนี้มาจากคนละแบรนด์ (FHF กับ Industronic)
+ * และผู้ซื้อค้นหาคนละคำ
+ *
  * คำแปลไทยเป็นร่าง — TODO: confirm with IDIE
  */
 export const productCategories: ProductCategory[] = [
@@ -13,8 +17,8 @@ export const productCategories: ProductCategory[] = [
     slug: 'telephones',
     name: { th: 'โทรศัพท์อุตสาหกรรม', en: 'Industrial Telephones' },
     description: {
-      th: 'โทรศัพท์กันสภาพอากาศและกันระเบิด ทั้งระบบอนาล็อกและ VoIP รวมถึงสถานีอินเตอร์คอมและอุปกรณ์เสริม',
-      en: 'Weatherproof and explosion-proof telephones in analogue and VoIP, plus intercom stations and accessories.',
+      th: 'เครื่องโทรศัพท์กันสภาพอากาศและกันระเบิด ทั้งระบบอนาล็อกและ VoIP สำหรับพื้นที่ผลิต พื้นที่กลางแจ้ง และพื้นที่จำแนกอันตราย',
+      en: 'Weatherproof and explosion-proof telephone sets in analogue and VoIP, for process areas, outdoor locations and classified zones.',
     },
     cover: {
       src: '/images/product-categories/telephones.webp',
@@ -24,6 +28,28 @@ export const productCategories: ProductCategory[] = [
     },
     featured: true,
     order: 1,
+  },
+  {
+    /*
+      แยกออกจาก `telephones` เพราะสองอย่างนี้ไม่ได้ถูกเลือกด้วยเหตุผลเดียวกัน
+      โทรศัพท์เลือกจากตัวถังกับใบรับรองของจุดติดตั้ง ส่วนสถานีอินเตอร์คอมเลือกจาก
+      ผังการเรียกและระบบแม่ข่ายที่ใช้อยู่ — คนที่กำลังหาสถานีอินเตอร์คอมจึงไม่ต้อง
+      ไล่ผ่านเครื่องโทรศัพท์ก่อน และกลับกัน
+    */
+    slug: 'intercom-stations',
+    name: { th: 'สถานีอินเตอร์คอม', en: 'Intercom Stations' },
+    description: {
+      th: 'สถานีอินเตอร์คอมตั้งโต๊ะ ฝังผนัง กลางแจ้ง และชนิดกันระเบิด พร้อมอุปกรณ์ประกอบอย่างชุดหูโทรศัพท์ หูฟัง สวิตช์เท้า และครอบกันเสียง',
+      en: 'Desktop, flush-mounted, outdoor and explosion-proof intercom stations, with accessories such as handsets, headsets, foot switches and acoustic hoods.',
+    },
+    cover: {
+      src: '/images/product-categories/intercom-stations.webp',
+      alt: { th: 'สถานีอินเตอร์คอมอุตสาหกรรม', en: 'Industrial intercom station' },
+      width: 1200,
+      height: 800,
+    },
+    featured: true,
+    order: 2,
   },
   {
     slug: 'acoustic-signalling',
@@ -39,7 +65,7 @@ export const productCategories: ProductCategory[] = [
       height: 800,
     },
     featured: true,
-    order: 2,
+    order: 3,
   },
   {
     slug: 'optical-signalling',
@@ -55,7 +81,7 @@ export const productCategories: ProductCategory[] = [
       height: 800,
     },
     featured: true,
-    order: 3,
+    order: 4,
   },
   {
     slug: 'combination-units',
@@ -70,7 +96,7 @@ export const productCategories: ProductCategory[] = [
       width: 1200,
       height: 800,
     },
-    order: 4,
+    order: 5,
   },
   {
     slug: 'alarm-call-points',
@@ -85,7 +111,7 @@ export const productCategories: ProductCategory[] = [
       width: 1200,
       height: 800,
     },
-    order: 5,
+    order: 6,
   },
   {
     slug: 'systems',
@@ -100,7 +126,7 @@ export const productCategories: ProductCategory[] = [
       width: 1200,
       height: 800,
     },
-    order: 6,
+    order: 7,
   },
 ]
 

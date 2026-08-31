@@ -70,7 +70,7 @@ export const brandBlurbs: Record<string, LocalizedText> = {
  * ใช้ทำลิงก์จากหน้า Brands ไปยัง product filter และบอกลูกค้าว่าแบรนด์ไหนมีอะไร
  */
 export const brandCategories: Record<string, string[]> = {
-  industronic: ['systems', 'telephones'],
+  industronic: ['intercom-stations', 'systems'],
   fhf: [
     'telephones',
     'acoustic-signalling',

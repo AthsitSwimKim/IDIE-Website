@@ -50,6 +50,24 @@ export const router = createBrowserRouter([
       { path: 'about', element: <About /> },
       { path: 'services', element: <ServiceList /> },
       { path: 'services/:slug', element: <ServiceDetail /> },
+
+      /**
+       * URL เก่าที่เลิกใช้แล้ว — ต้องพาไปหน้าใหม่ ไม่ใช่เด้ง 404
+       *
+       * `network-cctv-system` เคยเป็นบริการเดียวที่รวมงานเครือข่ายกับกล้องวงจรปิด
+       * ตอนนี้แยกเป็น `network-system` กับ `cctv-system` แล้ว เลือกให้ไปที่หน้ากล้อง
+       * เพราะเนื้อหาส่วนใหญ่ของหน้าเดิม (ขั้นตอนทำงาน ข้อมูลเสนอราคา ประเด็นเทคนิค
+       * สองในสามข้อ) ย้ายไปอยู่ที่นั่น
+       *
+       * ทางฝั่งเซิร์ฟเวอร์มีตัวเดียวกันนี้ตอบ 301 ไว้ที่ `server/src/redirects.ts`
+       * ให้คนที่เปิดลิงก์ตรง ๆ ได้สถานะที่ถูกต้อง — **แก้ที่ไหนต้องแก้อีกที่ด้วย**
+       * ตัวนี้ยังจำเป็นอยู่ เพราะตอน dev ไม่มีเซิร์ฟเวอร์นั้นมาคั่น และการกดลิงก์
+       * ภายในเว็บไม่ได้วิ่งผ่านเซิร์ฟเวอร์เลย
+       */
+      {
+        path: 'services/network-cctv-system',
+        element: <Navigate to="/services/cctv-system" replace />,
+      },
       { path: 'products', element: <ProductList /> },
       { path: 'products/:slug', element: <ProductDetail /> },
       { path: 'brands', element: <Brands /> },
