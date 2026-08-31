@@ -100,7 +100,7 @@ export default function StyleGuide() {
             ของสระบน-ล่างไม่ชนกัน และตัวอักษร Latin ยังอ่านสบายในย่อหน้าเดียวกัน
           </p>
           <p className="text-eyebrow text-primary-600 uppercase">Eyebrow · COMPANY PROFILE</p>
-          <p className="stat-figure text-4xl font-bold">1996 · 35 · 1,024</p>
+          <p className="stat-figure text-4xl font-bold">2006 · 35 · 1,024</p>
         </div>
       </Section>
 

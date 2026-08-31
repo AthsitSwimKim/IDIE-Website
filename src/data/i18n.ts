@@ -23,8 +23,8 @@ export const ui = {
 
   footer: {
     tagline: {
-      th: 'ระบบสื่อสารและสัญญาณเตือนภัยสำหรับโรงงานอุตสาหกรรมและพื้นที่อันตราย ตั้งแต่ปี 2539',
-      en: 'Industrial communication and safety signalling for plants and hazardous areas since 1996.',
+      th: 'ระบบสื่อสารและสัญญาณเตือนภัยสำหรับโรงงานอุตสาหกรรมและพื้นที่อันตราย ตั้งแต่ปี 2549',
+      en: 'Industrial communication and safety signalling for plants and hazardous areas since 2006.',
     },
     exploreHeading: { th: 'สำรวจเว็บไซต์', en: 'Explore' },
     companyHeading: { th: 'บริษัท', en: 'Company' },
@@ -118,15 +118,15 @@ export const ui = {
     },
     /** {years} ถูกแทนค่าตอน render จากปีก่อตั้งจริง ไม่ใช่ตัวเลขที่พิมพ์ทิ้งไว้ */
     heroMeta: {
-      th: '{years}+ ปีในสายระบบสื่อสารอุตสาหกรรม · ตั้งแต่ พ.ศ. 2539 · ระยอง ประเทศไทย',
-      en: '{years}+ years in industrial communication · Since 1996 · Rayong, Thailand',
+      th: '{years}+ ปีในสายระบบสื่อสารอุตสาหกรรม · ตั้งแต่ พ.ศ. 2549 · ระยอง ประเทศไทย',
+      en: '{years}+ years in industrial communication · Since 2006 · Rayong, Thailand',
     },
     whyTitle: { th: 'ทำไมโรงงานถึงเลือก IDIE', en: 'Why plants choose IDIE' },
     brandsTitle: {
       th: 'ตัวแทนจำหน่ายผู้ผลิตชั้นนำจากยุโรป',
       en: 'Authorised distributor for leading European manufacturers',
     },
-    companyTitle: { th: 'ผู้เชี่ยวชาญเฉพาะทางมาตั้งแต่ปี 2539', en: 'A focused specialist since 1996' },
+    companyTitle: { th: 'ผู้เชี่ยวชาญเฉพาะทางมาตั้งแต่ปี 2549', en: 'A focused specialist since 2006' },
     companyCta: { th: 'รู้จักบริษัทเพิ่มเติม', en: 'More about the company' },
 
     highlightsTitle: { th: 'สิ่งที่เราทำให้ลูกค้า', en: 'What we do for our customers' },
@@ -135,7 +135,7 @@ export const ui = {
       en: 'From system design through certified equipment procurement to installation and long-term support.',
     },
 
-    servicesTitle: { th: 'บริการหลัก 4 กลุ่ม', en: 'Four core services' },
+    servicesTitle: { th: 'บริการหลัก 5 กลุ่ม', en: 'Five core services' },
     servicesLead: {
       th: 'ทุกงานอยู่บนพื้นฐานเดียวกัน — ระบบต้องทำงานได้ในวันที่เกิดเหตุจริง',
       en: 'Every service rests on the same premise — the system has to work on the day it matters.',
@@ -212,8 +212,8 @@ export const ui = {
     profileHeading: { th: 'ข้อมูลบริษัท', en: 'Company profile' },
     scopeHeading: { th: 'ขอบเขตงานของเรา', en: 'Our scope of work' },
     scopeLead: {
-      th: 'สี่กลุ่มงานหลักที่บริษัทระบุไว้เอง ครอบคลุมตั้งแต่ออกแบบจนถึงบริการหลังการขาย',
-      en: 'The four core areas the company defines for itself, from design through after-sales service.',
+      th: 'กลุ่มงานหลักที่บริษัทระบุไว้เอง ครอบคลุมตั้งแต่ออกแบบจนถึงบริการหลังการขาย',
+      en: 'The core areas the company defines for itself, from design through after-sales service.',
     },
     industriesHeading: { th: 'อุตสาหกรรมที่ให้บริการ', en: 'Industries we serve' },
     contactPersonHeading: { th: 'ผู้ติดต่อหลัก', en: 'Primary contact' },

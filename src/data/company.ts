@@ -1,4 +1,5 @@
 import type { Certificate, CompanyInfo, Milestone, Stat, ValueProp } from '@/types/content'
+import { config } from '@/config'
 
 /**
  * ข้อมูลจริงจากเว็บไซต์บริษัท http://www.idindustrial.com/ (ดึง 18 ส.ค. 2026)
@@ -15,7 +16,8 @@ export const company: CompanyInfo = {
     th: 'ระบบสื่อสารและสัญญาณเตือนภัยสำหรับอุตสาหกรรม',
     en: 'Industrial Communication & Safety Signalling',
   },
-  foundedYear: 1996,
+  // อ่านจาก config เพื่อไม่ให้มีปีก่อตั้งสองที่ที่เพี้ยนจากกันได้
+  foundedYear: config.foundedYear,
   about: {
     // ต้นฉบับภาษาอังกฤษมาจากหน้า Company Profile ของเว็บเดิม — ฉบับไทยเป็นคำแปลร่าง
     th: 'บริษัท ไอดี อินดัสเตรียล เอ็นจิเนียริ่ง จำกัด เป็นบริษัทวิศวกรรม ตัวแทนจำหน่าย และงานบริการ ที่เชี่ยวชาญด้านการออกแบบและงานวิศวกรรม การจัดหาระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด รวมถึงจัดจำหน่ายโทรศัพท์อุตสาหกรรมและอุปกรณ์ส่งสัญญาณชนิดกันระเบิด ครอบคลุมอุตสาหกรรมเคมี ปิโตรเคมี น้ำมันและก๊าซ ปุ๋ยเคมี โรงไฟฟ้า และเหมืองแร่',
@@ -176,8 +178,8 @@ export const valueProps: ValueProp[] = [
     icon: 'target',
     title: { th: 'เชี่ยวชาญเฉพาะทาง', en: 'Focused Specialist' },
     description: {
-      th: 'ทำเฉพาะระบบสื่อสารและสัญญาณเตือนภัยอุตสาหกรรมมาตั้งแต่ปี 2539 ไม่ใช่งานรับเหมาทั่วไปที่รับงานนี้เป็นงานเสริม',
-      en: 'Dedicated to industrial communication and signalling since 1996 — not a general contractor taking this on as a side line.',
+      th: 'ทำเฉพาะระบบสื่อสารและสัญญาณเตือนภัยอุตสาหกรรมมาตั้งแต่ปี 2549 ไม่ใช่งานรับเหมาทั่วไปที่รับงานนี้เป็นงานเสริม',
+      en: 'Dedicated to industrial communication and signalling since 2006 — not a general contractor taking this on as a side line.',
     },
   },
   {

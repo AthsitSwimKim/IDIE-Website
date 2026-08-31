@@ -206,14 +206,102 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   },
 
   /* ---------------------------------------------------------------------- */
-  'network-cctv-system': {
+  'network-system': {
     overviewDetail: [
       {
-        th: 'งานกลุ่มนี้ครอบสองส่วนที่ต้องออกแบบไปด้วยกัน คือโครงข่ายสื่อสารที่เป็นเส้นเลือดของระบบ และกล้องวงจรปิดที่วางอยู่บนโครงข่ายนั้น การเลือกกล้องก่อนแล้วค่อยหาทางเดินสายทีหลัง เป็นลำดับที่ทำให้โครงการบานปลายบ่อยที่สุด เพราะข้อจำกัดเรื่องเส้นทางสาย กำลังไฟ และแบนด์วิดท์ มักเป็นตัวตัดตัวเลือกของกล้องมากกว่าตัวสเปกกล้องเอง',
-        en: 'This service covers two things that have to be designed together: the communication network that carries everything, and the cameras that sit on it. Choosing cameras first and working out cabling afterwards is the sequence that most often causes a project to overrun — routing, power and bandwidth constraints usually narrow the camera options more than the camera specification does.',
+        th: 'เครือข่ายในโรงงานไม่ได้ทำหน้าที่แค่ส่งข้อมูล ระบบอินเตอร์คอม ระบบประกาศ และกล้องวงจรปิดที่เป็นแบบ IP ทั้งหมดวิ่งอยู่บนโครงข่ายเดียวกันนี้ เมื่อสวิตช์ตัวหนึ่งดับ สิ่งที่หายไปจึงไม่ใช่แค่ภาพจากกล้อง แต่รวมถึงช่องทางที่ใช้เรียกคนออกจากพื้นที่ด้วย โครงข่ายส่วนนี้จึงต้องออกแบบด้วยเกณฑ์เดียวกับอุปกรณ์ความปลอดภัย ไม่ใช่เกณฑ์ของเครือข่ายสำนักงาน',
+        en: 'A plant network does more than move data. Intercom, public address and CCTV — once they are IP based — all ride on the same infrastructure, so when a switch goes down what is lost is not only the camera view but the channel used to call people out of an area. This network has to be designed to the standard applied to safety equipment, not to the standard of an office LAN.',
       },
       {
-        th: 'สภาพแวดล้อมในโรงงานต่างจากอาคารสำนักงานอย่างสิ้นเชิง กล้องต้องทนฝุ่น การล้างพื้นด้วยน้ำแรงดันสูง การสั่นสะเทือนจากเครื่องจักร ไอเกลือในพื้นที่ชายฝั่ง และช่วงอุณหภูมิที่กว้างกว่ามาก ส่วนจุดที่อยู่ในพื้นที่จำแนกอันตรายต้องใช้ตัวถังที่ผ่านการรับรองเฉพาะ ซึ่งเป็นสินค้าคนละหมวดที่มีทั้งราคาและระยะเวลาสั่งของต่างจากกล้องอุตสาหกรรมทั่วไปมาก',
+        th: 'อุปกรณ์เครือข่ายที่ใช้ในพื้นที่ผลิตต่างจากที่ใช้ในห้องเซิร์ฟเวอร์ สวิตช์ระดับอุตสาหกรรมทำงานได้ในช่วงอุณหภูมิที่กว้างกว่า ระบายความร้อนโดยไม่ใช้พัดลม รับไฟ DC ซ้ำสองชุด และยึดบนราง DIN ในตู้สนามได้ ส่วนสายที่เดินผ่านบริเวณที่มีมอเตอร์หรืออินเวอร์เตอร์ต้องเลือกชนิดที่มีชีลด์และวางแยกระยะจากสายกำลัง มิฉะนั้นจะเจออาการแพ็กเก็ตหายเป็นช่วงที่หาสาเหตุยากหลังระบบเดินแล้ว',
+        en: 'Network hardware for a process area is not the hardware used in a server room. Industrial switches work across a much wider temperature range, cool without fans, accept dual DC feeds and mount on DIN rail inside field cabinets. Cable passing near motors or variable-speed drives has to be shielded and physically separated from power runs — otherwise the result is intermittent packet loss that is very hard to trace once the plant is running.',
+      },
+      {
+        th: 'ระยะทางเป็นตัวกำหนดสื่อกลาง สายทองแดงตามมาตรฐานอีเทอร์เน็ตใช้ได้ราว 100 เมตรต่อช่วง ซึ่งสั้นกว่าระยะระหว่างอาคารของโรงงานส่วนใหญ่ ไฟเบอร์จึงเป็นตัวเลือกของแกนหลัก และยังตัดปัญหาความต่างศักย์ระหว่างอาคารที่ทำให้พอร์ตทองแดงเสียหายได้ในงานที่แต่ละอาคารใช้ระบบกราวด์คนละชุด',
+        en: 'Distance decides the medium. A copper Ethernet run is limited to roughly 100 metres per segment, which is shorter than the gap between buildings on most sites, so fibre becomes the backbone choice. Fibre also removes the ground potential difference between buildings that can destroy copper ports where each building sits on its own earthing system.',
+      },
+      {
+        th: 'เรื่องสุดท้ายที่ต้องตกลงร่วมกับฝ่ายไอทีของโรงงานคือการแบ่งเครือข่าย ระบบสื่อสารและกล้องควรอยู่บนวีแลนหรือเครือข่ายกายภาพที่แยกจากระบบควบคุมกระบวนการผลิต เพราะภาระข้อมูลจากวิดีโอมีปริมาณมากและสม่ำเสมอ และเพราะขอบเขตความรับผิดชอบของแต่ละทีมควรตรงกับขอบเขตของเครือข่ายจริง ไม่ใช่คร่อมกันจนไม่มีใครรู้ว่าปัญหาอยู่ฝั่งไหน',
+        en: 'The last decision belongs jointly with the plant IT team: segmentation. Communication and video should sit on a VLAN — or a physically separate network — away from process control, because video traffic is heavy and constant, and because each team’s responsibility should line up with a real network boundary rather than overlapping until nobody can say which side a fault is on.',
+      },
+    ],
+    process: [
+      {
+        th: 'สำรวจอาคาร เส้นทางเดินสายที่เป็นไปได้ และตำแหน่งตู้ที่มีไฟและพื้นที่เพียงพอ',
+        en: 'Survey the buildings, the practical cable routes, and cabinet positions with adequate power and space',
+      },
+      {
+        th: 'รวบรวมรายการอุปกรณ์ปลายทางทั้งหมดที่จะขึ้นเครือข่าย พร้อมกำลังไฟที่แต่ละตัวใช้',
+        en: 'List every end device that will join the network, together with the power each one draws',
+      },
+      {
+        th: 'ออกแบบผังเครือข่าย เลือกสื่อกลางของแต่ละช่วง และวางแผนการแบ่งวีแลนร่วมกับฝ่ายไอที',
+        en: 'Design the topology, choose the medium for each segment, and agree the VLAN plan with plant IT',
+      },
+      {
+        th: 'คำนวณแบนด์วิดท์และงบกำลังไฟของสวิตช์ที่จ่ายไฟผ่านสายแลนแต่ละตัว',
+        en: 'Calculate bandwidth and the power budget of each PoE switch',
+      },
+      {
+        th: 'เดินสาย ติดตั้งตู้ ตั้งค่าอุปกรณ์ และทดสอบสายทุกเส้นด้วยเครื่องวัด',
+        en: 'Run cable, install cabinets, configure the equipment and certify every link with a tester',
+      },
+      {
+        th: 'ส่งมอบพร้อมผังจริงและตารางพอร์ต เพื่อให้ทีมของโรงงานตามงานต่อเองได้',
+        en: 'Hand over with as-built drawings and a port schedule, so the site team can maintain it themselves',
+      },
+    ],
+    quoteChecklist: [
+      { th: 'ผังอาคารพร้อมระยะระหว่างจุดที่ต้องเชื่อมถึงกัน', en: 'Site layout with the distances between the points to be linked' },
+      {
+        th: 'รายการอุปกรณ์ปลายทางที่จะต่อเข้าเครือข่าย และจำนวนพอร์ตที่ต้องการเผื่อไว้',
+        en: 'The end devices to be connected, and how many spare ports to allow for',
+      },
+      { th: 'ตู้และเส้นทางสายเดิมที่ยังใช้ต่อได้ พร้อมสภาพปัจจุบัน', en: 'Existing cabinets and cable routes that can be reused, and their condition' },
+      {
+        th: 'มีไฟฟ้าและระบบไฟสำรองถึงจุดที่จะตั้งตู้สวิตช์หรือไม่',
+        en: 'Whether power and UPS backup reach the intended switch cabinet locations',
+      },
+      {
+        th: 'นโยบายของฝ่ายไอทีเรื่องการแยกเครือข่ายและการเข้าถึงจากภายนอก',
+        en: 'The IT department’s policy on network separation and remote access',
+      },
+      { th: 'ช่วงเวลาที่เข้าทำงานได้ และมีช่วงหยุดเดินเครื่องหรือไม่', en: 'Available working windows, and whether there is a shutdown period' },
+    ],
+    technicalNotes: [
+      {
+        title: { th: 'สายทองแดงมีเพดานที่ 100 เมตร', en: 'Copper stops at 100 metres' },
+        body: {
+          th: 'ระยะ 100 เมตรของสายทองแดงตามมาตรฐานอีเทอร์เน็ตนับรวมสายภายในตู้และสายกระโดดที่ปลายทั้งสองข้างด้วย ไม่ใช่แค่ระยะที่วัดบนแบบ ในทางปฏิบัติจึงควรเผื่อไว้ที่ราว 90 เมตรสำหรับสายหลัก จุดที่เกินกว่านั้นต้องใช้ไฟเบอร์หรือวางตู้พักกลางทาง ซึ่งเป็นข้อจำกัดที่ควรรู้ตั้งแต่ตอนเลือกตำแหน่งอุปกรณ์ ไม่ใช่ตอนลากสายจริง',
+          en: 'The 100-metre Ethernet limit for copper includes patch leads inside the cabinet at both ends, not just the distance on the drawing — so the horizontal run should be planned at around 90 metres. Anything beyond that needs fibre or an intermediate cabinet, and that constraint belongs in the device layout decision, not in the cable-pulling stage.',
+        },
+      },
+      {
+        title: { th: 'งบกำลังไฟ PoE ไม่เท่ากับจำนวนพอร์ต', en: 'A PoE budget is not the port count' },
+        body: {
+          th: 'สวิตช์ 24 พอร์ตที่รองรับการจ่ายไฟผ่านสายแลนแทบไม่มีรุ่นใดจ่ายไฟเต็มพิกัดได้พร้อมกันทั้ง 24 พอร์ต ตัวเลขที่ต้องดูคือกำลังไฟรวมของทั้งตัว เทียบกับผลรวมที่อุปกรณ์ปลายทางกินจริงในกรณีหนักที่สุด เช่นคืนที่กล้องทุกตัวเปิดฮีตเตอร์พร้อมกัน ซึ่งเป็นคืนที่ระบบต้องทำงานได้พอดี',
+          en: 'Almost no 24-port PoE switch can deliver full power on all 24 ports at once. The number that matters is the switch’s total power budget measured against what the end devices actually draw in the worst case — the cold night when every camera heater switches on together, which is exactly the night the system has to work.',
+        },
+      },
+      {
+        title: { th: 'สวิตช์อุตสาหกรรมไม่ใช่แค่สวิตช์ที่ราคาสูงกว่า', en: 'An industrial switch is not just a costlier switch' },
+        body: {
+          th: 'ความต่างอยู่ที่ช่วงอุณหภูมิใช้งาน การไม่มีพัดลมซึ่งเป็นชิ้นส่วนที่พังก่อนเสมอในที่ที่มีฝุ่น การรับไฟซ้ำสองชุด และการทนแรงสั่นสะเทือน สวิตช์สำนักงานที่ติดตั้งในตู้สนามมักทำงานได้ในช่วงแรกและเริ่มมีอาการเมื่อเข้าหน้าร้อนปีแรก ซึ่งเป็นเวลาที่ผู้รับเหมาส่งมอบงานไปแล้ว',
+          en: 'The difference is the operating temperature range, the absence of a fan — always the first part to fail where there is dust — dual power inputs, and vibration tolerance. An office switch installed in a field cabinet usually works at first and starts misbehaving in the first hot season, by which time the contractor has already handed over.',
+        },
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------------- */
+  'cctv-system': {
+    overviewDetail: [
+      {
+        th: 'งานกล้องวงจรปิดเริ่มจากคำถามว่าต้องการเห็นอะไร ไม่ใช่จะติดกี่ตัว ระหว่าง "รู้ว่ามีคนอยู่ตรงนั้น" กับ "ระบุได้ว่าเป็นใคร" คือความละเอียดที่ต่างกันหลายเท่า และแปลเป็นจำนวนพิกเซลต่อเมตรที่ต้องได้ ณ ระยะที่สนใจ การกำหนดข้อนี้ให้ชัดตั้งแต่ต้นเป็นสิ่งที่ทำให้เลือกเลนส์และตำแหน่งกล้องได้ถูก แทนที่จะได้ภาพที่ดูสวยแต่ขยายแล้วไม่เห็นอะไร',
+        en: 'A CCTV design starts from what has to be seen, not from how many cameras to fit. The gap between “someone is there” and “that is who it is” is several times the resolution, and it translates into a required pixel density per metre at the distance that matters. Settling this first is what makes lens and position choices correct, instead of producing footage that looks fine until it is zoomed in on.',
+      },
+      {
+        th: 'สภาพแวดล้อมในโรงงานต่างจากอาคารสำนักงานอย่างสิ้นเชิง กล้องต้องทนฝุ่น การล้างพื้นด้วยน้ำแรงดันสูง แรงสั่นสะเทือนจากเครื่องจักร ไอเกลือในพื้นที่ชายฝั่ง และช่วงอุณหภูมิที่กว้างกว่ามาก ส่วนจุดที่อยู่ในพื้นที่จำแนกอันตรายต้องใช้ตัวถังที่ผ่านการรับรองเฉพาะ ซึ่งเป็นสินค้าคนละหมวดที่มีทั้งราคาและระยะเวลาสั่งของต่างจากกล้องอุตสาหกรรมทั่วไปมาก',
         en: 'Plant conditions are nothing like an office building. Cameras have to survive dust, high-pressure wash-down, vibration from machinery, salt air on coastal sites, and a far wider temperature range. Points inside a classified area need a certified enclosure — a different product class altogether, with price and lead time to match.',
       },
       {
@@ -221,28 +309,31 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'Three values must be settled at the start: image resolution, retention period, and camera count. Multiplied together they define the storage and bandwidth the system has to carry. Specifying 90 days at maximum resolution without doing that arithmetic frequently makes the recording hardware cost more than every camera combined.',
       },
       {
-        th: 'อีกเรื่องที่ต้องตัดสินใจร่วมกับฝ่ายไอทีของโรงงานคือระบบนี้จะอยู่บนเครือข่ายเดียวกับระบบควบคุมกระบวนการผลิตหรือแยกออกมา โรงงานส่วนใหญ่เลือกแยก เพราะภาระข้อมูลจากกล้องมีปริมาณมากและสม่ำเสมอ ซึ่งไม่ควรไปแย่งทรัพยากรกับเครือข่ายที่ระบบควบคุมใช้อยู่',
-        en: 'One further decision belongs jointly to engineering and the plant IT team: whether this system shares a network with process control or sits on its own. Most plants separate them, because video traffic is heavy and constant, and should not compete for the network the control system depends on.',
+        th: 'สุดท้ายคือสภาพแสง กล้องที่ให้ภาพดีตอนกลางวันอาจใช้ไม่ได้เลยหลังพระอาทิตย์ตกถ้าจุดนั้นไม่มีไฟส่องสว่าง ไฟอินฟราเรดในตัวกล้องมีระยะจำกัดและถูกไอน้ำหรือฝุ่นสะท้อนกลับได้ง่าย จึงต้องดูควบคู่กับไฟฟ้าแสงสว่างที่มีอยู่จริงในพื้นที่ และควรทดสอบภาพตอนกลางคืนก่อนตรวจรับเสมอ ไม่ใช่ทดสอบเฉพาะช่วงกลางวันที่เข้าไปติดตั้ง',
+        en: 'Finally there is light. A camera that performs well by day can be useless after sunset if the point has no lighting of its own. Built-in infrared has a limited reach and is readily reflected back by mist or dust, so it has to be assessed against the lighting that actually exists on site — and night-time imaging should always be verified before acceptance, not only during the daytime installation visit.',
       },
     ],
     process: [
-      { th: 'สำรวจจุดที่ต้องการเห็นภาพและเส้นทางเดินสายที่เป็นไปได้', en: 'Survey the views required and the practical cable routes' },
+      { th: 'สำรวจจุดที่ต้องการเห็นภาพและกำหนดว่าแต่ละจุดต้องเห็นละเอียดระดับใด', en: 'Survey the views required and define the level of detail each one needs' },
       {
-        th: 'ออกแบบผังเครือข่ายและประเมินแบนด์วิดท์กับพื้นที่จัดเก็บที่ต้องใช้',
-        en: 'Design the network topology and size the bandwidth and storage required',
+        th: 'ออกแบบมุมกล้องและเลือกเลนส์ให้ได้ความละเอียดตามที่กำหนดที่ระยะจริง',
+        en: 'Design camera angles and select lenses to meet that detail at the real distance',
       },
       {
-        th: 'เลือกกล้องตามสภาพแสง ระยะที่ต้องเห็นรายละเอียด และสภาพแวดล้อมของจุดติดตั้ง',
-        en: 'Select cameras for the lighting, the detail range needed, and the environment at each point',
+        th: 'เลือกกล้องตามสภาพแสง สภาพแวดล้อม และการจำแนกพื้นที่ของจุดติดตั้ง',
+        en: 'Select cameras for the lighting, the environment and the area classification at each point',
       },
-      { th: 'ติดตั้งอุปกรณ์ เดินสาย และตั้งค่าระบบบันทึก', en: 'Install hardware, run cabling and configure recording' },
-      { th: 'ทดสอบภาพทั้งกลางวันและกลางคืน พร้อมตรวจสิทธิ์การเข้าถึง', en: 'Verify imaging by day and by night, and review access permissions' },
-      { th: 'ส่งมอบพร้อมอบรมผู้ดูแลระบบ', en: 'Handover with administrator training' },
+      {
+        th: 'คำนวณพื้นที่จัดเก็บและแบนด์วิดท์จากระยะเวลาเก็บภาพที่ต้องการ',
+        en: 'Size storage and bandwidth from the required retention period',
+      },
+      { th: 'ติดตั้งอุปกรณ์ เดินสาย และตั้งค่าระบบบันทึกพร้อมกำหนดสิทธิ์การเข้าถึง', en: 'Install hardware, run cabling, configure recording and set access permissions' },
+      { th: 'ทดสอบภาพทั้งกลางวันและกลางคืน แล้วส่งมอบพร้อมอบรมผู้ดูแลระบบ', en: 'Verify imaging by day and by night, then hand over with administrator training' },
     ],
     quoteChecklist: [
       { th: 'ผังพื้นที่พร้อมจุดที่ต้องการเห็นภาพ', en: 'Site layout marked with the views required' },
       {
-        th: 'ต้องเก็บภาพย้อนหลังกี่วัน — ตัวเลขนี้กำหนดขนาดสตอเรจโดยตรง',
+        th: 'ต้องเก็บภาพย้อนหลังกี่วัน ตัวเลขนี้กำหนดขนาดสตอเรจโดยตรง',
         en: 'How many days of retention are required — this drives storage size directly',
       },
       {
@@ -250,15 +341,15 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'Whether you need to detect presence, or identify faces and plates',
       },
       { th: 'สภาพแสงตอนกลางคืนของแต่ละจุด', en: 'Night-time lighting conditions at each point' },
-      { th: 'ระบบเครือข่ายเดิมที่มีอยู่และสวิตช์ที่รองรับ PoE', en: 'Existing network infrastructure and PoE-capable switches' },
+      { th: 'ระบบเครือข่ายเดิมที่มีอยู่และสวิตช์ที่รองรับการจ่ายไฟผ่านสายแลน', en: 'Existing network infrastructure and PoE-capable switches' },
       { th: 'มีจุดใดอยู่ในพื้นที่จำแนกอันตรายหรือไม่', en: 'Whether any point falls inside a classified hazardous area' },
     ],
     technicalNotes: [
       {
         title: { th: 'ระยะเวลาเก็บภาพเป็นตัวกำหนดงบประมาณมากกว่าจำนวนกล้อง', en: 'Retention period drives the budget more than camera count' },
         body: {
-          th: 'การเพิ่มกล้องหนึ่งตัวคือค่าอุปกรณ์หนึ่งชิ้น แต่การเพิ่มจำนวนวันที่เก็บภาพย้อนหลังคือการเพิ่มพื้นที่จัดเก็บของทุกกล้องพร้อมกัน โรงงานที่ระบุว่า "เก็บ 90 วัน" โดยไม่ได้คำนวณล่วงหน้ามักพบว่าค่าสตอเรจสูงกว่าค่ากล้องทั้งระบบ ควรกำหนดตัวเลขนี้ตั้งแต่ตอนออกแบบ ไม่ใช่ตอนติดตั้งเสร็จ',
-          en: 'Adding one camera costs one device. Extending retention adds storage for every camera at once. Plants that specify “90 days” without doing the arithmetic first often find storage costs more than the cameras. Fix this number during design, not after installation.',
+          th: 'การเพิ่มกล้องหนึ่งตัวคือค่าอุปกรณ์หนึ่งชิ้น แต่การเพิ่มจำนวนวันที่เก็บภาพย้อนหลังคือการเพิ่มพื้นที่จัดเก็บของทุกกล้องพร้อมกัน โรงงานที่ระบุว่าเก็บ 90 วันโดยไม่ได้คำนวณล่วงหน้ามักพบว่าค่าสตอเรจสูงกว่าค่ากล้องทั้งระบบ ควรกำหนดตัวเลขนี้ตั้งแต่ตอนออกแบบ ไม่ใช่ตอนติดตั้งเสร็จ',
+          en: 'Adding one camera costs one device. Extending retention adds storage for every camera at once. Plants that specify 90 days without doing the arithmetic first often find storage costs more than the cameras. Fix this number during design, not after installation.',
         },
       },
       {
@@ -269,10 +360,10 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         },
       },
       {
-        title: { th: 'PoE มีเพดานกำลังไฟ', en: 'PoE has a power ceiling' },
+        title: { th: 'เห็นว่ามีคน กับระบุตัวได้ ไม่ใช่ข้อกำหนดเดียวกัน', en: 'Detecting a person and identifying one are not the same requirement' },
         body: {
-          th: 'กล้องที่มีฮีตเตอร์ ที่ปัดน้ำฝน หรือมอเตอร์หมุนกล้อง กินไฟมากกว่ากล้องแบบตายตัวหลายเท่า สวิตช์ PoE ที่คำนวณจากจำนวนพอร์ตอย่างเดียวโดยไม่ดูงบกำลังไฟรวม จะจ่ายไฟไม่พอเมื่อกล้องทุกตัวเปิดฮีตเตอร์พร้อมกันในคืนที่อากาศเย็น ซึ่งเป็นคืนที่ระบบต้องทำงานพอดี',
-          en: 'Cameras with heaters, wipers or pan-tilt motors draw several times the power of a fixed dome. A PoE switch sized by port count alone, without checking the total power budget, will fall short on the cold night when every heater switches on at once — precisely the night the system is needed.',
+          th: 'การมองเห็นว่ามีคนเคลื่อนไหวในภาพใช้ความละเอียดต่อเมตรน้อยกว่าการระบุใบหน้าหรืออ่านป้ายทะเบียนหลายเท่า กล้องตัวเดียวกันจึงอาจผ่านข้อกำหนดหนึ่งและตกอีกข้อกำหนดหนึ่งที่ระยะเท่ากัน การเขียนสเปกว่า "ต้องเห็นชัด" โดยไม่ระบุว่าต้องเห็นชัดพอทำอะไร ทำให้ทั้งผู้ซื้อและผู้ขายเข้าใจไม่ตรงกันจนถึงวันตรวจรับ',
+          en: 'Noticing that a person is moving in frame needs a fraction of the pixel density required to recognise a face or read a number plate, so the same camera can pass one requirement and fail the other at the same distance. A specification that says only “must be clear”, without stating what it must be clear enough to do, leaves buyer and supplier disagreeing right up to the acceptance test.',
         },
       },
     ],
