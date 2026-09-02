@@ -1,4 +1,4 @@
-import { Button, Section } from '@/components/ui'
+import { Button, KeepPhrases, Section } from '@/components/ui'
 import { useLocale } from '@/hooks/useLocale'
 import { ui } from '@/data'
 import { yearsOfExperience } from '@/config'
@@ -35,7 +35,9 @@ export function HomeHero() {
           {t(ui.home.heroTitle)}
         </h1>
 
-        <p className="mt-6 max-w-xl text-lg text-white/70">{t(ui.home.heroLead)}</p>
+        <p className="mt-6 max-w-xl text-lg text-white/70">
+          <KeepPhrases>{t(ui.home.heroLead)}</KeepPhrases>
+        </p>
 
         <div className="mt-9 flex flex-wrap gap-3">
           <Button to="/services" variant="onDark" size="lg" withArrow>

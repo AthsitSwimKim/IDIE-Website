@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Button, Heading, Reveal, Section } from '@/components/ui'
+import { ArrowRight, Button, Heading, KeepPhrases, Reveal, Section } from '@/components/ui'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
 import { getServices, ui } from '@/data'
@@ -48,7 +48,9 @@ export function HomeServices() {
                 </span>
 
                 <span className="md:w-2/5">
-                  <span className="text-h3 block font-semibold">{t(service.name)}</span>
+                  <span className="text-h3 block font-semibold">
+                    <KeepPhrases>{t(service.name)}</KeepPhrases>
+                  </span>
                 </span>
 
                 <span className="text-ink-muted flex-1 text-sm">

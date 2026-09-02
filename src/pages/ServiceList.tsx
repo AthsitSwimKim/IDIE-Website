@@ -1,4 +1,4 @@
-import { Button, Heading, ImagePlaceholder, Section } from '@/components/ui'
+import { Button, Heading, ImagePlaceholder, KeepPhrases, Section } from '@/components/ui'
 import { ArrowRight } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -69,7 +69,9 @@ export default function ServiceList() {
               )}
 
               <div>
-                <Heading level={2}>{t(service.name)}</Heading>
+                <Heading level={2}>
+                  <KeepPhrases>{t(service.name)}</KeepPhrases>
+                </Heading>
                 <p className="text-ink-muted mt-4 max-w-prose">{t(service.shortDescription)}</p>
 
                 <h3 className="text-eyebrow text-ink-muted mt-7 uppercase">
