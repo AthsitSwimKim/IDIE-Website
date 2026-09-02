@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 interface AsyncState<T> {
   data: T | null
@@ -13,6 +13,17 @@ interface AsyncState<T> {
   error: string | null
 }
 
+interface AsyncResult<T> extends AsyncState<T> {
+  /**
+   * เรียก loader ใหม่โดยไม่โหลดหน้าใหม่ทั้งหน้า
+   *
+   * มีไว้ให้ปุ่ม "ลองใหม่อีกครั้ง" บนสถานะโหลดไม่สำเร็จ — `location.reload()`
+   * ทำงานได้เหมือนกันแต่ทิ้งทุกอย่างที่โหลดไว้แล้วและพาผู้ใช้กลับไปบนสุดของหน้า
+   * ทั้งที่สิ่งที่ล้มคือคำขอเดียว
+   */
+  reload: () => void
+}
+
 /**
  * อ่านข้อมูลจาก accessor ที่เป็น async
  *
@@ -23,8 +34,12 @@ interface AsyncState<T> {
  * ยังไม่ใส่ cache หรือ dedupe เพราะข้อมูลอยู่ในเครื่องและยังไม่มีต้นทุนจริง
  * เมื่อต่อ API แล้วค่อยเปลี่ยนตรงนี้เป็น TanStack Query หรือ React 19 use() + cache
  */
-export function useAsyncData<T>(loader: () => Promise<T>, deps: unknown[] = []): AsyncState<T> {
+export function useAsyncData<T>(loader: () => Promise<T>, deps: unknown[] = []): AsyncResult<T> {
   const [state, setState] = useState<AsyncState<T>>({ data: null, loading: true, error: null })
+
+  /** ตัวนับที่เพิ่มค่าเพื่อบังคับให้ effect ทำงานซ้ำ โดยไม่ต้องแตะ deps ของผู้เรียก */
+  const [attempt, setAttempt] = useState(0)
+  const reload = useCallback(() => setAttempt((n) => n + 1), [])
 
   /**
    * เก็บ loader ไว้ใน ref เพราะผู้เรียกมักส่ง arrow function ที่สร้างใหม่ทุก render
@@ -61,7 +76,7 @@ export function useAsyncData<T>(loader: () => Promise<T>, deps: unknown[] = []):
     return () => {
       cancelled = true
     }
-  }, [depsKey])
+  }, [depsKey, attempt])
 
-  return state
+  return { ...state, reload }
 }

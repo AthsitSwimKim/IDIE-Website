@@ -17,10 +17,14 @@ const markSize: Record<LogoSize, string> = {
   lg: 'h-12 sm:h-14',
 }
 
+/**
+ * ระยะบรรทัด 1.45 ไม่ใช่ 1.25 — ชื่อบริษัทสองบรรทัดที่ชิดกันเกินไปอ่านเป็นก้อนทึบ
+ * ตัวพิมพ์ใหญ่ล้วนไม่มีส่วนหางบน-ล่างมาช่วยแยกบรรทัดให้เหมือนตัวพิมพ์เล็ก
+ */
 const wordmarkSize: Record<LogoSize, string> = {
-  sm: 'text-[0.65rem] leading-[1.25]',
-  md: 'text-[0.7rem] leading-[1.25] sm:text-xs',
-  lg: 'text-sm leading-[1.25]',
+  sm: 'text-[0.65rem] leading-[1.45]',
+  md: 'text-[0.7rem] leading-[1.45] sm:text-xs',
+  lg: 'text-sm leading-[1.45]',
 }
 
 export interface LogoProps {
@@ -70,9 +74,22 @@ export function Logo({ tone = 'light', size = 'md', markOnly = false, to, classN
           className={cn(
             // whitespace-nowrap กันคำในโลโก้แตกเป็นตัวอักษรต่อบรรทัดถ้าที่ว่างไม่พอ
             // ให้มันล้นออกมาให้เห็นแทน จะได้รู้ตัวว่า layout ผิด ไม่ใช่พังเงียบ ๆ
-            'font-bold tracking-tight whitespace-nowrap uppercase',
+            'whitespace-nowrap uppercase',
+            /*
+              สองค่านี้คือสิ่งที่ทำให้ชื่อบริษัทดู "แข็ง" ตอนแรก:
+
+              · `font-semibold` แทน `font-bold` — น้ำหนัก 700 ที่ขนาด 12px ทำให้ช่องว่าง
+                ในตัวอักษรตันจนอ่านเป็นแถบดำ 600 ยังหนักแน่นพอสำหรับโลโก้
+              · `tracking-[0.06em]` แทน `tracking-tight` — ตัวพิมพ์ใหญ่ล้วนต้องการระยะ
+                ห่างตัวอักษร**เป็นบวก**เสมอ ของเดิมเป็นลบ (-0.3px) จึงบีบตัวอักษรเข้าหากัน
+
+              ไม่ต้องระบุฟอนต์เองแล้ว — `--font-sans` วาง Inter ไว้หน้าสุด ชื่อบริษัท
+              ซึ่งเป็นละตินล้วนจึงได้ Inter อยู่แล้วเหมือนข้อความอังกฤษที่อื่นทั้งเว็บ
+            */
+            'font-semibold tracking-[0.06em]',
             wordmarkSize[size],
-            tone === 'dark' ? 'text-white' : 'text-ink',
+            // navy-900 เป็นสีเดียวกับตราสัญลักษณ์ ส่วน ink เดิมเกือบดำจนตัดกับโลโก้
+            tone === 'dark' ? 'text-white' : 'text-navy-900',
           )}
         >
           <span className="block">{WORDMARK_LINE_1}</span>

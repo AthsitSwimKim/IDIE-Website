@@ -213,20 +213,35 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
 /* -------------------------------------------------------------------------- */
 
 /**
- * ดึงจาก API แล้ว**กลืน error เป็นค่าว่าง**
+ * ดึงจาก API แล้ว**ปล่อย error ให้ผู้เรียกจัดการ**
  *
- * ตั้งใจให้หน้าเว็บสาธารณะทนต่อ API ที่ล่ม — ผู้เข้าชมที่มาดูข้อมูลบริษัทหรือสินค้า
- * ไม่ควรเจอหน้าพังเพราะฐานข้อมูลข่าวมีปัญหา หน้า News/Projects จะแสดง
- * empty state ที่ออกแบบไว้แล้วแทน ซึ่งเป็นสิ่งที่มันแสดงอยู่ก่อนหน้านี้อยู่แล้ว
+ * เดิมฟังก์ชันนี้กลืน error เป็นค่าว่างทุกกรณี ด้วยเหตุผลว่าหน้าเว็บสาธารณะควรทน
+ * ต่อ API ที่ล่ม — แต่ผลข้างเคียงคือหน้า News/Projects แยกไม่ออกระหว่าง
+ * "ยังไม่มีเนื้อหา" กับ "โหลดไม่สำเร็จ" แล้วไปบอกผู้เข้าชมว่ายังไม่มีข่าว
+ * ทั้งที่ข่าวมีอยู่ครบแต่ระบบหลังบ้านมีปัญหา ซึ่งเป็นข้อมูลที่ผิด
+ *
+ * ตอนนี้แยกเป็นสองทางชัดเจน: หน้าที่**มีหน้าที่แสดงรายการนั้นโดยตรง**เรียกตัวนี้
+ * แล้วอ่าน `error` จาก `useAsyncData` ไปแสดงข้อความที่ถูกต้อง ส่วน section เสริม
+ * ที่ล้มแล้วแค่ไม่ต้องแสดงให้ห่อด้วย `quiet()` ด้านล่าง
+ */
+async function fetchContent<T>(path: string): Promise<T> {
+  const response = await fetch(path)
+  if (!response.ok) throw new Error(`${path} ตอบกลับ ${response.status}`)
+  return (await response.json()) as T
+}
+
+/**
+ * กลืน error เป็นค่าสำรอง — สำหรับส่วนที่ล้มแล้วเงียบได้
+ *
+ * ใช้กับ section เสริมอย่าง "ข่าวล่าสุด" หรือ "ผลงานอื่น" ที่อยู่ท้ายหน้าอื่น
+ * ผู้เข้าชมที่เปิดมาอ่านข่าวชิ้นหนึ่งไม่ควรเจอหน้าพังเพราะรายการข้างล่างโหลดไม่ขึ้น
  *
  * ยัง `console.error` ไว้เสมอ เพื่อให้คนที่เปิด devtools ตรวจอาการเห็นสาเหตุจริง
  * ไม่ใช่เดาว่าทำไมข่าวที่เพิ่งลงไม่ขึ้น
  */
-async function fetchContent<T>(path: string, fallback: T): Promise<T> {
+async function quiet<T>(load: () => Promise<T>, fallback: T): Promise<T> {
   try {
-    const response = await fetch(path)
-    if (!response.ok) throw new Error(`${path} ตอบกลับ ${response.status}`)
-    return (await response.json()) as T
+    return await load()
   } catch (cause) {
     console.error('[data] โหลดเนื้อหาจาก API ไม่สำเร็จ:', cause)
     return fallback
@@ -234,11 +249,11 @@ async function fetchContent<T>(path: string, fallback: T): Promise<T> {
 }
 
 export async function getProjects(): Promise<Project[]> {
-  return fetchContent<Project[]>('/api/projects', [])
+  return fetchContent<Project[]>('/api/projects')
 }
 
 export async function getFeaturedProjects(limit = 3): Promise<Project[]> {
-  const projects = await getProjects()
+  const projects = await quiet(getProjects, [])
   // ผลงานที่แอดมินติดดาวไว้มาก่อน ถ้ายังไม่ครบจำนวนค่อยเติมด้วยชิ้นที่เหลือ
   // เพื่อไม่ให้ section บนหน้าแรกโล่งเพราะลืมติดดาว
   const featured = projects.filter((project) => project.featured)
@@ -247,23 +262,26 @@ export async function getFeaturedProjects(limit = 3): Promise<Project[]> {
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
-  return fetchContent<Project | null>(`/api/projects/${encodeURIComponent(slug)}`, null)
+  return quiet(
+    () => fetchContent<Project | null>(`/api/projects/${encodeURIComponent(slug)}`),
+    null,
+  )
 }
 
 export async function getNews(): Promise<NewsArticle[]> {
-  return fetchContent<NewsArticle[]>('/api/news', [])
+  return fetchContent<NewsArticle[]>('/api/news')
 }
 
 export async function getLatestNews(limit = 3): Promise<NewsArticle[]> {
   // API เรียงมาให้แล้ว แต่เรียงซ้ำที่นี่เพื่อให้ฟังก์ชันนี้ถูกต้องด้วยตัวเอง
   // ไม่ต้องพึ่งว่า endpoint ฝั่งโน้นจะไม่เปลี่ยนลำดับในอนาคต
-  return (await getNews())
+  return (await quiet(getNews, []))
     .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
     .slice(0, limit)
 }
 
 export async function getNewsBySlug(slug: string): Promise<NewsArticle | null> {
-  return fetchContent<NewsArticle | null>(`/api/news/${encodeURIComponent(slug)}`, null)
+  return quiet(() => fetchContent<NewsArticle | null>(`/api/news/${encodeURIComponent(slug)}`), null)
 }
 
 /* -------------------------------------------------------------------------- */

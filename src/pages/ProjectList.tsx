@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
-import { Button, Heading, PendingContent, Section } from '@/components/ui'
+import { Button, EmptyState, Heading, Section } from '@/components/ui'
+import { AlertCircleIcon, LayersIcon, RefreshIcon } from '@/components/ui/icons'
 import { ProjectCard } from '@/components/sections/ProjectCard'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -11,6 +12,10 @@ import { cn } from '@/utils/cn'
  * Projects — Phase 4b
  *
  * ผลงานมาจาก API (`/api/projects`) ที่ทีมงานลงเองผ่านหน้า /admin
+ *
+ * สถานะที่ไม่มีรายการให้แสดงแยกเป็นสองแบบ คือโหลดไม่สำเร็จกับยังไม่มีผลงาน
+ * ใช้ `EmptyState` ที่เขียนถึงผู้เข้าชมโดยตรง ไม่ใช่ `PendingContent` ที่ประกาศ
+ * สถานะภายในของโครงการ — เหตุผลเต็มอยู่ในคอมเมนต์ของ `EmptyState`
  *
  * ตัวกรองอุตสาหกรรม sync กับ URL เหมือนหน้า Products ด้วยเหตุผลเดียวกัน —
  * ฝ่ายวิศวกรรมส่งลิงก์หากันในองค์กร "ดูงานปิโตรเคมีที่เคยทำสิ" ต้องเปิดแล้ว
@@ -24,7 +29,7 @@ export default function ProjectList() {
   const [params, setParams] = useSearchParams()
   const industry = params.get('industry') ?? undefined
 
-  const { data: projects, loading } = useAsyncData(getProjects)
+  const { data: projects, loading, error, reload } = useAsyncData(getProjects)
   const { data: industries } = useAsyncData(getIndustries)
 
   const available = (industries ?? []).filter((item) =>
@@ -92,18 +97,38 @@ export default function ProjectList() {
           </ul>
         )}
 
-        {projects?.length === 0 && (
-          <PendingContent need={t(ui.projects.pendingNeed)}>
-            <p className="text-ink-muted text-sm">{t(ui.projects.pendingHeading)}</p>
-            <div className="mt-4 flex flex-wrap gap-3">
-              <Button to="/reference" variant="outline" size="sm" withArrow>
-                {t(ui.projects.seeReference)}
-              </Button>
-              <Button to="/contact" variant="ghost" size="sm">
-                {t(ui.actions.contactInquiry)}
-              </Button>
-            </div>
-          </PendingContent>
+        {/*
+          โหลดไม่สำเร็จกับยังไม่มีผลงาน เป็นคนละเรื่องและต้องพูดคนละอย่าง —
+          การบอกว่า "กำลังรวบรวมผลงาน" ตอน API ล่มคือการบอกข้อมูลที่ผิดกับผู้เข้าชม
+        */}
+        {error && (
+          <EmptyState
+            icon={<AlertCircleIcon aria-hidden="true" className="size-12" strokeWidth={1.5} />}
+            title={t(ui.states.loadFailedTitle)}
+            body={t(ui.states.loadFailedBody)}
+          >
+            <Button onClick={reload}>
+              <RefreshIcon aria-hidden="true" className="size-4 shrink-0" />
+              {t(ui.actions.retry)}
+            </Button>
+          </EmptyState>
+        )}
+
+        {/*
+          หน้านี้ใช้ปุ่ม "ดูลูกค้าที่เคยร่วมงาน" แทน "กลับสู่หน้าแรก" ของหน้าข่าว —
+          หน้าลูกค้าอ้างอิงคือเนื้อหาที่ใกล้เคียงกับสิ่งที่ผู้อ่านตั้งใจมาดูที่สุด
+          ส่วนหน้าแรกคือการพากลับไปเริ่มใหม่
+        */}
+        {!error && projects?.length === 0 && (
+          <EmptyState
+            icon={<LayersIcon aria-hidden="true" className="size-12" strokeWidth={1.5} />}
+            title={t(ui.projects.emptyTitle)}
+            body={t(ui.projects.emptyBody)}
+          >
+            <Button to="/reference" variant="outline" withArrow>
+              {t(ui.projects.seeReference)}
+            </Button>
+          </EmptyState>
         )}
       </Section>
     </>

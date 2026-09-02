@@ -58,8 +58,14 @@ export default function ServiceDetail() {
             */}
             <p className="text-ink mt-5 text-lg leading-relaxed">{t(service.overview)}</p>
 
+            {/*
+              mt-6 (24px) ไม่ใช่ mt-4 — ระยะระหว่างย่อหน้าต้อง**มากกว่าระยะบรรทัด
+              ภายในย่อหน้า** ไม่งั้นสายตาแยกไม่ออกว่าย่อหน้าใหม่เริ่มตรงไหน
+              ที่นี่บรรทัดสูง 26px ส่วน mt-4 เดิมให้แค่ 16px คือน้อยกว่าระยะบรรทัด
+              ทั้งสี่ย่อหน้าจึงอ่านต่อกันเป็นพืดทั้งที่เป็นคนละประเด็น
+            */}
             {depth?.overviewDetail.map((paragraph) => (
-              <p key={paragraph.en} className="text-ink-muted mt-4 leading-relaxed">
+              <p key={paragraph.en} className="text-ink-muted mt-6 leading-relaxed">
                 {t(paragraph)}
               </p>
             ))}

@@ -76,6 +76,8 @@ export const ui = {
     requestInformation: { th: 'ขอข้อมูลเพิ่มเติม', en: 'Request information' },
     clearFilters: { th: 'ล้างตัวกรอง', en: 'Clear filters' },
     backToTop: { th: 'กลับขึ้นด้านบน', en: 'Back to top' },
+    backToHome: { th: 'กลับสู่หน้าแรก', en: 'Back to home' },
+    retry: { th: 'ลองใหม่อีกครั้ง', en: 'Try again' },
     skipToContent: { th: 'ข้ามไปยังเนื้อหาหลัก', en: 'Skip to main content' },
     close: { th: 'ปิด', en: 'Close' },
   },
@@ -88,6 +90,15 @@ export const ui = {
       en: 'The page may have moved or no longer exists. Try the home page or pick from the menu above.',
     },
     errorTitle: { th: 'เกิดข้อผิดพลาด', en: 'Something went wrong' },
+    /*
+      สถานะโหลดไม่สำเร็จของหน้าที่ดึงข้อมูลจาก API — ใช้ร่วมกันทั้งหน้าข่าวและหน้าผลงาน
+      เพราะผู้อ่านไม่ได้ต้องการรู้ว่า endpoint ไหนล้ม แค่ต้องการรู้ว่าทำอะไรต่อได้
+    */
+    loadFailedTitle: { th: 'ไม่สามารถโหลดข้อมูลได้', en: 'Unable to load this content' },
+    loadFailedBody: {
+      th: 'เกิดข้อผิดพลาดในการเชื่อมต่อ กรุณาลองใหม่อีกครั้ง',
+      en: 'A connection error occurred. Please try again.',
+    },
     errorBody: {
       th: 'ส่วนนี้ของหน้าโหลดไม่สำเร็จ ส่วนอื่นของเว็บไซต์ยังใช้งานได้ตามปกติ',
       en: 'This part of the page failed to load. The rest of the site still works.',
@@ -311,10 +322,14 @@ export const ui = {
       th: 'รวมโครงการและผลงานความสำเร็จทางวิศวกรรม ที่เราส่งมอบโซลูชันคุณภาพและได้มาตรฐานให้กับภาคอุตสาหกรรม',
       en: 'Engineering projects and successful deliveries — quality solutions, built to standard, for the industrial sector.',
     },
-    pendingHeading: { th: 'กำลังรวบรวมผลงานเพื่อเผยแพร่', en: 'We are compiling projects for publication' },
-    pendingNeed: {
-      th: 'ต่อหนึ่งโครงการ: ชื่องาน ลูกค้า (หรือระบุว่าเปิดเผยไม่ได้) อุตสาหกรรม สถานที่ ปี ขอบเขตงาน และภาพหน้างาน',
-      en: 'Per project: name, client (or “confidential”), industry, location, year, scope of work and site photos.',
+    /*
+      ข้อความสองชุดนี้ผู้เข้าชมเป็นคนอ่าน ไม่ใช่ทีมงาน — ห้ามใส่สถานะภายในของโครงการ
+      หรือรายการข้อมูลที่ยังรอจากบริษัท เพราะหน้านี้ตกมาที่บล็อกนี้ตอนหลังบ้านล่มด้วย
+    */
+    emptyTitle: { th: 'ยังไม่มีผลงานเผยแพร่ในขณะนี้', en: 'No projects published at the moment' },
+    emptyBody: {
+      th: 'เรากำลังรวบรวมโครงการที่ส่งมอบแล้วเพื่อเผยแพร่ ระหว่างนี้ดูรายชื่อองค์กรที่เคยร่วมงานกับเราได้ที่หน้าลูกค้าอ้างอิง',
+      en: 'We are compiling delivered projects for publication. In the meantime, see the companies we have worked with on our reference page.',
     },
     seeReference: { th: 'ดูลูกค้าที่เคยร่วมงาน', en: 'See who we have worked with' },
     backToList: { th: 'กลับไปหน้าผลงาน', en: 'Back to projects' },
@@ -336,10 +351,11 @@ export const ui = {
       th: 'ข่าวสารและความเคลื่อนไหวของบริษัท',
       en: 'Company news and updates.',
     },
-    pendingHeading: { th: 'ยังไม่มีข่าวเผยแพร่', en: 'No news published yet' },
-    pendingNeed: {
-      th: 'ข่าวอย่างน้อย 3 ชิ้นเพื่อให้ส่วนข่าวล่าสุดบนหน้าแรกทำงาน เช่น งานแสดงสินค้า การอบรม หรือโครงการที่เพิ่งส่งมอบ',
-      en: 'At least three items so the “latest news” section on the home page can run — trade shows, training, or a recently delivered project.',
+    /* เช่นเดียวกับหน้าผลงาน — ข้อความที่ผู้เข้าชมอ่าน ไม่ใช่สถานะงานของทีม */
+    emptyTitle: { th: 'ยังไม่มีข่าวสารใหม่ในขณะนี้', en: 'No news updates at the moment' },
+    emptyBody: {
+      th: 'เรากำลังเตรียมอัปเดตข้อมูลและกิจกรรมใหม่ ๆ โปรดติดตามอีกครั้งเร็ว ๆ นี้',
+      en: 'We are preparing new updates and activities. Please check back again soon.',
     },
     backToList: { th: 'กลับไปหน้าข่าวสาร', en: 'Back to news' },
     latestHeading: { th: 'ข่าวอื่นที่น่าสนใจ', en: 'More news' },

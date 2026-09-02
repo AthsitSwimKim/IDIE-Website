@@ -30,7 +30,12 @@ export const brands: Brand[] = [
     name: 'Industronic',
     logo: logo('industronic', { th: 'โลโก้ Industronic', en: 'Industronic' }),
     country: 'Germany',
-    website: 'https://www.industronic.com',
+    /*
+      ไม่ตั้ง `website` โดยตั้งใจ — ปุ่มของ Industronic ชี้ไปหน้าดาวน์โหลดเอกสาร
+      ของผู้ผลิตแทนหน้าแรก (ดู `brandDocuments` ด้านล่าง) คนที่กดจากหน้านี้กำลัง
+      หาสเปกสินค้า ไม่ได้อยากอ่านหน้าแนะนำบริษัท การมีปุ่มออกนอกเว็บสองอัน
+      ที่ไปเว็บเดียวกันคนละหน้าก็ทำให้ต้องเลือกโดยไม่รู้ว่าต่างกันตรงไหน
+    */
   },
   {
     id: 'fhf',
@@ -94,8 +99,23 @@ export const brandCategories: Record<string, string[]> = {
  * `sizeKb` จึงเก็บไว้เป็นบันทึกของไฟล์ ยังไม่มี UI ตัวไหนแสดง
  *
  * TODO: confirm with IDIE — ขอหนังสือยืนยันสิทธิ์เผยแพร่สื่อจากผู้ผลิตก่อนขึ้น production
+ *
+ * **ของ Industronic เป็นลิงก์ออกไปเว็บผู้ผลิต ไม่ใช่ไฟล์ที่เราโฮสต์เอง** — `url` จึงเป็น
+ * URL เต็มแทน path ใน `public/` ปุ่มบนหน้าเว็บใช้ตัวเดียวกันได้เพราะเป็น `<a href>`
+ * อยู่แล้ว และการชี้ไปหน้าของผู้ผลิตแปลว่าผู้อ่านได้ฉบับล่าสุดเสมอ ไม่ต้องรอเราอัปเดต
+ * ทั้งยังไม่มีคำถามเรื่องสิทธิ์เผยแพร่ เพราะเราไม่ได้แจกไฟล์ของใคร
  */
 export const brandDocuments: Record<string, DownloadItem[]> = {
+  industronic: [
+    {
+      label: {
+        th: 'ศูนย์ดาวน์โหลดเอกสารของ Industronic',
+        en: 'Industronic download centre',
+      },
+      url: 'https://www.industronic.com/support/downloads',
+      type: 'datasheet',
+    },
+  ],
   fhf: [
     {
       /**

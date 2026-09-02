@@ -58,8 +58,19 @@ export default function About() {
               </Heading>
               <p className="text-ink-muted mt-6">{t(company.about)}</p>
 
+              {/*
+                `items-baseline` ไม่ใช่ค่าเริ่มต้น — ป้ายกำกับเป็น text-sm (บรรทัดสูง 23px)
+                ส่วนค่าเป็นขนาดปกติ (บรรทัดสูง 28px) ถ้าปล่อยให้กล่องเริ่มที่ขอบบนเท่ากัน
+                ตัวอักษรของสองฝั่งจะเหลื่อมกัน 2.4px ซึ่งพอที่จะรู้สึกว่าตารางไม่ตรง
+                แม้จะบอกไม่ถูกว่าอะไรผิด — จับที่เส้นฐานตัวอักษรแทนขอบกล่องจึงตรงเสมอ
+                ไม่ว่าขนาดตัวอักษรสองฝั่งจะต่างกันแค่ไหน และค่าที่ยาวหลายบรรทัด
+                (ที่อยู่) ก็ยังจับกับบรรทัดแรกอยู่ดี
+
+                py-4 เท่ากับตารางข้อมูลติดต่อในหน้า Contact — เป็นตารางแบบเดียวกัน
+                ระยะควรเท่ากัน
+              */}
               <dl className="border-line mt-8 divide-y border-t border-b">
-                <div className="flex gap-6 py-3">
+                <div className="flex items-baseline gap-6 py-4">
                   <dt className="text-ink-muted w-40 shrink-0 text-sm">
                     {t({ th: 'ก่อตั้ง', en: 'Established' })}
                   </dt>
@@ -70,13 +81,13 @@ export default function About() {
                     </span>
                   </dd>
                 </div>
-                <div className="flex gap-6 py-3">
+                <div className="flex items-baseline gap-6 py-4">
                   <dt className="text-ink-muted w-40 shrink-0 text-sm">
                     {t({ th: 'สำนักงาน', en: 'Office' })}
                   </dt>
                   <dd>{t(company.address)}</dd>
                 </div>
-                <div className="flex gap-6 py-3">
+                <div className="flex items-baseline gap-6 py-4">
                   <dt className="text-ink-muted w-40 shrink-0 text-sm">
                     {t(ui.about.contactPersonHeading)}
                   </dt>

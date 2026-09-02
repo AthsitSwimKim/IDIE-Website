@@ -10,6 +10,7 @@ export {
   type ImagePlaceholderProps,
 } from '@/components/ui/ImagePlaceholder'
 export { PendingContent, type PendingContentProps } from '@/components/ui/PendingContent'
+export { EmptyState, type EmptyStateProps } from '@/components/ui/EmptyState'
 export { KeepWords, type KeepWordsProps } from '@/components/ui/KeepWords'
 export { Reveal, type RevealProps } from '@/components/ui/Reveal'
 export { Lightbox, type LightboxProps } from '@/components/ui/Lightbox'

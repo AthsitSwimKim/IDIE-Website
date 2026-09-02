@@ -22,6 +22,20 @@ const EMPTY: Values = { name: '', company: '', email: '', phone: '', subject: ''
 const REQUIRED: Field[] = ['name', 'email', 'subject', 'message']
 
 /**
+ * ลิงก์เบอร์โทรและอีเมลในบล็อกข้อมูลติดต่อ — พื้นที่กด 44px **เฉพาะอุปกรณ์สัมผัส**
+ *
+ * เหตุผลเดียวกับ `FOOTER_LINK` ใน Footer.tsx และเป็นสาเหตุที่บล็อกนี้ดูจังหวะเพี้ยน:
+ * เมื่อบังคับ 44px ทุกอุปกรณ์ ลิงก์เบอร์โทรกลายเป็นกล่องสูง 44px ครอบตัวอักษรที่สูง
+ * แค่ 28px เหลือที่ว่างเปล่าอันละ 16px แถวโทรศัพท์ซึ่งมีสองเบอร์จึงสูงถึง 177px
+ * ขณะที่แถวที่อยู่สูง 86px — ต่างกันเท่าตัวทั้งที่เนื้อหาไม่ได้ต่างกันขนาดนั้น
+ *
+ * บนเมาส์เหลือ 32px ซึ่งยังเกินเกณฑ์ขั้นต่ำของ pointer ละเอียด (24×24)
+ * ส่วนบนมือถือได้ 44px ครบตามเกณฑ์เหมือนเดิม
+ */
+const CONTACT_LINK =
+  'text-primary-600 inline-flex min-h-8 items-center font-medium underline-offset-4 hover:underline pointer-coarse:min-h-11'
+
+/**
  * Contact — Phase 4
  *
  * ฟอร์มส่งอีเมลถึงบริษัทจริงแล้ว (ส.ค. 2026) ผ่าน `POST /api/contact`
@@ -139,16 +153,16 @@ export default function Contact() {
                   <dt className="text-eyebrow text-ink-muted uppercase">
                     {t(ui.contact.address)}
                   </dt>
-                  <dd className="mt-1.5">{t(company.address)}</dd>
+                  <dd className="mt-2">{t(company.address)}</dd>
                 </div>
                 <div className="py-4">
                   <dt className="text-eyebrow text-ink-muted uppercase">{t(ui.contact.phone)}</dt>
-                  <dd className="mt-1.5 space-y-1">
+                  <dd className="mt-2 space-y-1">
                     {company.phone.map((number) => (
                       <p key={number}>
                         <a
                           href={`tel:${number.replace(/\s/g, '')}`}
-                          className="text-primary-600 inline-flex min-h-11 items-center font-medium underline-offset-4 hover:underline"
+                          className={CONTACT_LINK}
                         >
                           {number}
                         </a>
@@ -161,12 +175,12 @@ export default function Contact() {
                 </div>
                 <div className="py-4">
                   <dt className="text-eyebrow text-ink-muted uppercase">{t(ui.contact.email)}</dt>
-                  <dd className="mt-1.5">
+                  <dd className="mt-2">
                     {company.email.map((address) => (
                       <p key={address}>
                         <a
                           href={`mailto:${address}`}
-                          className="text-primary-600 inline-flex min-h-11 items-center font-medium break-all underline-offset-4 hover:underline"
+                          className={`${CONTACT_LINK} break-all`}
                         >
                           {address}
                         </a>
@@ -178,7 +192,7 @@ export default function Contact() {
                   <dt className="text-eyebrow text-ink-muted uppercase">
                     {t(ui.contact.contactPerson)}
                   </dt>
-                  <dd className="mt-1.5">
+                  <dd className="mt-2">
                     {contactPerson.name}
                     <span className="text-ink-muted"> · {t(contactPerson.role)}</span>
                   </dd>
