@@ -290,22 +290,6 @@ export async function getReferenceCompanies(industry?: IndustrySlug): Promise<Re
   return industry ? list.filter((c) => c.industry === industry) : list
 }
 
-/**
- * อุตสาหกรรมที่มีลูกค้าอ้างอิงจริงอย่างน้อยหนึ่งราย
- *
- * หน้า Reference ต้องใช้ตัวนี้ ไม่ใช่ getIndustries() — เพราะ industries.ts
- * เก็บ "อุตสาหกรรมที่ IDIE ให้บริการ" ครบทุกกลุ่มตามที่บริษัทประกาศไว้เอง
- * ซึ่งบางกลุ่มยังไม่มีลูกค้าที่เปิดเผยชื่อได้ (เช่นเหมืองแร่ ปัจจุบัน 0 ราย)
- * ถ้าเอาทั้งหมดมาทำปุ่มกรอง ผู้ใช้จะกดแล้วเจอหน้าว่างโดยไม่มีทางรู้ล่วงหน้า
- *
- * กรองที่ชั้นนี้ไม่ใช่ที่ component เพื่อให้หน้าไหนก็ตามที่ทำตัวกรองลูกค้าในอนาคต
- * ได้พฤติกรรมเดียวกันโดยไม่ต้องรู้กติกาข้อนี้เอง
- */
-export async function getReferenceIndustries(): Promise<Industry[]> {
-  const used = new Set(referenceCompanies.map((company) => company.industry))
-  return (await getIndustries()).filter((industry) => used.has(industry.slug))
-}
-
 export async function getFeaturedReferenceCompanies(limit = 12): Promise<ReferenceCompany[]> {
   return (await getReferenceCompanies()).filter((c) => c.featured).slice(0, limit)
 }

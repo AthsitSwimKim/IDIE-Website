@@ -100,6 +100,49 @@ export default function ProductList() {
         <p className="text-ink-muted mt-4 max-w-prose">{t(ui.products.lead)}</p>
       </Section>
 
+      {/*
+        แถบสีน้ำเงินกรมของแบรนด์ผู้ผลิต — แยกเป็น section ของตัวเองเพื่อให้สีกินเต็ม
+        ความกว้างจอ ไม่ใช่แค่ในกรอบคอนเทนต์ แถบสีเข้มคั่นตรงนี้ทำให้ "เราเป็นตัวแทนใคร"
+        แยกออกจาก "กดเพื่อกรอง" ที่อยู่ถัดลงไปโดยไม่ต้องมีเส้นคั่นหรือหัวข้อซ้ำ
+
+        ลูกค้าอุตสาหกรรมจำผู้ผลิตจากโลโก้ก่อนจำชื่อ การเห็นโลโก้ตั้งแต่ต้นหน้า
+        จึงตอบคำถามแรกที่เขามีว่า "ที่นี่ขายของยี่ห้ออะไร" ได้ทันที
+      */}
+      {/*
+        สว่างกว่า tone="dark" ปกติหนึ่งขั้น (navy-800) ตามสีที่ลูกค้าเลือก
+        ใส่ ! ทับเพราะ cn ในโปรเจกต์นี้เป็น clsx เปล่า ไม่ได้ merge Tailwind ให้
+        ถ้าไม่บังคับ ผลลัพธ์จะขึ้นกับลำดับ class ใน stylesheet ซึ่งเดายาก
+      */}
+      <Section tone="dark" spacing="md" className="bg-navy-800!">
+        <Heading level={3} align="center">
+          {t(ui.products.distributedBrands)}
+        </Heading>
+        <ul className="mx-auto mt-6 grid max-w-4xl grid-cols-3 gap-3 sm:gap-5">
+          {brands?.map((item) => (
+            <li key={item.id}>
+              {/*
+                การ์ดพื้นขาวบนแถบน้ำเงิน — โลโก้ทั้งสามรายออกแบบมาสำหรับพื้นสว่าง
+                วางลงบนพื้นเข้มตรง ๆ แล้วตัวหนังสือในโลโก้จะจมหายไป
+
+                ช่องไฟบางลงบนจอแคบ ไม่งั้นเหลือที่ให้โลโก้แค่ 43px จนอ่านไม่ออก
+              */}
+              <div className="bg-surface rounded-card shadow-lift flex aspect-3/2 items-center justify-center p-3 sm:p-4">
+                <img
+                  src={item.logo.src}
+                  srcSet={item.logo.srcSet}
+                  alt={t(item.logo.alt)}
+                  width={item.logo.width}
+                  height={item.logo.height}
+                  loading="lazy"
+                  decoding="async"
+                  className="max-h-full max-w-full object-contain"
+                />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </Section>
+
       <Section spacing="md">
         {/* แบรนด์เป็นตัวกรองแรก — ลูกค้าส่วนใหญ่มาด้วยชื่อผู้ผลิตที่สเปกไว้แล้ว */}
         <fieldset className="flex flex-wrap items-center gap-2 border-0 p-0">

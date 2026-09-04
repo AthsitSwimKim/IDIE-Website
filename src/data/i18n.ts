@@ -218,6 +218,7 @@ export const ui = {
     searchPlaceholder: { th: 'ชื่อรุ่นหรือชื่อสินค้า', en: 'Model or product name' },
     resultCount: { th: 'พบ {count} รายการ', en: '{count} products' },
     noImage: { th: 'ยังไม่มีภาพสินค้า', en: 'No product image yet' },
+    distributedBrands: { th: 'แบรนด์ผู้จัดจำหน่าย', en: 'Brands we distribute' },
     showingRange: {
       th: 'แสดง {from}–{to} จากทั้งหมด {total} รายการ',
       en: 'Showing {from}–{to} of {total} products',

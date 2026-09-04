@@ -1,33 +1,23 @@
-import { useState } from 'react'
 import { Heading, Section } from '@/components/ui'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
-import { getReferenceCompanies, getReferenceIndustries, ui } from '@/data'
-import type { IndustrySlug } from '@/types/content'
+import { getReferenceCompanies, ui } from '@/data'
 import { cn } from '@/utils/cn'
 
 /**
- * Phase 1: logo grid จริง 35 ราย + filter ตามอุตสาหกรรม
+ * logo grid ลูกค้าอ้างอิง
  *
  * หน้านี้แสดงว่า "ลูกค้าคือใคร" เท่านั้น ไม่มีรายละเอียดงาน —
  * รายละเอียดงานอยู่ที่ /projects การแยกสองอย่างนี้คือสิ่งที่ลูกค้าระบุว่าอยากแก้จากเว็บเดิม
  *
- * ปุ่มกรองแสดงเฉพาะอุตสาหกรรมที่มีลูกค้าจริง (ดู getReferenceIndustries)
+ * **ไม่มีตัวกรองอุตสาหกรรม** — หน้านี้เป็นตะแกรงโลโก้ที่กวาดตาทีเดียวก็เห็นครบทั้งหมด
+ * การแยกหมวดเพิ่มขั้นตอนให้ผู้อ่านโดยไม่ได้ช่วยอะไร เพราะไม่มีใครมาหน้านี้เพื่อ
+ * "ค้นหา" ลูกค้าสักราย แต่มาดูว่าเคยร่วมงานกับใครมาบ้าง
  */
 export default function Reference() {
   const { t } = useLocale()
-  const [industry, setIndustry] = useState<IndustrySlug | 'all'>('all')
-
-  const { data: companies } = useAsyncData(
-    () => getReferenceCompanies(industry === 'all' ? undefined : industry),
-    [industry],
-  )
-  /**
-   * ใช้ getReferenceIndustries() ไม่ใช่ getIndustries() — แสดงเฉพาะกลุ่มที่มีลูกค้าจริง
-   * ปุ่มกรองที่กดแล้วไม่มีอะไรเลยแย่กว่าการไม่มีปุ่มนั้นตั้งแต่แรก
-   */
-  const { data: industries } = useAsyncData(getReferenceIndustries)
+  const { data: companies } = useAsyncData(() => getReferenceCompanies())
 
   return (
     <>
@@ -47,26 +37,10 @@ export default function Reference() {
       </Section>
 
       <Section>
-        <fieldset className="flex flex-wrap gap-2 border-0 p-0">
-          <legend className="sr-only">{t(ui.labels.category)}</legend>
-          <FilterChip active={industry === 'all'} onClick={() => setIndustry('all')}>
-            {t(ui.labels.all)}
-          </FilterChip>
-          {industries?.map((item) => (
-            <FilterChip
-              key={item.slug}
-              active={industry === item.slug}
-              onClick={() => setIndustry(item.slug)}
-            >
-              {t(item.name)}
-            </FilterChip>
-          ))}
-        </fieldset>
-
         {companies && companies.length === 0 ? (
-          <p className="text-ink-muted mt-10">{t(ui.states.empty)}</p>
+          <p className="text-ink-muted">{t(ui.states.empty)}</p>
         ) : (
-          <ul className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          <ul className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {companies?.map((item) => (
               <li key={item.id}>
                 <div
@@ -96,35 +70,7 @@ export default function Reference() {
             ))}
           </ul>
         )}
-
       </Section>
     </>
-  )
-}
-
-function FilterChip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  children: React.ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        'rounded-pill min-h-11 border px-4 text-sm font-medium',
-        'transition-colors duration-(--duration-ui)',
-        active
-          ? 'border-primary-600 bg-primary-600 text-white'
-          : 'border-line text-ink-muted hover:border-primary-200 hover:text-ink',
-      )}
-    >
-      {children}
-    </button>
   )
 }
