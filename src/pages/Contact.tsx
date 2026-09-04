@@ -8,7 +8,7 @@ import {
   companyFax,
   contactPerson,
   getCompany,
-  getProductCategories,
+  getProductBySlug,
   getServices,
   submitInquiry,
   ui,
@@ -57,7 +57,6 @@ export default function Contact() {
 
   const { data: company } = useAsyncData(getCompany)
   const { data: services } = useAsyncData(getServices)
-  const { data: categories } = useAsyncData(getProductCategories)
 
   const [values, setValues] = useState<Values>(EMPTY)
   const [errors, setErrors] = useState<Partial<Record<Field, string>>>({})
@@ -75,17 +74,25 @@ export default function Contact() {
   /** ป๊อปอัปแผนที่ขนาดใหญ่ — แยก state จากฟอร์มเพราะไม่เกี่ยวกัน */
   const [mapOpen, setMapOpen] = useState(false)
 
-  const productSlug = params.get('product')
   const serviceSlug = params.get('service')
+  const productSlug = params.get('product')
 
-  // เติมหัวข้อจาก context ที่ผู้ใช้กดมา — ทำครั้งเดียวตอนเข้าหน้า ไม่ทับสิ่งที่ผู้ใช้พิมพ์เอง
+  const { data: product } = useAsyncData(
+    () => (productSlug ? getProductBySlug(productSlug) : Promise.resolve(null)),
+    [productSlug],
+  )
+
+  /*
+    เติมหัวข้อจาก context ที่ผู้ใช้กดมา — ทำครั้งเดียวตอนเข้าหน้า ไม่ทับสิ่งที่ผู้ใช้พิมพ์เอง
+    มาได้สองทาง: `?service=` จากหน้ารายละเอียดบริการ และ `?product=` จากหน้าสินค้า
+    ชื่อสินค้าเป็นชื่อที่ผู้ผลิตตั้ง จึงเป็น string ไม่ต้องผ่าน t()
+  */
   useEffect(() => {
     const service = services?.find((s) => s.slug === serviceSlug)
-    const category = categories?.find((c) => c.slug === productSlug)
-    const source = service?.name ?? category?.name
-    if (!source) return
-    setValues((prev) => (prev.subject ? prev : { ...prev, subject: t(source) }))
-  }, [services, categories, serviceSlug, productSlug, t])
+    const subject = service ? t(service.name) : product?.name
+    if (!subject) return
+    setValues((prev) => (prev.subject ? prev : { ...prev, subject }))
+  }, [services, serviceSlug, product, t])
 
   function update(field: Field, value: string) {
     setValues((prev) => ({ ...prev, [field]: value }))
@@ -300,12 +307,6 @@ export default function Contact() {
                   aria-hidden="true"
                   className="pointer-events-none absolute -left-[9999px] size-0 opacity-0"
                 />
-
-                {productSlug && (
-                  <p className="text-ink-muted text-sm">
-                    {t(ui.contact.productContext)}: <strong className="text-ink">{productSlug}</strong>
-                  </p>
-                )}
 
                 <div className="grid gap-5 sm:grid-cols-2">
                   <TextField

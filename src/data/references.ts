@@ -74,7 +74,8 @@ const seeds: readonly ReferenceSeed[] = [
   ['ctci', 'CTCI (Thailand)', 'epc'],
   ['toyo-thai', 'TTCL (Toyo-Thai)', 'epc'],
   ['uhde', 'Uhde · thyssenkrupp', 'epc'],
-  ['g-steel', 'G Steel', 'manufacturing'],
+  // โรงถลุงเหล็ก ไม่ใช่โรงงานผลิตทั่วไป — Company Profile ระบุ steel plant เป็นสายงานหนึ่ง
+  ['g-steel', 'G Steel', 'steel-plant'],
   ['saiden', 'Saiden', 'manufacturing'],
   ['asm', 'ASM', 'manufacturing', false, undefined, true],
   ['mps', 'MPS', 'manufacturing', false, undefined, true],

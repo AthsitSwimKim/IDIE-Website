@@ -1,61 +1,58 @@
 import { Link } from 'react-router-dom'
-import { Badge, ImagePlaceholder } from '@/components/ui'
-import { useLocale } from '@/hooks/useLocale'
 import type { Product } from '@/types/content'
+import { useLocale } from '@/hooks/useLocale'
+import { ui } from '@/data'
+
+export interface ProductCardProps {
+  product: Product
+}
 
 /**
- * การ์ดสินค้า — ใช้ทั้งหน้า Products และหน้า Product Detail (สินค้าที่เกี่ยวข้อง)
- * จึงอยู่ใน components/sections ไม่ใช่ใต้ pages
+ * การ์ดสินค้าในหน้ารายการ
  *
- * แสดงรหัสรุ่นเด่นกว่าชื่อเต็ม เพราะฝ่ายจัดซื้อโรงงานค้นและสั่งของด้วยรหัสรุ่น
- * ไม่ใช่ชื่อบรรยาย — และแสดง certification ที่เป็นตัวตัดสินใจซื้อจริงไว้บนการ์ดเลย
+ * **ภาพเต็มกรอบ ไม่มีช่องไฟสีขาวคั่น** — ไฟล์ภาพการ์ดถูกจัดกรอบมาแล้วตั้งแต่ตอนสร้าง
+ * (ดู `scripts/imageframe.py`): ตัดพื้นหลังว่างออก วางสินค้ากลางกรอบจัตุรัสที่มี
+ * ช่องไฟเท่ากันทุกใบ และใช้สีพื้นเดิมของภาพเป็นสีกรอบ
+ *
+ * ที่นี่จึงปล่อยให้ภาพเต็มกล่องพอดี — ถ้าใส่ padding สีขาวเพิ่มอีกชั้น ภาพที่ถ่าย
+ * บนพื้นดำจะกลายเป็นสี่เหลี่ยมดำลอยกลางกรอบขาว ซึ่งอ่านเหมือนภาพเสียมากกว่า
+ * ภาพถ่ายในกรอบ
+ *
+ * ไม่มีคำโปรยใต้ชื่อ เพราะเอกสารผู้ผลิตไม่ได้ให้ประโยคสรุปมา และการเขียนเองแปลว่า
+ * ต้องเขียน 279 ประโยคที่ไม่มีใครตรวจได้ — สิ่งที่ช่วยผู้อ่านจริงคือรหัสรุ่น ซึ่งอยู่ตรงนั้นแล้ว
  */
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({ product }: ProductCardProps) {
   const { t } = useLocale()
-  const image = product.gallery[0]
 
   return (
     <Link
       to={`/products/${product.slug}`}
-      className="group border-line bg-surface rounded-card hover:shadow-lift hover:border-primary-200 flex h-full flex-col overflow-hidden border transition-[box-shadow,border-color] duration-(--duration-ui)"
+      className="group focus-visible:outline-primary-600 block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
     >
-      <span className="bg-surface-alt flex aspect-square items-center justify-center p-6">
-        {image ? (
+      <span className="border-line rounded-card bg-surface-alt block overflow-hidden border transition-shadow duration-(--duration-ui) group-hover:shadow-lift">
+        {product.card ? (
           <img
-            src={image.src}
-            srcSet={image.srcSet}
-            alt={t(image.alt)}
-            width={image.width}
-            height={image.height}
+            src={product.card.src}
+            alt=""
+            width={product.card.width}
+            height={product.card.height}
             loading="lazy"
             decoding="async"
-            className="h-full w-full object-contain transition-transform duration-(--duration-ui) ease-(--ease-out-expo) group-hover:scale-105 motion-reduce:transform-none"
+            className="block aspect-square w-full object-cover"
           />
         ) : (
-          <ImagePlaceholder
-            aspect="aspect-square"
-            className="w-full"
-            label={`${t(product.name)} (${product.model})`}
-            size="1200 × 1200"
-          />
-        )}
-      </span>
-
-      <span className="flex flex-1 flex-col p-5">
-        <span className="stat-figure text-primary-600 text-sm font-bold">{product.model}</span>
-        <span className="mt-1 font-semibold">{t(product.name)}</span>
-        <span className="text-ink-muted mt-2 line-clamp-3 flex-1 text-sm">
-          {t(product.shortDescription)}
-        </span>
-
-        {product.certifications && product.certifications.length > 0 && (
-          <span className="mt-4 flex flex-wrap gap-1.5">
-            {product.certifications.slice(0, 3).map((cert) => (
-              <Badge key={cert}>{cert}</Badge>
-            ))}
+          <span className="text-ink-muted flex aspect-square w-full items-center justify-center text-center text-xs">
+            {t(ui.products.noImage)}
           </span>
         )}
       </span>
+
+      <span className="mt-3 block text-sm leading-snug font-semibold group-hover:underline">
+        {product.name}
+      </span>
+      {product.model && (
+        <span className="stat-figure text-ink-muted mt-1 block text-xs">{product.model}</span>
+      )}
     </Link>
   )
 }

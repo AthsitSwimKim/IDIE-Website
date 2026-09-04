@@ -16,6 +16,7 @@ export const INDUSTRY_LABEL = {
   'oil-gas': 'น้ำมันและก๊าซ',
   chemical: 'เคมีภัณฑ์',
   'power-plant': 'โรงไฟฟ้า',
+  'steel-plant': 'โรงงานเหล็ก',
   fertilizer: 'ปุ๋ย',
   mining: 'เหมืองแร่',
   epc: 'ผู้รับเหมา EPC',

@@ -18,10 +18,16 @@ export const company: CompanyInfo = {
   },
   // อ่านจาก config เพื่อไม่ให้มีปีก่อตั้งสองที่ที่เพี้ยนจากกันได้
   foundedYear: config.foundedYear,
+  /*
+    ข้อความนี้ยึดตามย่อหน้า business activities ใน Company Profile ฉบับย่อ 2026
+    ซึ่งระบุระบบไว้ครบหกอย่างและระบุ steel plant เป็นหนึ่งในสายงาน — ฉบับก่อนหน้านี้
+    อ้างอิงเว็บเดิมที่ยังไม่ได้พูดถึงระบบโทรศัพท์เต็มระบบและระบบควบคุมการเข้าออกเลย
+    (คงคำว่า "งานบริการ / service" ไว้ตามเว็บเดิม เพราะเป็นสิ่งที่บริษัทระบุเองและ
+     เอกสารฉบับย่อไม่ได้ปฏิเสธ)
+  */
   about: {
-    // ต้นฉบับภาษาอังกฤษมาจากหน้า Company Profile ของเว็บเดิม — ฉบับไทยเป็นคำแปลร่าง
-    th: 'บริษัท ไอดี อินดัสเตรียล เอ็นจิเนียริ่ง จำกัด เป็นบริษัทวิศวกรรม ตัวแทนจำหน่าย และงานบริการ ที่เชี่ยวชาญด้านการออกแบบและงานวิศวกรรม การจัดหาระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด รวมถึงจัดจำหน่ายโทรศัพท์อุตสาหกรรมและอุปกรณ์ส่งสัญญาณชนิดกันระเบิด ครอบคลุมอุตสาหกรรมเคมี ปิโตรเคมี น้ำมันและก๊าซ ปุ๋ยเคมี โรงไฟฟ้า และเหมืองแร่',
-    en: 'ID Industrial Engineering Co.,Ltd. is an engineering, distributor and service company, specializing in design and engineering, procurement of Intercommunication systems, Public Address and Warning Alarm systems, and Network and CCTV systems. We also supply industrial and explosion-proof telephones and signalling devices. Our field of service covers chemical, petrochemical, oil and gas, fertilizer, power plant and mining industries.',
+    th: 'บริษัท ไอดี อินดัสเตรียล เอ็นจิเนียริ่ง จำกัด เป็นบริษัทวิศวกรรม ตัวแทนจำหน่าย และงานบริการ ที่เชี่ยวชาญด้านการออกแบบและงานวิศวกรรม รวมถึงการจัดหาระบบสื่อสารสำหรับโรงงาน ได้แก่ ระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบโทรศัพท์ ระบบเครือข่าย WAN/LAN ระบบกล้องวงจรปิด และระบบควบคุมการเข้าออก ครอบคลุมอุตสาหกรรมเคมี ปิโตรเคมี น้ำมันและก๊าซ โรงงานเหล็ก โรงไฟฟ้า และเหมืองแร่',
+    en: 'ID Industrial Engineering Co.,Ltd. is an engineering, distribution and service company specialising in design and engineering, and in the procurement of communication systems — intercom, public address and warning alarm, telephone, WAN/LAN, CCTV and access control. Our field of service covers the chemical, petrochemical, oil and gas, steel plant, power plant and mining industries.',
   },
   vision: {
     th: '',

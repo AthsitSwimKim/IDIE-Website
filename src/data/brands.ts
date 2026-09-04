@@ -31,11 +31,26 @@ export const brands: Brand[] = [
     logo: logo('industronic', { th: 'โลโก้ Industronic', en: 'Industronic' }),
     country: 'Germany',
     /*
-      ไม่ตั้ง `website` โดยตั้งใจ — ปุ่มของ Industronic ชี้ไปหน้าดาวน์โหลดเอกสาร
-      ของผู้ผลิตแทนหน้าแรก (ดู `brandDocuments` ด้านล่าง) คนที่กดจากหน้านี้กำลัง
-      หาสเปกสินค้า ไม่ได้อยากอ่านหน้าแนะนำบริษัท การมีปุ่มออกนอกเว็บสองอัน
-      ที่ไปเว็บเดียวกันคนละหน้าก็ทำให้ต้องเลือกโดยไม่รู้ว่าต่างกันตรงไหน
+      เคยไม่ตั้ง `website` ไว้ เพราะตอนนั้นปุ่มออกนอกเว็บของ Industronic ชี้ไป
+      หน้าดาวน์โหลดเอกสารอยู่แล้ว การมีสองปุ่มไปเว็บเดียวกันคนละหน้าทำให้ต้องเลือก
+      โดยไม่รู้ว่าต่างกันตรงไหน — ตอนนี้ลิงก์ดาวน์โหลดย้ายเข้าไปอยู่ในหน้า
+      เอกสารข้อมูลสินค้าแล้ว (ดู `brandDownloadCentre`) ปุ่มบนหน้าแบรนด์จึงว่าง
+      ให้ลิงก์หน้าแรกของผู้ผลิตได้ตามที่ IDIE ขอ (ก.ย. 2026)
     */
+    website: 'https://www.industronic.com/',
+    /*
+      ตราวงกลมของ Industronic ที่ IDIE ส่งมา (ก.ย. 2026) ใช้ท้ายปุ่มเว็บไซต์ผู้ผลิต
+      ต้นฉบับเป็น JPEG พื้นขาว จึงทำพื้นนอกวงกลมให้โปร่งก่อน (ดู assets-src/README.md)
+
+      ไฟล์เดียวไม่มีคู่ 1x/2x — แสดงจริงแค่ 16px ไฟล์ 96px จึงคมพอถึงจอ 4x
+      และยังเล็กกว่า 4 KB การทำสองไฟล์ให้ภาพขนาดนี้เพิ่มงานโดยไม่ได้อะไรกลับมา
+    */
+    siteIcon: {
+      src: '/images/brands/industronic-icon.webp',
+      alt: { th: 'ตราสัญลักษณ์ Industronic', en: 'Industronic emblem' },
+      width: 96,
+      height: 96,
+    },
   },
   {
     id: 'fhf',
@@ -71,19 +86,32 @@ export const brandBlurbs: Record<string, LocalizedText> = {
 }
 
 /**
- * หมวดสินค้าที่แต่ละแบรนด์ครอบคลุม — อ้างอิงจากสารบัญ catalog ของผู้ผลิตเอง
- * ใช้ทำลิงก์จากหน้า Brands ไปยัง product filter และบอกลูกค้าว่าแบรนด์ไหนมีอะไร
+ * ประเภทสินค้าที่แต่ละแบรนด์ครอบคลุม — อ้างอิงจากสารบัญ catalog ของผู้ผลิตเอง
+ * ใช้บอกลูกค้าบนหน้า Brands ว่าแบรนด์ไหนมีอะไร
+ *
+ * เก็บเป็น**ข้อความตรง ๆ ไม่ใช่ slug ที่ชี้ไปหมวดสินค้า** — เดิมชี้ไป
+ * `product-categories.ts` เพื่อทำลิงก์ไปหน้าสินค้าด้วย พอ IDIE สั่งถอดหน้าสินค้าออก
+ * (ก.ย. 2026) ปลายทางนั้นไม่มีแล้ว เหลือแต่ตัวข้อความที่ยังมีประโยชน์อยู่
+ * ถ้อยคำยกมาจากชื่อหมวดเดิมทั้งหมด ไม่ได้เขียนใหม่
  */
-export const brandCategories: Record<string, string[]> = {
-  industronic: ['intercom-stations', 'systems'],
-  fhf: [
-    'telephones',
-    'acoustic-signalling',
-    'optical-signalling',
-    'combination-units',
-    'alarm-call-points',
+export const brandSupplies: Record<string, LocalizedText[]> = {
+  industronic: [
+    { th: 'สถานีอินเตอร์คอม', en: 'Intercom Stations' },
+    { th: 'ระบบและโซลูชัน', en: 'Systems & Solutions' },
   ],
-  medc: ['acoustic-signalling', 'optical-signalling', 'combination-units', 'alarm-call-points'],
+  fhf: [
+    { th: 'โทรศัพท์อุตสาหกรรม', en: 'Industrial Telephones' },
+    { th: 'อุปกรณ์สัญญาณเสียง', en: 'Acoustic Signalling Devices' },
+    { th: 'อุปกรณ์สัญญาณแสง', en: 'Optical Signalling Devices' },
+    { th: 'อุปกรณ์สัญญาณเสียงและแสงรวม', en: 'Optical-Acoustic Combination Units' },
+    { th: 'จุดแจ้งเหตุและอุปกรณ์ตรวจจับ', en: 'Manual Alarm Call Points & Detectors' },
+  ],
+  medc: [
+    { th: 'อุปกรณ์สัญญาณเสียง', en: 'Acoustic Signalling Devices' },
+    { th: 'อุปกรณ์สัญญาณแสง', en: 'Optical Signalling Devices' },
+    { th: 'อุปกรณ์สัญญาณเสียงและแสงรวม', en: 'Optical-Acoustic Combination Units' },
+    { th: 'จุดแจ้งเหตุและอุปกรณ์ตรวจจับ', en: 'Manual Alarm Call Points & Detectors' },
+  ],
 }
 
 /**
@@ -106,16 +134,6 @@ export const brandCategories: Record<string, string[]> = {
  * ทั้งยังไม่มีคำถามเรื่องสิทธิ์เผยแพร่ เพราะเราไม่ได้แจกไฟล์ของใคร
  */
 export const brandDocuments: Record<string, DownloadItem[]> = {
-  industronic: [
-    {
-      label: {
-        th: 'ศูนย์ดาวน์โหลดเอกสารของ Industronic',
-        en: 'Industronic download centre',
-      },
-      url: 'https://www.industronic.com/support/downloads',
-      type: 'datasheet',
-    },
-  ],
   fhf: [
     {
       /**
@@ -155,6 +173,21 @@ export const brandDocuments: Record<string, DownloadItem[]> = {
       sizeKb: 13810,
     },
   ],
+}
+
+/**
+ * ศูนย์ดาวน์โหลดเอกสารของผู้ผลิต — ลิงก์ออกนอกเว็บ ไม่ใช่ไฟล์ที่เราโฮสต์เอง
+ *
+ * เดิม Industronic ใช้ลิงก์นี้เป็นปุ่ม "ดาต้าชีต" บนหน้าแบรนด์ เพราะยังไม่มีไฟล์ราย
+ * รุ่นให้เปิดดู ตอนนี้เว็บมีคลังดาต้าชีตของตัวเองแล้ว (`/brands/:id/datasheets`)
+ * ลิงก์นี้จึงย้ายไปอยู่ **ในหน้าคลังนั้น** แทน — คนที่อยากได้ฉบับล่าสุดที่สุด
+ * หรือเอกสารที่เราไม่ได้โฮสต์ไว้ ยังไปต่อที่ต้นทางได้ในที่ที่กำลังหาเอกสารอยู่พอดี
+ *
+ * มีเฉพาะแบรนด์ที่เปิดศูนย์ดาวน์โหลดสาธารณะ — FHF กับ MEDC อยู่ใต้เว็บ Eaton
+ * ซึ่งต้องล็อกอินก่อนถึงจะโหลดได้ จึงไม่ใส่ลิงก์ที่พาผู้อ่านไปเจอหน้าล็อกอิน
+ */
+export const brandDownloadCentre: Record<string, string> = {
+  industronic: 'https://www.industronic.com/support/downloads',
 }
 
 /**

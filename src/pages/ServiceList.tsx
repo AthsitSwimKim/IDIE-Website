@@ -1,4 +1,4 @@
-import { Button, Heading, ImagePlaceholder, KeepPhrases, Section } from '@/components/ui'
+import { Button, CoverImage, Heading, KeepPhrases, Section } from '@/components/ui'
 import { ArrowRight } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -24,8 +24,8 @@ export default function ServiceList() {
       <Seo
         title={{ th: 'บริการ', en: 'Services' }}
         description={{
-          th: 'ระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด และอุปกรณ์กันระเบิด',
-          en: 'Intercom, PA/GA, network and CCTV systems, and explosion-proof equipment.',
+          th: 'ระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบโทรศัพท์ ระบบเครือข่าย WAN/LAN กล้องวงจรปิด และระบบควบคุมการเข้าออก',
+          en: 'Intercom, PA/GA, telephone, WAN/LAN, CCTV and access control systems.',
         }}
       />
 
@@ -53,20 +53,7 @@ export default function ServiceList() {
                 (index % 2 === 1 ? 'lg:[&>*:first-child]:order-2' : '')
               }
             >
-              {service.cover ? (
-                <img
-                  src={service.cover.src}
-                  srcSet={service.cover.srcSet}
-                  alt={t(service.cover.alt)}
-                  width={service.cover.width}
-                  height={service.cover.height}
-                  loading="lazy"
-                  decoding="async"
-                  className="border-line rounded-card bg-surface-alt aspect-[4/3] w-full border object-cover"
-                />
-              ) : (
-                <ImagePlaceholder label={t(service.name)} size="1600 × 1200" />
-              )}
+              <CoverImage image={service.cover} label={t(service.name)} />
 
               <div>
                 <Heading level={2}>
@@ -119,11 +106,11 @@ export default function ServiceList() {
               <ArrowRight className="size-4 shrink-0" aria-hidden="true" />
             </Button>
             <Button
-              to="/products"
+              to="/brands"
               variant="outline"
               className="border-white/40 text-white hover:bg-white/10 active:bg-white/15"
             >
-              {t(ui.nav.products)}
+              {t(ui.nav.brands)}
             </Button>
           </div>
         </div>

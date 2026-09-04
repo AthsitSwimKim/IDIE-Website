@@ -28,7 +28,12 @@ export function IndustriesServed() {
         <p className="mt-4 text-white/70">{t(ui.home.industriesLead)}</p>
       </div>
 
-      <ul className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {/*
+        สามคอลัมน์ ไม่ใช่สี่ — รายการมีเก้าอุตสาหกรรมหลังเพิ่มโรงงานเหล็กเข้ามา
+        ซึ่งลงตัวพอดีสามแถวที่ 3 คอลัมน์ แต่จะเหลือเศษหนึ่งใบโดด ๆ ที่ 4 คอลัมน์
+        คอลัมน์ที่กว้างขึ้นยังทำให้คำอธิบายไทยไม่ต้องตัดคำถี่เท่าเดิมด้วย
+      */}
+      <ul className="mt-12 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
         {industries.map((industry, index) => (
           <li key={industry.slug}>
             <Reveal delay={index * 50}>

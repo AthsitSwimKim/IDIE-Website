@@ -370,15 +370,30 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   },
 
   /* ---------------------------------------------------------------------- */
-  'explosion-proof-telephone-signalling': {
+  /*
+    เดิมคีย์นี้ชื่อ 'explosion-proof-telephone-signalling' และเล่าเรื่องเป็นงานจัดจำหน่าย
+    อุปกรณ์ Company Profile จัด Telephone System ไว้เป็นงานระบบเต็มรูปแบบ เนื้อหาจึงถูก
+    ขยายให้เริ่มจากตัวระบบ (ตู้สาขา ชนิดของชุมสาย งานเดินสาย) แล้วค่อยลงไปที่การเลือก
+    เครื่องปลายทาง — ย่อหน้าเรื่องพื้นที่อันตรายทั้งหมดยังอยู่ครบ เพราะเครื่องกันระเบิด
+    เป็นชนิดหนึ่งของเครื่องปลายทางในระบบเดียวกันนี้ ไม่ได้หายไปไหน
+  */
+  'telephone-system': {
     overviewDetail: [
       {
-        th: 'หมวดนี้ครอบอุปกรณ์สามกลุ่มที่มักถูกสั่งพร้อมกัน คือโทรศัพท์อุตสาหกรรมสำหรับพื้นที่ที่ต้องทนฝุ่น น้ำ และเสียงดัง โทรศัพท์กันระเบิดสำหรับจุดที่อยู่ในบรรยากาศเสี่ยงติดไฟ และอุปกรณ์ส่งสัญญาณทั้งชนิดเสียงและชนิดแสงที่ใช้แจ้งเหตุในพื้นที่เดียวกัน ทั้งหมดเป็นสินค้าที่วิศวกรระบุในสเปกด้วยชื่อรุ่นและใบรับรอง ไม่ใช่ด้วยคำบรรยายทั่วไป',
-        en: 'This category covers three groups of equipment that are usually ordered together: industrial telephones for areas that must tolerate dust, water and noise; explosion-proof telephones for points inside a potentially flammable atmosphere; and both acoustic and optical signalling devices used to raise the alarm in those same areas. These are products engineers specify by model number and certificate, not by general description.',
+        th: 'ระบบโทรศัพท์เป็นระบบที่ใช้มากที่สุดทั้งในสำนักงานและในโรงงาน เพราะเป็นช่องทางสื่อสารแบบมีสายหลักทั้งภายในพื้นที่และกับโลกภายนอก หัวใจของระบบคือตู้สาขา PABX ที่ทำหน้าที่เชื่อมสายทั้งหมดเข้าด้วยกัน ตามด้วยเครื่องปลายทางที่มีให้เลือกหลายชนิด และงานที่คนมักไม่นับว่าเป็นส่วนของระบบแต่กำหนดคุณภาพทั้งหมด คือตู้กระจายสาย MDF และ IDF กับสายสัญญาณที่เดินถึงทุกจุด',
+        en: 'The telephone system is the most widely used system in both offices and plants: it is the primary wired channel inside the premises and out to the world beyond. At its heart is the PABX, which ties every line together, followed by the handsets — available in several types — and by the part people rarely count as part of the system even though it sets the quality of the whole: the MDF and IDF distribution frames and the cabling that reaches every point.',
       },
       {
-        th: 'การเลือกรุ่นเริ่มจากเอกสารจำแนกพื้นที่ของโรงงาน ซึ่งต้องอ่านครบสามค่าเสมอ คือโซน (ความถี่ที่บรรยากาศติดไฟจะปรากฏ) กลุ่มก๊าซ IIA IIB หรือ IIC (ชนิดของสารที่อาจมีอยู่ โดย IIC เข้มงวดที่สุดเพราะครอบคลุมไฮโดรเจนและอะเซทิลีน) และ temperature class T1 ถึง T6 (อุณหภูมิผิวสูงสุดที่อุปกรณ์มีได้โดยไม่จุดสารนั้น) ใบสั่งซื้อที่ระบุแค่โซนอย่างเดียวยังไม่พอให้ผู้ขายเสนอรุ่นที่ถูกต้อง',
-        en: 'Selection begins from the plant area classification, and all three values must be read together: the zone (how often a flammable atmosphere is present), the gas group — IIA, IIB or IIC, with IIC the most demanding as it covers hydrogen and acetylene — and the temperature class T1 to T6, capping the surface temperature the equipment may reach without igniting that substance. A purchase order stating only the zone is not yet enough for a supplier to propose the correct model.',
+        th: 'ระบบดั้งเดิมเป็นแบบอนาล็อก ซึ่งกำลังถูกแทนที่ด้วยแบบ IP ทีละน้อย และยังมีระบบไฮบริดที่รองรับทั้งอนาล็อกและ IP อยู่ในตู้เดียวกัน ทางเลือกนี้สำคัญกับโรงงานที่มีสายเดิมเดินอยู่แล้วหลายร้อยจุด เพราะการเปลี่ยนทั้งระบบพร้อมกันแปลว่าต้องหยุดใช้งานเป็นช่วง ในขณะที่ระบบไฮบริดยอมให้ทยอยเปลี่ยนเฉพาะจุดที่ต้องการฟังก์ชันใหม่ก่อน แล้วปล่อยจุดที่ยังใช้ได้ดีไว้ตามเดิม',
+        en: 'Traditional systems are analogue, and are slowly being replaced by the IP version. There are also hybrid systems that support both analogue and IP within one platform. That choice matters for a plant with hundreds of existing lines already pulled, because replacing everything at once means planned downtime, whereas a hybrid system allows the points that need new functionality to be converted first while the ones still working stay as they are.',
+      },
+      {
+        th: 'เครื่องปลายทางเลือกตามจุดติดตั้ง ไม่ใช่ตามงบประมาณเพียงอย่างเดียว มีทั้งแบบอนาล็อก ดิจิทัล และ IP และมีทั้งชนิดใช้ในอาคาร ชนิดกลางแจ้ง ชนิดกันสภาพอากาศ และชนิดกันระเบิดสำหรับจุดที่อยู่ในบรรยากาศที่อาจติดไฟ เครื่องที่เหมาะกับโต๊ะทำงานในสำนักงานกับเครื่องที่ต้องอยู่กลางลานถังจึงเป็นสินค้าคนละหมวดกันโดยสิ้นเชิง แม้จะต่อเข้าตู้สาขาตัวเดียวกัน',
+        en: 'Handsets are selected by where they are mounted, not by budget alone. They come as analogue, digital and IP, and as indoor, outdoor, weather-proof and explosion-proof versions for points inside a potentially flammable atmosphere. A set suited to an office desk and a set that has to live in a tank farm are entirely different product classes, even when both terminate on the same PABX.',
+      },
+      {
+        th: 'สำหรับจุดที่อยู่ในพื้นที่จำแนกอันตราย การเลือกรุ่นเริ่มจากเอกสารจำแนกพื้นที่ของโรงงาน ซึ่งต้องอ่านครบสามค่าเสมอ คือโซน (ความถี่ที่บรรยากาศติดไฟจะปรากฏ) กลุ่มก๊าซ IIA IIB หรือ IIC (ชนิดของสารที่อาจมีอยู่ โดย IIC เข้มงวดที่สุดเพราะครอบคลุมไฮโดรเจนและอะเซทิลีน) และ temperature class T1 ถึง T6 (อุณหภูมิผิวสูงสุดที่อุปกรณ์มีได้โดยไม่จุดสารนั้น) ใบสั่งซื้อที่ระบุแค่โซนอย่างเดียวยังไม่พอให้ผู้ขายเสนอรุ่นที่ถูกต้อง',
+        en: 'For points inside a classified area, selection begins from the plant area classification, and all three values must be read together: the zone (how often a flammable atmosphere is present), the gas group — IIA, IIB or IIC, with IIC the most demanding as it covers hydrogen and acetylene — and the temperature class T1 to T6, capping the surface temperature the equipment may reach without igniting that substance. A purchase order stating only the zone is not yet enough for a supplier to propose the correct model.',
       },
       {
         th: 'เงื่อนไขที่สองคือสภาพแวดล้อมทางกายภาพ ซึ่งกำหนดวัสดุตัวถังและระดับ IP ที่ต้องใช้ พื้นที่ชายฝั่งและงานนอกชายฝั่งต้องการวัสดุที่ทนไอเกลือ เช่นตัวถัง GRP หรือชิ้นส่วนสเตนเลสเกรดสูง พื้นที่ที่ล้างด้วยสารเคมีต้องการความทนการกัดกร่อนอีกแบบ และทุกจุดต้องเทียบช่วงอุณหภูมิของรุ่นที่เลือกกับอุณหภูมิสูงสุดและต่ำสุดที่หน้างานเจอจริง เพราะอุปกรณ์ที่ผ่าน Ex แล้วยังมีข้อจำกัดเรื่องอุณหภูมิกำกับมาเสมอ',
@@ -391,38 +406,56 @@ export const serviceDepth: Record<string, ServiceDepth> = {
     ],
     process: [
       {
-        th: 'ตรวจเอกสารจำแนกพื้นที่: โซน กลุ่มก๊าซ และ temperature class ของจุดติดตั้ง',
-        en: 'Review the area classification: zone, gas group and temperature class for each point',
+        th: 'สำรวจจำนวนจุดใช้งาน ระบบเดิมที่มีอยู่ และชนิดของชุมสายที่เชื่อมออกภายนอก',
+        en: 'Survey the number of extensions, the existing system, and how external lines are connected',
       },
       {
-        th: 'คัดรุ่นที่ใบรับรองครอบคลุมเงื่อนไขนั้นครบทุกข้อ ไม่ใช่แค่โซน',
-        en: 'Shortlist models whose certification covers every one of those conditions, not just the zone',
+        th: 'เลือกตู้สาขา PABX และรูปแบบระบบ (อนาล็อก IP หรือไฮบริด) ให้ตรงกับแผนการใช้งานระยะยาว',
+        en: 'Select the PABX and system type — analogue, IP or hybrid — against the long-term plan',
       },
       {
-        th: 'ตรวจช่วงอุณหภูมิและระดับ IP เทียบกับสภาพแวดล้อมจริง เช่นไอเกลือหรือสารกัดกร่อน',
-        en: 'Check temperature range and IP rating against the real environment — salt spray or corrosive agents included',
+        th: 'ตรวจเอกสารจำแนกพื้นที่ของจุดที่อยู่ในบริเวณอันตราย: โซน กลุ่มก๊าซ และ temperature class',
+        en: 'Review the area classification for points in hazardous locations: zone, gas group and temperature class',
       },
-      { th: 'จัดหาและตรวจรับพร้อมเอกสารรับรองของแต่ละชิ้น', en: 'Procure and take delivery together with each unit’s certification documents' },
       {
-        th: 'ติดตั้งตามข้อกำหนดการติดตั้งของผู้ผลิต ซึ่งเป็นเงื่อนไขที่ทำให้ใบรับรองยังมีผล',
+        th: 'คัดรุ่นเครื่องปลายทางตามจุดติดตั้ง และตรวจว่าใบรับรองครอบคลุมเงื่อนไขครบทุกข้อ ไม่ใช่แค่โซน',
+        en: 'Shortlist handsets by location and verify their certification covers every condition, not just the zone',
+      },
+      {
+        th: 'ออกแบบผังตู้กระจายสาย MDF/IDF และเส้นทางเดินสายถึงทุกจุด',
+        en: 'Design the MDF/IDF layout and the cable routes to every point',
+      },
+      {
+        th: 'ติดตั้งตามข้อกำหนดของผู้ผลิต ซึ่งเป็นเงื่อนไขที่ทำให้ใบรับรองยังมีผล',
         en: 'Install to the manufacturer’s instructions — the condition under which the certification remains valid',
       },
-      { th: 'ทดสอบ ส่งมอบ และส่งชุดเอกสารสำหรับการตรวจสอบภายหลัง', en: 'Test, hand over, and provide the document set for later inspection' },
+      {
+        th: 'ทดสอบรายจุด ส่งมอบ และส่งชุดเอกสารสำหรับการตรวจสอบภายหลัง',
+        en: 'Test point by point, hand over, and provide the document set for later inspection',
+      },
     ],
     quoteChecklist: [
+      { th: 'จำนวนจุดใช้งานทั้งหมด และแยกว่าอยู่ในสำนักงานกี่จุด อยู่ในพื้นที่ผลิตกี่จุด', en: 'Total number of extensions, split between office and process areas' },
+      { th: 'ระบบเดิมเป็นอนาล็อกหรือ IP และตู้สาขาเดิมยังใช้ต่อได้หรือไม่', en: 'Whether the existing system is analogue or IP, and whether the current PABX is to be reused' },
       {
-        th: 'เอกสารจำแนกพื้นที่ที่ระบุโซน กลุ่มก๊าซ (IIA / IIB / IIC) และ temperature class (T1–T6)',
-        en: 'Area classification stating zone, gas group (IIA / IIB / IIC) and temperature class (T1–T6)',
+        th: 'เอกสารจำแนกพื้นที่ที่ระบุโซน กลุ่มก๊าซ (IIA / IIB / IIC) และ temperature class (T1–T6) ของจุดที่อยู่ในบริเวณอันตราย',
+        en: 'Area classification stating zone, gas group (IIA / IIB / IIC) and temperature class (T1–T6) for points in hazardous locations',
       },
       { th: 'อุณหภูมิแวดล้อมต่ำสุดและสูงสุดที่จุดติดตั้งเจอจริง', en: 'The lowest and highest ambient temperatures the point actually sees' },
       {
         th: 'สภาพกัดกร่อน เช่น ใกล้ทะเล ไอกรด หรือพื้นที่ล้างด้วยสารเคมี',
         en: 'Corrosive conditions — coastal, acid vapour, or chemical wash-down areas',
       },
-      { th: 'ระบบโทรศัพท์เดิมเป็นอนาล็อกหรือ VoIP', en: 'Whether the existing telephone system is analogue or VoIP' },
-      { th: 'จำนวนจุดและระยะสายจากตู้ควบคุมถึงจุดที่ไกลที่สุด', en: 'Number of points and cable distance from the panel to the furthest one' },
+      { th: 'ระยะสายจากตู้กระจายสายถึงจุดที่ไกลที่สุด', en: 'Cable distance from the distribution frame to the furthest point' },
     ],
     technicalNotes: [
+      {
+        title: { th: 'ไฮบริดไม่ใช่ทางออกชั่วคราวเสมอไป', en: 'Hybrid is not always a stopgap' },
+        body: {
+          th: 'โรงงานที่มีสายอนาล็อกเดินไว้แล้วหลายร้อยจุด การเปลี่ยนเป็น IP ทั้งระบบพร้อมกันแปลว่าต้องรื้อสายและหยุดใช้งานเป็นช่วง ระบบไฮบริดยอมให้ย้ายเฉพาะจุดที่ต้องการฟังก์ชันใหม่ก่อน แล้วคงจุดที่ยังทำงานได้ดีไว้ตามเดิม การเลือกไฮบริดจึงเป็นการตัดสินใจเรื่องแผนงานและงบประมาณ ไม่ใช่การยอมรับเทคโนโลยีที่ด้อยกว่า',
+          en: 'In a plant with hundreds of analogue lines already pulled, converting everything to IP at once means re-cabling and planned downtime. A hybrid platform lets the points that need new functionality move first while the rest stay as they are. Choosing hybrid is therefore a decision about scheduling and budget, not a concession to inferior technology.',
+        },
+      },
       {
         title: { th: 'รู้แค่โซนยังเลือกของไม่ได้', en: 'Knowing the zone alone is not enough to select equipment' },
         body: {
@@ -442,6 +475,85 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         body: {
           th: 'เอกสารรับรองของอุปกรณ์กันระเบิดมาพร้อมเงื่อนไขการติดตั้งเสมอ เช่นชนิดของ cable gland ที่ใช้ได้ แรงขันของสกรูฝาครอบ และวิธีต่อสายดิน การเปลี่ยน gland เป็นรุ่นที่หาได้ง่ายกว่าหน้างาน หรือขันฝาไม่ได้แรงตามที่กำหนด ทำให้การป้องกันไม่เป็นไปตามที่รับรองไว้ แม้ตัวอุปกรณ์จะเป็นรุ่นที่ถูกต้องก็ตาม',
           en: 'Certification for explosion-protected equipment always comes with installation conditions — which cable glands are permitted, the torque for the cover bolts, how earthing must be made. Substituting a gland for whatever was available on site, or under-torquing the cover, means the protection no longer matches what was certified, even though the device itself is the correct model.',
+        },
+      },
+    ],
+  },
+
+  /* ---------------------------------------------------------------------- */
+  'access-control-system': {
+    overviewDetail: [
+      {
+        th: 'ระบบควบคุมการเข้าออกเป็นส่วนหนึ่งของระบบรักษาความปลอดภัยที่ทำสามหน้าที่พร้อมกัน คือเฝ้าระวังว่าใครเข้าออกที่ไหนเมื่อไร ป้องกันไม่ให้ผู้ที่ไม่มีสิทธิ์เข้าถึงพื้นที่ที่กำหนด และบริหารสิทธิ์เหล่านั้นให้เปลี่ยนแปลงได้เมื่อคนย้ายหน้าที่หรือหมดสัญญา สองหน้าที่แรกเป็นสิ่งที่ทุกคนนึกถึง แต่หน้าที่ที่สามคือสิ่งที่ทำให้ระบบยังใช้ได้จริงหลังผ่านไปสองปี',
+        en: 'Access control is the part of a security system that does three things at once: it monitors who went where and when, it protects defined areas from people without the right to be there, and it manages those rights as staff change roles or contracts end. The first two are what everyone pictures. The third is what keeps the system usable two years after handover.',
+      },
+      {
+        th: 'ระบบเดียวกันนี้มักถูกใช้เป็นระบบบันทึกเวลาทำงานไปด้วย เพราะข้อมูลเวลาเข้าออกที่ระบบเก็บอยู่แล้วสามารถส่งต่อให้ระบบเงินเดือนได้โดยตรง ข้อดีคือไม่ต้องมีเครื่องรูดบัตรสองชุด ข้อควรระวังคือต้องตกลงกันตั้งแต่ต้นว่าใครเป็นเจ้าของข้อมูลชุดนี้และเก็บไว้นานเท่าใด เพราะข้อมูลเวลาเข้าออกของพนักงานเป็นข้อมูลส่วนบุคคล ไม่ใช่แค่บันทึกของประตู',
+        en: 'The same system is often used as a time and attendance system, since the entry and exit times it already records can feed payroll directly. The benefit is obvious — no second set of card readers. The point to settle early is who owns that data and how long it is retained, because an employee’s movement record is personal data, not merely a log of a door.',
+      },
+      {
+        th: 'จุดที่ต้องออกแบบร่วมกับงานความปลอดภัยคือการเชื่อมกับระบบป้องกันอัคคีภัย ระบบควบคุมการเข้าออกที่ทำงานถูกต้องต้องปลดล็อกประตูตามเส้นทางหนีไฟเมื่อเกิดเหตุ เพื่อให้คนออกจากอาคารได้เร็วและปลอดภัย ประตูที่ล็อกแน่นหนาที่สุดในวันปกติ จึงต้องเป็นประตูที่เปิดได้ทันทีในวันที่เกิดเหตุ เงื่อนไขนี้เป็นเรื่องที่ต้องกำหนดตั้งแต่ตอนออกแบบ ไม่ใช่ตอนติดตั้งเสร็จแล้วค่อยหาวิธีต่อสายเพิ่ม',
+        en: 'The point that has to be designed together with the safety systems is the interface to fire protection. A correctly engineered access control system releases the doors along the escape routes under a fire condition, so that people can leave the building quickly and safely. The door that is most firmly locked on an ordinary day has to be the one that opens immediately on the day it matters. That condition belongs in the design, not in a search for spare wiring after installation.',
+      },
+      {
+        th: 'สำหรับโรงงาน ระบบนี้ยังทำหน้าที่ที่สำนักงานทั่วไปไม่ต้องการ คือคุมการเข้าพื้นที่หวงห้ามที่ต้องมีใบอนุญาตทำงานก่อน และรู้ว่าขณะนี้มีใครอยู่ในพื้นที่ใดบ้างเมื่อต้องอพยพ ข้อมูลนี้มีค่ามากที่สุดในนาทีที่ต้องนับหัวคน ซึ่งเป็นเหตุผลว่าทำไมระบบควบคุมการเข้าออกกับระบบแจ้งเหตุจึงควรออกแบบให้คุยกันได้ ไม่ใช่แยกกันอยู่คนละระบบ',
+        en: 'In a plant the system also does something an ordinary office never asks of it: it restricts entry to areas that require a work permit first, and it knows who is inside which area when an evacuation begins. That information is worth most in the minutes when people have to be counted — which is why access control and the alarm system should be designed to talk to each other rather than living side by side as separate installations.',
+      },
+    ],
+    process: [
+      {
+        th: 'สำรวจประตูและจุดผ่านทั้งหมด แยกว่าจุดใดต้องคุมเข้า จุดใดต้องคุมทั้งเข้าและออก',
+        en: 'Survey every door and passage, separating entry-only points from those needing both directions',
+      },
+      {
+        th: 'กำหนดกลุ่มผู้ใช้และสิทธิ์ตามพื้นที่ รวมถึงผู้รับเหมาและผู้มาติดต่อ',
+        en: 'Define user groups and area rights, contractors and visitors included',
+      },
+      {
+        th: 'เลือกอุปกรณ์อ่านและชนิดล็อกให้เหมาะกับประตูและสภาพแวดล้อมของแต่ละจุด',
+        en: 'Select readers and lock types to suit each door and its environment',
+      },
+      {
+        th: 'ออกแบบการเชื่อมกับระบบป้องกันอัคคีภัยให้ประตูเส้นทางหนีไฟปลดล็อกเมื่อเกิดเหตุ',
+        en: 'Design the fire protection interface so escape-route doors release on alarm',
+      },
+      {
+        th: 'เชื่อมข้อมูลกับระบบบันทึกเวลาหรือระบบเงินเดือน ถ้าโรงงานต้องการใช้ร่วมกัน',
+        en: 'Link to time attendance or payroll where the site wants one system to serve both',
+      },
+      {
+        th: 'ติดตั้ง ทดสอบทั้งกรณีปกติและกรณีเกิดเหตุ แล้วส่งมอบพร้อมอบรมผู้ดูแลระบบ',
+        en: 'Install, test both the normal and the fire condition, then hand over with administrator training',
+      },
+    ],
+    quoteChecklist: [
+      { th: 'จำนวนประตูที่ต้องคุม และแต่ละจุดคุมทางเดียวหรือสองทาง', en: 'Number of controlled doors, and whether each is one-way or two-way' },
+      { th: 'จำนวนผู้ใช้ทั้งหมด แยกพนักงานประจำ ผู้รับเหมา และผู้มาติดต่อ', en: 'Total users, split between staff, contractors and visitors' },
+      { th: 'ต้องใช้เป็นระบบบันทึกเวลาทำงานด้วยหรือไม่ และต้องส่งข้อมูลให้ระบบเงินเดือนตัวไหน', en: 'Whether it must double as time attendance, and which payroll system receives the data' },
+      { th: 'ระบบแจ้งเหตุเพลิงไหม้ที่มีอยู่เดิม และจุดที่ต้องปลดล็อกเมื่อเกิดเหตุ', en: 'The existing fire alarm system and which doors must release on alarm' },
+      { th: 'พื้นที่ที่ต้องมีใบอนุญาตทำงานก่อนเข้า', en: 'Areas requiring a work permit before entry' },
+      { th: 'สภาพแวดล้อมของจุดติดตั้ง เช่น กลางแจ้ง ฝุ่นมาก หรืออยู่ในพื้นที่จำแนกอันตราย', en: 'Environment at each point — outdoor, dusty, or inside a classified area' },
+    ],
+    technicalNotes: [
+      {
+        title: { th: 'ประตูที่ล็อกแน่นที่สุด ต้องเปิดได้เร็วที่สุดตอนเกิดเหตุ', en: 'The most secure door has to be the fastest to open in an emergency' },
+        body: {
+          th: 'ความปลอดภัยของทรัพย์สินกับความปลอดภัยของชีวิตเป็นข้อกำหนดที่สวนทางกันที่ประตูบานเดียวกัน ระบบต้องออกแบบให้ประตูตามเส้นทางหนีไฟปลดล็อกเมื่อระบบแจ้งเหตุทำงาน ซึ่งหมายถึงต้องมีทั้งการเดินสายสัญญาณจากระบบดับเพลิงและการเลือกชนิดล็อกที่ปลดเมื่อไฟดับ ไม่ใช่ล็อกที่ค้างอยู่เมื่อไม่มีไฟ',
+          en: 'Protecting property and protecting life pull in opposite directions at the same door. The system has to release escape-route doors when the fire alarm operates, which means both a signal path from the fire system and a lock type that unlocks when power is lost — not one that stays engaged without it.',
+        },
+      },
+      {
+        title: { th: 'การถอนสิทธิ์สำคัญกว่าการให้สิทธิ์', en: 'Revoking access matters more than granting it' },
+        body: {
+          th: 'ทุกระบบทำงานได้ดีในวันแรกที่ทุกคนได้บัตร ปัญหาเกิดตอนคนย้ายแผนก ลาออก หรือผู้รับเหมาจบสัญญาแล้วบัตรยังใช้ได้อยู่ ระบบที่ไม่มีขั้นตอนถอนสิทธิ์ที่ชัดเจนจะค่อย ๆ สะสมบัตรที่ยังเปิดประตูได้โดยไม่มีเจ้าของ ซึ่งเป็นช่องโหว่ที่ตรวจไม่พบจนกว่าจะมีเหตุ การกำหนดวันหมดอายุของบัตรผู้รับเหมาตั้งแต่วันออกบัตรจึงได้ผลกว่าการไล่เก็บคืนภายหลัง',
+          en: 'Every system works on day one, when everyone receives a card. The trouble starts when people change departments, leave, or a contractor’s term ends while their card still opens doors. Without a clear revocation procedure a system slowly accumulates live credentials with no owner — a gap nobody notices until there is an incident. Setting an expiry date on contractor cards at the moment they are issued works far better than chasing them afterwards.',
+        },
+      },
+      {
+        title: { th: 'ข้อมูลเวลาเข้าออกเป็นข้อมูลส่วนบุคคล', en: 'Movement records are personal data' },
+        body: {
+          th: 'เมื่อระบบถูกใช้เป็นระบบบันทึกเวลาทำงานด้วย สิ่งที่ระบบเก็บไม่ใช่แค่บันทึกของประตูอีกต่อไป แต่เป็นบันทึกว่าพนักงานคนหนึ่งอยู่ที่ไหนในเวลาใดตลอดทั้งปี ต้องกำหนดตั้งแต่ตอนออกแบบว่าใครเข้าถึงข้อมูลนี้ได้ เก็บไว้นานเท่าใด และใช้เพื่อวัตถุประสงค์ใดได้บ้าง เพราะการมากำหนดทีหลังเมื่อข้อมูลสะสมไปแล้วสองปี ทำได้ยากกว่ามาก',
+          en: 'Once the system doubles as time and attendance, what it stores is no longer a log of a door but a record of where a given employee was, at what time, across a whole year. Who may read it, how long it is kept and what it may be used for belong in the design decisions — settling that after two years of accumulated records is far harder.',
         },
       },
     ],

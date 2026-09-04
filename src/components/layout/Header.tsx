@@ -110,7 +110,7 @@ export function Header() {
  *
  * dropdown เปิดด้วย hover สำหรับเมาส์ และด้วย focus สำหรับคีย์บอร์ด —
  * ไม่ใช้ปุ่มกดเปิด เพราะหัวข้อหลักเองก็เป็นลิงก์ที่ต้องกดไปได้
- * (Products ต้องพาไป /products ได้ ไม่ใช่เป็นแค่ตัวเปิดเมนูย่อย)
+ * (Reference ต้องพาไป /reference ได้ ไม่ใช่เป็นแค่ตัวเปิดเมนูย่อย)
  */
 function DesktopNavItem({ item }: { item: NavItem }) {
   const { t } = useLocale()

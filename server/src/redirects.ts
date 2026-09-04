@@ -16,6 +16,13 @@ const permanentRedirects: Record<string, string> = {
   // บริการเดิม "Network & CCTV System" แยกเป็น network-system กับ cctv-system
   // ชี้ไปหน้ากล้องเพราะเนื้อหาส่วนใหญ่ของหน้าเดิมย้ายไปอยู่ที่นั่น
   '/services/network-cctv-system': '/services/cctv-system',
+  // บริการเดิมที่เล่าเรื่องเป็น "จัดจำหน่ายโทรศัพท์กันระเบิด" ขยายขอบเขตเป็น
+  // Telephone System เต็มระบบตาม Company Profile — เนื้อหาเดิมย้ายไปทั้งหมด
+  '/services/explosion-proof-telephone-signalling': '/services/telephone-system',
+  // หน้าสินค้าถูกถอดออกทั้งหน้า (ก.ย. 2026) — ส่งไปหน้าแบรนด์ซึ่งมีคลังเอกสาร
+  // ข้อมูลสินค้ารายรุ่นอยู่ ส่วน URL ของสินค้ารายชิ้นจัดการที่ src/router.tsx
+  // เพราะเป็น path แบบมีพารามิเตอร์ซึ่งตารางนี้เทียบแบบตรงตัวอย่างเดียว
+  '/products': '/brands',
 }
 
 /**

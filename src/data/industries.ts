@@ -1,8 +1,16 @@
 import type { Industry } from '@/types/content'
 
 /**
- * 6 อุตสาหกรรมแรก = รายการที่ IDIE ระบุเองบนเว็บบริษัท ("The field of services covers to
- * chemical, petrochemical, oil and gas, fertilizer, power plant and mining")
+ * 7 อุตสาหกรรมแรก = รายการที่ IDIE ระบุเอง โดยรวมสองแหล่งเข้าด้วยกัน
+ *
+ * - Company Profile ฉบับย่อ 2026: "Chemical, Petrochemical, Oil & Gas,
+ *   **Steel plant**, Power plant and mining"
+ * - เว็บบริษัทฉบับเดิม: "chemical, petrochemical, oil and gas, **fertilizer**,
+ *   power plant and mining"
+ *
+ * เก็บทั้ง `steel-plant` และ `fertilizer` ไว้ ไม่ตัดตัวใดตัวหนึ่งทิ้ง เพราะทั้งคู่
+ * มีลูกค้าจริงรองรับอยู่ในหน้า Reference (G Steel และ Thai Nitrate ตามลำดับ)
+ * เอกสารสองฉบับเลือกยกตัวอย่างคนละตัวเท่านั้น ไม่ได้แปลว่าอีกตัวเลิกทำแล้ว
  *
  * 'epc' และ 'manufacturing' เพิ่มเข้ามาเพื่อจัดหมวดลูกค้าจริงบางรายในหน้า Reference
  * (CTCI, TTCL/Toyo-Thai, Uhde เป็น EPC contractor ไม่ใช่เจ้าของโรงงาน)
@@ -51,6 +59,16 @@ export const industries: Industry[] = [
     order: 4,
   },
   {
+    slug: 'steel-plant',
+    name: { th: 'โรงงานเหล็ก', en: 'Steel Plant' },
+    description: {
+      th: 'โรงถลุงและโรงรีดเหล็กที่มีความร้อนแผ่รังสี ฝุ่นโลหะ และเสียงดังตลอดกะการทำงาน',
+      en: 'Steelworks and rolling mills with radiant heat, metallic dust and noise across every shift.',
+    },
+    icon: 'flame',
+    order: 5,
+  },
+  {
     slug: 'fertilizer',
     name: { th: 'ปุ๋ยเคมี', en: 'Fertilizer' },
     description: {
@@ -58,7 +76,7 @@ export const industries: Industry[] = [
       en: 'Fertilizer plants with dust and corrosive media, requiring high-protection enclosures.',
     },
     icon: 'layers',
-    order: 5,
+    order: 6,
   },
   {
     slug: 'mining',
@@ -68,7 +86,7 @@ export const industries: Industry[] = [
       en: 'Mining operations needing wide-area, ruggedised communication systems.',
     },
     icon: 'mountain',
-    order: 6,
+    order: 7,
   },
   {
     slug: 'epc',
@@ -78,7 +96,7 @@ export const industries: Industry[] = [
       en: 'Engineering and construction contractors who need a communication systems partner from design stage.',
     },
     icon: 'blueprint',
-    order: 7,
+    order: 8,
   },
   {
     slug: 'manufacturing',
@@ -88,6 +106,6 @@ export const industries: Industry[] = [
       en: 'General manufacturing plants requiring public address, signalling and CCTV.',
     },
     icon: 'factory',
-    order: 8,
+    order: 9,
   },
 ]

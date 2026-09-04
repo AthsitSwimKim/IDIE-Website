@@ -7,7 +7,7 @@ import type { NewsArticle } from '@/types/content'
 
 /**
  * การ์ดข่าว — ใช้ทั้งหน้า /news และหัวข้อข่าวล่าสุดบนหน้าแรก
- * จึงอยู่ใน components/sections ไม่ใช่ใต้ pages ตามกติกาเดียวกับ ProductCard
+ * จึงอยู่ใน components/sections ไม่ใช่ใต้ pages ตามกติกาเดียวกับ ProjectCard
  */
 export function NewsCard({ article }: { article: NewsArticle }) {
   const { t, locale } = useLocale()

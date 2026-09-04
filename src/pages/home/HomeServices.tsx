@@ -26,7 +26,7 @@ export function HomeServices() {
       <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
           <Heading level={2} eyebrow="OUR SERVICES">
-            {t(ui.home.servicesTitle)}
+            {t(ui.home.servicesTitle).replace('{count}', String(services.length))}
           </Heading>
           <p className="text-ink-muted mt-4">{t(ui.home.servicesLead)}</p>
         </div>

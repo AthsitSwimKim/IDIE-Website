@@ -1,14 +1,14 @@
 import { Badge, Button, Heading, Section } from '@/components/ui'
-import { DocumentIcon } from '@/components/ui/icons'
+import { DocumentIcon, ExternalLinkIcon } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
 import {
   brandBlurbs,
-  brandCategories,
   brandDocuments,
+  brandSupplies,
+  countDatasheets,
   getBrands,
-  getProductCategories,
   sourcingStatement,
   ui,
 } from '@/data'
@@ -28,6 +28,30 @@ const documentTypeLabel = {
 } satisfies Record<DownloadItem['type'], LocalizedText>
 
 /**
+ * ปุ่มไปหน้าคลังดาต้าชีตของแบรนด์ พร้อมจำนวนเอกสาร
+ *
+ * แยกเป็น component เล็ก ๆ เพราะต้องเรียกข้อมูลของตัวเอง — การดึงจำนวนของทั้งสาม
+ * แบรนด์ไว้ที่หน้าแม่แล้วส่งลงมาแปลว่าต้องจับคู่ผลลัพธ์กลับไปหาแบรนด์เอง
+ * ซึ่งยาวกว่าและพังเงียบกว่าถ้าลำดับเปลี่ยน
+ */
+function DatasheetsButton({ brandId }: { brandId: string }) {
+  const { t } = useLocale()
+  const { data: count } = useAsyncData(() => countDatasheets(brandId), [brandId])
+
+  if (!count) return null
+
+  return (
+    <Button to={`/brands/${brandId}/datasheets`} variant="outline">
+      {t(ui.datasheets.title)}
+      {/* วงเล็บอยู่ในข้อความ ไม่ใช่คั่นด้วยระยะห่างเฉย ๆ — จำนวนที่ลอยอยู่ข้างชื่อปุ่ม
+          อ่านเหมือนเป็นคนละอย่างกัน ทั้งที่มันขยายความชื่อปุ่มอยู่ */}
+      <span className="stat-figure text-ink-muted -ml-1 text-sm">({count})</span>
+      <ExternalLinkIcon aria-hidden="true" className="size-4 shrink-0" />
+    </Button>
+  )
+}
+
+/**
  * หน้าแบรนด์คู่ค้า
  *
  * เว็บเดิมมีหน้าแยกต่อแบรนด์ (Industronic.html / FHF.html / MEDC.html) แต่ทั้งสามหน้า
@@ -41,7 +65,6 @@ const documentTypeLabel = {
 export default function Brands() {
   const { t } = useLocale()
   const { data: brands } = useAsyncData(getBrands)
-  const { data: categories } = useAsyncData(getProductCategories)
 
   return (
     <>
@@ -59,9 +82,7 @@ export default function Brands() {
       </Section>
 
       {brands?.map((brand, index) => {
-        const covered = (brandCategories[brand.id] ?? [])
-          .map((slug) => categories?.find((c) => c.slug === slug))
-          .filter((c) => c !== undefined)
+        const covered: LocalizedText[] = brandSupplies[brand.id] ?? []
 
         // เอกสารที่ยังไม่ได้ไฟล์จริง (`url: null`) ไม่ต้องแสดง — ลิงก์ที่กดแล้วไม่มีอะไร
         // แย่กว่าการไม่มีลิงก์ ส่วนที่ยังขาดถูกไล่ไว้ใน docs/data-requests.md แล้ว
@@ -103,9 +124,9 @@ export default function Brands() {
                       {t(ui.brandsPage.suppliesHeading)}
                     </h3>
                     <ul className="mt-3 flex flex-wrap gap-2">
-                      {covered.map((category) => (
-                        <li key={category.slug}>
-                          <Badge tone="brand">{t(category.name)}</Badge>
+                      {covered.map((item) => (
+                        <li key={item.en}>
+                          <Badge tone="brand">{t(item)}</Badge>
                         </li>
                       ))}
                     </ul>
@@ -116,6 +137,11 @@ export default function Brands() {
                   <Button to={`/products?brand=${brand.id}`} withArrow>
                     {t(ui.brandsPage.viewProducts)}
                   </Button>
+                  {/*
+                    ปุ่มดาต้าชีตบอกจำนวนไฟล์มาด้วย — คนที่กดเข้าไปเจอเอกสารเป็นร้อยฉบับ
+                    โดยไม่รู้ล่วงหน้าจะตกใจ ส่วนคนที่เห็นเลขก่อนจะรู้ว่ามีช่องค้นหาให้ใช้
+                  */}
+                  <DatasheetsButton brandId={brand.id} />
                   {/*
                     เอกสารผู้ผลิตอยู่ก่อนลิงก์ออกนอกเว็บ — ปุ่มที่พาออกจากเว็บควรเป็น
                     ตัวเลือกท้ายสุดของแถวเสมอ
@@ -134,6 +160,23 @@ export default function Brands() {
                   {brand.website && (
                     <Button href={brand.website} target="_blank" variant="outline">
                       {t(ui.brandsPage.visitSite)}
+                      {/*
+                        ตราย่อของผู้ผลิตท้ายปุ่ม — `alt=""` เพราะชื่อแบรนด์อยู่ในหัวข้อ
+                        ของ section เดียวกันอยู่แล้ว ถ้าใส่ alt ซ้ำ ผู้ใช้ screen reader
+                        จะได้ยินชื่อแบรนด์สองรอบติดกันในปุ่มเดียว
+                      */}
+                      {brand.siteIcon && (
+                        <img
+                          src={brand.siteIcon.src}
+                          srcSet={brand.siteIcon.srcSet}
+                          alt=""
+                          width={brand.siteIcon.width}
+                          height={brand.siteIcon.height}
+                          loading="lazy"
+                          decoding="async"
+                          className="size-4 shrink-0 object-contain"
+                        />
+                      )}
                     </Button>
                   )}
                 </div>
@@ -150,14 +193,7 @@ export default function Brands() {
           </Heading>
           <p className="mt-4 text-white/70">{t(ui.brandsPage.ctaLead)}</p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <Button to="/products" variant="onDark" withArrow>
-              {t(ui.nav.products)}
-            </Button>
-            <Button
-              to="/contact"
-              variant="outline"
-              className="border-white/40 text-white hover:bg-white/10 active:bg-white/15"
-            >
+            <Button to="/contact" variant="onDark" withArrow>
               {t(ui.actions.contactInquiry)}
             </Button>
           </div>

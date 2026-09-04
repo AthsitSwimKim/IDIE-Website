@@ -9,6 +9,7 @@ export {
   ImagePlaceholder,
   type ImagePlaceholderProps,
 } from '@/components/ui/ImagePlaceholder'
+export { CoverImage, type CoverImageProps } from '@/components/ui/CoverImage'
 export { PendingContent, type PendingContentProps } from '@/components/ui/PendingContent'
 export { EmptyState, type EmptyStateProps } from '@/components/ui/EmptyState'
 export { KeepWords, type KeepWordsProps } from '@/components/ui/KeepWords'

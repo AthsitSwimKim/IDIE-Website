@@ -34,28 +34,36 @@ export interface ImageAsset {
   srcSet?: string;
   width?: number;
   height?: number;
+  /**
+   * ชนิดของภาพ ไม่ใช่วิธีแสดงผล — ค่าเริ่มต้นคือ 'photo'
+   *
+   * 'diagram' คือผังระบบหรือภาพลายเส้นที่**มีตัวอักษรอยู่ข้างใน** การครอบตัดให้เต็มกรอบ
+   * จะตัดป้ายกำกับหายไป ภาพจึงต้องแสดงทั้งภาพเสมอ ส่วนภาพถ่ายครอบตัดได้โดยไม่เสียความหมาย
+   * (เก็บเป็นข้อเท็จจริงของภาพ ไม่ใช่ชื่อคลาส CSS เพื่อให้ component เป็นคนตัดสินใจ
+   *  ว่าจะแปลงเป็น object-cover หรือ object-contain)
+   */
+  kind?: 'photo' | 'diagram';
 }
 
 /**
- * 6 อุตสาหกรรมแรกคือรายการที่ IDIE ระบุเองบนเว็บบริษัท
+ * 7 อุตสาหกรรมแรกคือรายการที่ IDIE ระบุเอง
  * 'epc' และ 'manufacturing' เพิ่มเพื่อรองรับลูกค้าจริงบางรายในหน้า Reference
  * (CTCI, TTCL/Toyo-Thai, Uhde เป็น EPC contractor ไม่ใช่เจ้าของโรงงาน)
+ *
+ * 'steel-plant' มาจาก Company Profile ฉบับย่อ 2026 ที่ระบุ field of services เป็น
+ * "Chemical, Petrochemical, Oil & Gas, Steel plant, Power plant and mining"
+ * ส่วน 'fertilizer' ยังอยู่เพราะมาจากเว็บเดิมและมีลูกค้าจริง (Thai Nitrate) ใช้อยู่
  */
 export type IndustrySlug =
   | 'petrochemical'
   | 'oil-gas'
   | 'chemical'
   | 'power-plant'
+  | 'steel-plant'
   | 'fertilizer'
   | 'mining'
   | 'epc'
   | 'manufacturing';
-
-/**
- * แกนที่ฝ่ายจัดซื้อในโรงงานปิโตรเคมีมองหาก่อนอย่างอื่น และเป็นแกนที่ catalog
- * ของผู้ผลิตใช้แบ่งสินค้าเป็นหลัก — ต้องเป็น filter ชั้นแรกบนหน้า /products
- */
-export type ProductArea = 'hazardous-area' | 'industrial' | 'marine-offshore';
 
 /* -------------------------------------------------------------------------- */
 /* Company                                                                     */
@@ -138,21 +146,11 @@ export interface Service extends Placeholderable {
   featured?: boolean;
   order: number;
   relatedProjectSlugs?: string[];
-  relatedProductCategorySlugs?: string[];
 }
 
 /* -------------------------------------------------------------------------- */
-/* Products                                                                    */
+/* Brands & documents                                                          */
 /* -------------------------------------------------------------------------- */
-
-export interface ProductCategory extends Placeholderable {
-  slug: string;
-  name: LocalizedText;
-  description: LocalizedText;
-  cover: ImageAsset;
-  featured?: boolean;
-  order: number;
-}
 
 export interface Brand extends Placeholderable {
   id: string;
@@ -160,11 +158,87 @@ export interface Brand extends Placeholderable {
   logo: ImageAsset;
   country?: string;
   website?: string;
+  /**
+   * ตราสัญลักษณ์ย่อของผู้ผลิต (แบบ favicon) ใช้ท้ายปุ่มลิงก์ออกไปเว็บของแบรนด์
+   *
+   * คนละไฟล์กับ `logo` ซึ่งเป็นโลโก้เต็มพร้อมชื่อแบรนด์ — โลโก้เต็มย่อลงเหลือ 16px
+   * แล้วอ่านไม่ออก ตราย่อจึงต้องเป็นไฟล์แยกที่ออกแบบมาให้เล็กได้
+   */
+  siteIcon?: ImageAsset;
 }
 
-export interface SpecRow {
-  label: LocalizedText;
-  value: LocalizedText;
+/**
+ * สินค้าหนึ่งรายการ = **เอกสารข้อมูลสินค้าหนึ่งฉบับ**
+ *
+ * ทั้งชื่อ รหัสรุ่น หมวด และภาพ ถูกดึงออกจากไฟล์ PDF ของผู้ผลิตโดยตรงด้วย
+ * `scripts/build-catalog.py` ไม่มีข้อความที่เราแต่งเองแม้แต่คำเดียว — จงใจเป็นแบบนี้
+ * เพราะค่าทางเทคนิคของอุปกรณ์พื้นที่อันตรายเป็นสิ่งที่ผู้ซื้อและผู้ตรวจสอบย้อนกลับไป
+ * เทียบกับเอกสารต้นทางได้ การเขียนคำโปรยเพิ่มเองจึงเป็นความเสี่ยง ไม่ใช่การตลาด
+ *
+ * `slug` เป็นตัวเดียวกับ `Datasheet.id` โดยตั้งใจ — ของสองอย่างนี้คือของชิ้นเดียวกัน
+ * ที่มองคนละมุม (หน้าสินค้า = ดูว่ามีอะไรขาย · คลังเอกสาร = หาไฟล์ที่จะโหลด)
+ */
+export interface Product {
+  slug: string;
+  brandId: string;
+  /** slug ของหมวด — ใช้ชุดเดียวกับ `datasheetCategories` */
+  category: string;
+  /** ชื่อตามที่ผู้ผลิตพิมพ์ไว้บนเอกสาร ไม่ใช่ข้อความที่เราเขียน จึงไม่ใช่ LocalizedText */
+  name: string;
+  model?: string;
+  datasheetUrl: string;
+  /**
+   * คุณสมบัติที่ผู้ผลิตเขียนไว้เอง — มีเฉพาะสินค้าที่ดึงจากเว็บผู้ผลิต
+   * เป็น string ไม่ใช่ LocalizedText เพราะเป็นถ้อยคำของผู้ผลิต ไม่ใช่ของเรา
+   */
+  features?: string[];
+  /** รหัสสัญลักษณ์คุณสมบัติจากเว็บผู้ผลิต เช่น 'ip66', 'ex-bereich' — ดู PRODUCT_ATTRIBUTES */
+  attributes?: string[];
+  /** หน้าต้นทางบนเว็บผู้ผลิต ใช้อ้างอิงตอนตรวจข้อมูลย้อนหลัง */
+  sourceUrl?: string;
+  /** ภาพบนการ์ดในหน้ารายการ — ไม่มี = เอกสารนั้นไม่มีภาพที่ใช้ได้เลย */
+  card?: { src: string; width: number; height: number };
+  /** ภาพทั้งหมดที่ดึงได้จากเอกสาร ทั้งภาพถ่ายและภาพแบบบอกขนาด */
+  gallery: ProductImage[];
+}
+
+export interface ProductImage {
+  src: string;
+  width: number;
+  height: number;
+  /** 'photo' = ภาพถ่ายสินค้า · 'drawing' = ภาพแบบบอกขนาด (ครอบตัดไม่ได้) */
+  kind: 'photo' | 'drawing';
+}
+
+/**
+ * ดาต้าชีตรายรุ่นของผู้ผลิต — คนละอย่างกับ `DownloadItem`
+ *
+ * `DownloadItem` คือเอกสารไม่กี่ชิ้นที่ผูกกับแบรนด์หรือสินค้าหนึ่งชิ้นและเขียนข้อมูลด้วยมือ
+ * ส่วนตัวนี้คือ**คลังเอกสารทั้งชุด**ที่ผู้ผลิตออกให้ ซึ่งมีหลักร้อยรายการและถูกสร้าง
+ * ด้วย `scripts/build-datasheets.py` จากไฟล์ PDF โดยตรง ฟิลด์จึงเป็นข้อเท็จจริงของ
+ * ตัวไฟล์ล้วน ๆ ไม่มีคำโปรยหรือคำแปลที่ต้องให้คนเขียน
+ *
+ * `title` เป็น string ไม่ใช่ `LocalizedText` เพราะเป็น**ชื่อเอกสารที่ผู้ผลิตตั้ง**
+ * ไม่ใช่ข้อความที่เราเขียน — เหมือน `Brand.name` การแปลชื่อเอกสารเป็นไทยจะทำให้
+ * ผู้อ่านหาไฟล์ที่ผู้ผลิตอ้างถึงไม่เจอ ส่วนที่แปลได้คือ**ชื่อหมวด** ซึ่งอยู่ใน
+ * `src/data/datasheets.ts`
+ */
+export interface Datasheet {
+  id: string;
+  brandId: string;
+  /** slug ของหมวด — ชื่อที่แสดงอยู่ใน `datasheetCategories` */
+  category: string;
+  title: string;
+  /** รหัสรุ่นตามที่ผู้ผลิตใช้ ไม่มีในเอกสารบางฉบับ เช่น คู่มือระบบ */
+  model?: string;
+  /** เลขเอกสารของผู้ผลิต ใช้แยกฉบับที่ชื่อซ้ำกัน (เช่น ฉบับ global กับฉบับสหรัฐฯ) */
+  docNo?: string;
+  language: 'en' | 'de';
+  pages: number;
+  sizeKb: number;
+  pdfUrl: string;
+  /** ภาพหน้าแรกของเอกสาร เรนเดอร์ไว้ล่วงหน้า */
+  thumb: { src: string; width: number; height: number };
 }
 
 export interface DownloadItem extends Placeholderable {
@@ -173,45 +247,6 @@ export interface DownloadItem extends Placeholderable {
   url: string | null;
   type: 'datasheet' | 'manual' | 'catalog' | 'certificate';
   sizeKb?: number;
-}
-
-/** จุดอธิบาย feature บนโมเดล 3D — ตำแหน่งเป็นพิกัดในระบบของโมเดล */
-export interface Hotspot {
-  id: string;
-  position: [number, number, number];
-  title: LocalizedText;
-  description: LocalizedText;
-}
-
-export interface Product extends Placeholderable {
-  slug: string;
-  name: LocalizedText;
-  model: string;
-  brandId: string;
-  categorySlug: string;
-  area: ProductArea[];
-  /** มาตรฐาน/ใบรับรอง เช่น 'ATEX', 'IECEx', 'IP66', 'Ex d IIC T6' — เป็นจุดตัดสินใจซื้อจริง */
-  certifications?: string[];
-  shortDescription: LocalizedText;
-  overview: LocalizedText;
-  features: LocalizedText[];
-  applications: LocalizedText[];
-  specs: SpecRow[];
-  gallery: ImageAsset[]; // fallback ของ 3D viewer — ต้องมีเสมอ
-  /** path ไป .glb; ไม่มี = แสดง gallery อย่างเดียว ไม่ต้องมีปุ่ม 3D */
-  model3dUrl?: string;
-  hotspots?: Hotspot[];
-  downloads?: DownloadItem[];
-  featured?: boolean;
-  /** keyword เสริมสำหรับ search — ชื่อเรียกในโรงงาน, คำพ้อง, ตัวสะกดอื่น */
-  searchKeywords?: string[];
-}
-
-export interface ProductFilter {
-  categorySlug?: string;
-  brandId?: string;
-  area?: ProductArea;
-  query?: string;
 }
 
 /* -------------------------------------------------------------------------- */

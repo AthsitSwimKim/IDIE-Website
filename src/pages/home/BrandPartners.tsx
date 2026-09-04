@@ -36,8 +36,8 @@ export function BrandPartners() {
           </Heading>
           <p className="text-ink-muted mt-4">{t(sourcingStatement)}</p>
         </div>
-        <Button to="/products" variant="outline" withArrow className="shrink-0">
-          {t(ui.nav.products)}
+        <Button to="/brands" variant="outline" withArrow className="shrink-0">
+          {t(ui.nav.brands)}
         </Button>
       </div>
 
@@ -51,7 +51,7 @@ export function BrandPartners() {
           <li key={brand.id}>
             <Reveal delay={index * 70}>
               {/* Link ไม่ใช่ <a> — ไม่งั้นกดแล้วโหลดหน้าใหม่ทั้งหน้า */}
-              <Link to={`/products?brand=${brand.id}`} className="group block">
+              <Link to={`/brands#${brand.id}`} className="group block">
                 <span
                   className={cn(
                     'border-line bg-surface rounded-card flex aspect-3/2 items-center justify-center border p-5',

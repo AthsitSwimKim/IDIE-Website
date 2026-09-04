@@ -44,6 +44,7 @@ export const ui = {
       en: 'Industronic, FHF and MEDC — the communication and signalling manufacturers IDIE distributes.',
     },
     suppliesHeading: { th: 'สินค้าที่จัดจำหน่าย', en: 'What we supply' },
+    viewProducts: { th: 'ดูสินค้าของแบรนด์นี้', en: 'View products' },
     /**
      * ชื่อบนปุ่มเอกสาร — ตั้งตาม**ชนิด**ของเอกสาร ไม่ใช่ชื่อเต็มของไฟล์
      * ชื่อจริงยาวเกินกว่าจะใส่ในปุ่มได้ (ของ FHF คือ "ภาพรวมสายผลิตภัณฑ์ FHF —
@@ -61,7 +62,6 @@ export const ui = {
     documentManual: { th: 'คู่มือการใช้งาน', en: 'User manual' },
     documentCertificate: { th: 'ใบรับรอง', en: 'Certificate' },
     visitSite: { th: 'เว็บไซต์ผู้ผลิต', en: 'Manufacturer site' },
-    viewProducts: { th: 'ดูสินค้าของแบรนด์นี้', en: 'View products' },
     ctaTitle: { th: 'ไม่แน่ใจว่ารุ่นไหนตรงกับหน้างาน?', en: 'Not sure which model fits your site?' },
     ctaLead: {
       th: 'ส่งสเปกงานหรือการจำแนกพื้นที่มาให้เรา ทีมวิศวกรจะช่วยเลือกรุ่นที่ผ่านมาตรฐานและเหมาะกับสภาพแวดล้อมจริงของโรงงาน',
@@ -124,8 +124,8 @@ export const ui = {
       en: 'Industrial Communication & Safety Signalling',
     },
     heroLead: {
-      th: 'ออกแบบ จัดหา และติดตั้งระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด สำหรับโรงงานปิโตรเคมี น้ำมันและก๊าซ โรงไฟฟ้า และพื้นที่อันตราย',
-      en: 'Design, supply and installation of intercom, public address and warning alarm, network and CCTV systems for petrochemical, oil and gas, power generation and hazardous-area facilities.',
+      th: 'ออกแบบ จัดหา และติดตั้งระบบสื่อสารของโรงงาน ตั้งแต่อินเตอร์คอมและระบบประกาศ ไปจนถึงระบบโทรศัพท์ ระบบเครือข่าย กล้องวงจรปิด และระบบควบคุมการเข้าออก สำหรับโรงงานปิโตรเคมี น้ำมันและก๊าซ โรงงานเหล็ก โรงไฟฟ้า และพื้นที่อันตราย',
+      en: 'Design, supply and installation of plant communication systems — intercom, public address and warning alarm, telephone, WAN/LAN, CCTV and access control — for petrochemical, oil and gas, steel, power generation and hazardous-area facilities.',
     },
     /** {years} ถูกแทนค่าตอน render จากปีก่อตั้งจริง ไม่ใช่ตัวเลขที่พิมพ์ทิ้งไว้ */
     heroMeta: {
@@ -146,7 +146,12 @@ export const ui = {
       en: 'From system design through certified equipment procurement to installation and long-term support.',
     },
 
-    servicesTitle: { th: 'บริการหลัก 5 กลุ่ม', en: 'Five core services' },
+    /**
+     * {count} ถูกแทนด้วยจำนวนบริการจริงตอน render — เคยเขียนตัวเลขตายตัวไว้ว่า 5
+     * แล้วค้างอยู่อย่างนั้นตอนเพิ่มบริการที่หกเข้ามา หัวข้อที่นับของเองไม่มีทางเพี้ยน
+     * (ใช้วิธีเดียวกับ heroMeta ที่แทน {years} ด้วยปีที่คำนวณจากปีก่อตั้งจริง)
+     */
+    servicesTitle: { th: 'บริการหลัก {count} กลุ่ม', en: '{count} core services' },
     servicesLead: {
       th: 'ทุกงานอยู่บนพื้นฐานเดียวกัน — ระบบต้องทำงานได้ในวันที่เกิดเหตุจริง',
       en: 'Every service rests on the same premise — the system has to work on the day it matters.',
@@ -154,8 +159,8 @@ export const ui = {
 
     productsTitle: { th: 'อุปกรณ์ที่เราจัดจำหน่าย', en: 'Equipment we supply' },
     productsLead: {
-      th: 'อุปกรณ์สื่อสารและสัญญาณเตือนภัยสำหรับพื้นที่อันตราย พื้นที่อุตสาหกรรม และงานนอกชายฝั่ง',
-      en: 'Communication and signalling equipment for hazardous, industrial and offshore environments.',
+      th: 'อุปกรณ์สื่อสารและสัญญาณเตือนภัยสำหรับพื้นที่อันตราย พื้นที่อุตสาหกรรม และงานนอกชายฝั่ง ทุกรุ่นมีเอกสารข้อมูลสินค้าของผู้ผลิตกำกับ',
+      en: 'Communication and signalling equipment for hazardous, industrial and offshore environments — every model backed by the manufacturer’s datasheet.',
     },
 
     referencesTitle: { th: 'โรงงานที่ไว้วางใจเรา', en: 'Plants that trust us' },
@@ -200,8 +205,69 @@ export const ui = {
     },
   },
 
+  /**
+   * หน้าสินค้า — รายการทั้งหมดมาจากเอกสารข้อมูลสินค้าของผู้ผลิต
+   * ไม่มีคำโปรยรายรุ่นเพราะเอกสารไม่ได้ให้มา และการเขียนเอง 279 ประโยคไม่มีใครตรวจได้
+   */
+  products: {
+    title: { th: 'สินค้า', en: 'Products' },
+    lead: {
+      th: 'อุปกรณ์สื่อสารและสัญญาณเตือนภัยจากผู้ผลิตยุโรปที่ IDIE เป็นตัวแทน ทุกรุ่นมีเอกสารข้อมูลสินค้าของผู้ผลิตให้เปิดดูได้',
+      en: 'Communication and signalling equipment from the European manufacturers IDIE represents — every model comes with the manufacturer’s own datasheet.',
+    },
+    searchPlaceholder: { th: 'ชื่อรุ่นหรือชื่อสินค้า', en: 'Model or product name' },
+    resultCount: { th: 'พบ {count} รายการ', en: '{count} products' },
+    noImage: { th: 'ยังไม่มีภาพสินค้า', en: 'No product image yet' },
+  },
+
+  productDetail: {
+    backToProducts: { th: 'กลับไปหน้าสินค้า', en: 'Back to products' },
+    modelLabel: { th: 'รหัสรุ่น', en: 'Model' },
+    featuresHeading: { th: 'คุณสมบัติและการทำงาน', en: 'Features and functions' },
+    documentHeading: { th: 'เอกสารข้อมูลสินค้า', en: 'Product datasheet' },
+    documentLead: {
+      th: 'ค่าทางเทคนิคทั้งหมด ทั้งมาตรฐานที่ผ่าน ระดับ IP ช่วงอุณหภูมิ และการจำแนกพื้นที่ อยู่ในเอกสารฉบับเต็มของผู้ผลิต เราไม่พิมพ์ซ้ำลงหน้าเว็บเพื่อไม่ให้มีค่าสองชุดที่อาจไม่ตรงกัน',
+      en: 'Every technical value — certifications, IP rating, temperature range and area classification — is in the manufacturer’s full datasheet. We do not retype them here, so there is never a second set of figures that might disagree.',
+    },
+    photoNote: { th: 'กดที่ภาพเพื่อดูขนาดเต็ม', en: 'Tap the image to view it full size' },
+    drawingNote: {
+      th: 'ภาพแบบบอกขนาด — กดเพื่อดูขนาดเต็มและอ่านตัวเลข',
+      en: 'Dimensional drawing — tap to view full size and read the figures',
+    },
+    viewFull: { th: 'ดูภาพของ {name} ขนาดเต็ม', en: 'View the full-size image of {name}' },
+    thumbPhoto: { th: 'ดูภาพถ่ายที่ {n}', en: 'Show photo {n}' },
+    thumbDrawing: { th: 'ดูภาพแบบที่ {n}', en: 'Show drawing {n}' },
+    relatedHeading: { th: 'สินค้าในหมวดเดียวกัน', en: 'Others in this category' },
+  },
+
+  /** หน้าคลังดาต้าชีตรายรุ่นของแต่ละแบรนด์ */
+  datasheets: {
+    title: { th: 'เอกสารข้อมูลสินค้า', en: 'Product datasheets' },
+    lead: {
+      th: 'เอกสารข้อมูลจำเพาะที่ผู้ผลิตออกให้ ครบทุกรุ่นที่ IDIE จัดจำหน่าย กดที่หน้าปกเพื่อเปิดไฟล์',
+      en: 'Specification sheets issued by the manufacturer, covering every model IDIE supplies. Open a cover to read the PDF.',
+    },
+    backToBrands: { th: 'กลับไปหน้าแบรนด์คู่ค้า', en: 'Back to brand partners' },
+    downloadCentre: { th: 'ศูนย์ดาวน์โหลดของผู้ผลิต', en: 'Manufacturer download centre' },
+    searchLabel: { th: 'ค้นหา', en: 'Search' },
+    searchPlaceholder: { th: 'ชื่อรุ่นหรือชื่อเอกสาร', en: 'Model or document name' },
+    /** {shown} และ {total} ถูกแทนค่าตอน render */
+    totalCount: { th: 'ทั้งหมด {total} ฉบับ', en: '{total} documents' },
+    resultCount: { th: 'พบ {shown} จาก {total} ฉบับ', en: '{shown} of {total} documents' },
+    empty: { th: 'ไม่พบเอกสารที่ตรงกับคำค้น', en: 'No documents match that search' },
+    pages: { th: '{n} หน้า', en: '{n} pages' },
+    openPdf: { th: '(ไฟล์ PDF เปิดในแท็บใหม่)', en: '(PDF, opens in a new tab)' },
+  },
+
   media: {
     awaitingPhoto: { th: 'รอภาพจริงจาก IDIE', en: 'Awaiting photo from IDIE' },
+    /*
+      ผังระบบบนหน้าบริการกดดูขนาดเต็มได้ — ป้ายกำกับในผังเล็กเกินกว่าจะอ่านออก
+      ที่ขนาดบนการ์ด คำใบ้จึงเป็นข้อความที่มองเห็น ไม่ใช่แค่ tooltip
+      {name} ถูกแทนด้วยชื่อบริการตอน render
+    */
+    diagramHint: { th: 'กดที่ผังเพื่อดูขนาดเต็ม', en: 'Tap the diagram to view it full size' },
+    diagramOpen: { th: 'ดูผัง{name} ขนาดเต็ม', en: 'View the full-size {name} diagram' },
   },
 
   /** บล็อกที่ใช้เมื่อ section มีโครงแล้วแต่ยังไม่ได้รับข้อมูลจากบริษัท */
@@ -278,42 +344,8 @@ export const ui = {
       th: 'เรื่องที่มักถูกมองข้ามตอนกำหนดสเปก แล้วกลายเป็นปัญหาตอนติดตั้งหรือตรวจรับ',
       en: 'Points often missed at specification stage that turn into problems at installation or acceptance.',
     },
-    relatedProductsHeading: { th: 'สินค้าที่เกี่ยวข้อง', en: 'Related products' },
     backToServices: { th: 'กลับไปหน้าบริการ', en: 'Back to services' },
     ctaTitle: { th: 'มีงานที่อยากให้เราช่วยดูไหม', en: 'Have a project for us to look at?' },
-  },
-
-  products: {
-    title: { th: 'สินค้า', en: 'Products' },
-    lead: {
-      th: 'อุปกรณ์สื่อสารและสัญญาณเตือนภัยจากผู้ผลิตยุโรป เลือกดูตามพื้นที่ใช้งาน หมวดสินค้า หรือแบรนด์',
-      en: 'Communication and signalling equipment from European manufacturers — browse by application area, category or brand.',
-    },
-    searchPlaceholder: { th: 'ค้นหาชื่อสินค้า รุ่น หรือคำสำคัญ', en: 'Search by name, model or keyword' },
-    resultCount: { th: 'พบ {count} รายการ', en: '{count} products' },
-    pendingHeading: { th: 'รายการสินค้ายังอยู่ระหว่างจัดเตรียม', en: 'The product list is being prepared' },
-    pendingNeed: {
-      th: 'รุ่นสินค้าที่ต้องการโชว์ พร้อมภาพ สเปก มาตรฐานที่ผ่าน (ATEX / IECEx / IP) และไฟล์ datasheet ที่มีสิทธิ์เผยแพร่',
-      en: 'The models to feature, with photos, specifications, certifications (ATEX / IECEx / IP) and datasheets you are licensed to distribute.',
-    },
-    browseByBrand: { th: 'เลือกดูตามแบรนด์', en: 'Browse by brand' },
-  },
-
-  productDetail: {
-    specsHeading: { th: 'ข้อมูลทางเทคนิค', en: 'Technical data' },
-    certsHeading: { th: 'มาตรฐานและการรับรอง', en: 'Certifications' },
-    areaHeading: { th: 'พื้นที่ใช้งาน', en: 'Application area' },
-    relatedHeading: { th: 'สินค้าที่เกี่ยวข้อง', en: 'Related products' },
-    backToProducts: { th: 'กลับไปหน้าสินค้า', en: 'Back to products' },
-    inquiryTitle: { th: 'ต้องการสเปกหรือใบเสนอราคา', en: 'Need a specification or a quotation?' },
-    inquiryLead: {
-      th: 'แจ้งรุ่นที่สนใจพร้อมเงื่อนไขหน้างาน ทีมวิศวกรจะช่วยยืนยันว่ารุ่นนี้ตรงกับการจำแนกพื้นที่และสภาพแวดล้อมจริงหรือไม่',
-      en: 'Tell us the model and your site conditions — our engineers will confirm whether it matches the actual area classification and environment.',
-    },
-    noDatasheet: {
-      th: 'ยังไม่มีไฟล์ datasheet ที่เผยแพร่ได้ — ติดต่อขอจากทีมงานได้โดยตรง',
-      en: 'No distributable datasheet yet — contact the team to request one.',
-    },
   },
 
   projects: {
@@ -424,7 +456,6 @@ export const ui = {
     submit: { th: 'ส่งคำถาม', en: 'Send inquiry' },
     required: { th: 'กรุณากรอกข้อมูลนี้', en: 'This field is required' },
     invalidEmail: { th: 'รูปแบบอีเมลไม่ถูกต้อง', en: 'Enter a valid email address' },
-    productContext: { th: 'สอบถามเกี่ยวกับสินค้า', en: 'Inquiry about product' },
     submittedTitle: { th: 'ส่งคำถามเรียบร้อยแล้ว', en: 'Your inquiry has been sent' },
     submittedBody: {
       th: 'ทีมงานได้รับคำถามของคุณแล้ว และจะติดต่อกลับทางอีเมลที่ให้ไว้ หากเป็นเรื่องเร่งด่วนโทรหาเราได้โดยตรง',
@@ -469,11 +500,10 @@ export const ui = {
 
   labels: {
     locale: { th: 'ภาษา', en: 'Language' },
+    category: { th: 'หมวดหมู่', en: 'Category' },
     menu: { th: 'เมนู', en: 'Menu' },
     closeMenu: { th: 'ปิดเมนู', en: 'Close menu' },
-    category: { th: 'หมวดหมู่', en: 'Category' },
     brand: { th: 'แบรนด์', en: 'Brand' },
-    area: { th: 'พื้นที่ใช้งาน', en: 'Application area' },
     industry: { th: 'อุตสาหกรรม', en: 'Industry' },
     search: { th: 'ค้นหา', en: 'Search' },
     all: { th: 'ทั้งหมด', en: 'All' },

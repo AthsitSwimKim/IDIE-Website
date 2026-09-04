@@ -1,16 +1,15 @@
-import { Link } from 'react-router-dom'
 import { Button, Heading, Reveal, Section } from '@/components/ui'
+import { ProductCard } from '@/components/sections/ProductCard'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
-import { getFeaturedProducts, productAreas, ui } from '@/data'
-import { ProductCard } from '@/components/sections/ProductCard'
+import { getFeaturedProducts, ui } from '@/data'
 
 /**
- * Products — Home section 6
+ * อุปกรณ์ที่เราจัดจำหน่าย — Home section
  *
- * แสดงสินค้าเด่นจริง 8 รุ่น พร้อมแถบ area filter ด้านบน
- * เพราะ "ใช้ในพื้นที่ไหน" คือคำถามแรกที่ฝ่ายวิศวกรรมโรงงานปิโตรเคมีถาม —
- * การโชว์แกนนี้ตั้งแต่หน้าแรกบอกทันทีว่าเว็บนี้เข้าใจงานของเขา
+ * แสดงของจริงแปดรุ่นจากคนละหมวด ไม่ใช่แผงภาพหมวดสินค้า — ผู้อ่านที่ยังไม่รู้จัก
+ * สายงานนี้ดูจากภาพอุปกรณ์จริงแล้วเข้าใจเร็วกว่าชื่อหมวดอย่าง "อุปกรณ์สัญญาณแสง"
+ * (ตัวเลือกหมวดครบทุกหมวดอยู่บนหน้าสินค้าอยู่แล้ว ที่นี่ทำหน้าที่เป็นตัวอย่าง)
  */
 export function HomeProducts() {
   const { t } = useLocale()
@@ -19,7 +18,7 @@ export function HomeProducts() {
   if (!products?.length) return null
 
   return (
-    <Section>
+    <Section tone="alt">
       {/* items-start กัน flex-col ยืดปุ่มให้เต็มความกว้างบนจอแคบ */}
       <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">
@@ -33,23 +32,10 @@ export function HomeProducts() {
         </Button>
       </div>
 
-      <ul className="mt-8 flex flex-wrap gap-2">
-        {productAreas.map((area) => (
-          <li key={area.slug}>
-            <Link
-              to={`/products?area=${area.slug}`}
-              className="border-line text-ink-muted hover:border-primary-200 hover:text-ink rounded-pill inline-flex min-h-11 items-center border px-4 text-sm font-medium transition-colors duration-(--duration-ui)"
-            >
-              {t(area.name)}
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      <ul className="mt-8 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <ul className="mt-10 grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 lg:grid-cols-4">
         {products.map((product, index) => (
           <li key={product.slug}>
-            <Reveal delay={index * 45}>
+            <Reveal delay={index * 40}>
               <ProductCard product={product} />
             </Reveal>
           </li>

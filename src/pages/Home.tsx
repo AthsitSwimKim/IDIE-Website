@@ -16,8 +16,11 @@ import { ContactCta } from '@/pages/home/ContactCta'
  * หน้า Home — Phase 3
  *
  * ลำดับ section คือลำดับการเล่าเรื่อง ไม่ใช่ลำดับความสำคัญของแต่ละหน้า:
- * เราคือใคร → ทำอะไรได้ → ขายของใคร → ขายอะไร → เคยส่งมอบให้ใคร →
+ * เราคือใคร → ทำอะไรได้ → เป็นตัวแทนใคร → ขายอะไร → เคยส่งมอบให้ใคร →
  * อยู่ในวงการไหน → ทำไมต้องเรา → ตัวเลขยืนยัน → ร่วมงาน → ติดต่อ
+ *
+ * section "อุปกรณ์ที่เราจัดจำหน่าย" แสดงสินค้าจริงจากคนละหมวด ไม่ใช่แผงภาพหมวด
+ * เหมือนเดิม — ภาพทั้งหมดมาจากเอกสารข้อมูลสินค้าของผู้ผลิต
  *
  * **Featured Projects และ Latest News ยังไม่ได้ประกอบ** เพราะยังไม่มีข้อมูลจริงเลย
  * (เว็บเดิมไม่มีหน้า Projects และหน้า News เขียนว่า "Comming Soon....")
@@ -34,8 +37,8 @@ export default function Home() {
           en: 'Industrial Communication & Safety Signalling',
         }}
         description={{
-          th: 'ID Industrial Engineering — ออกแบบ จัดหา และติดตั้งระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด สำหรับโรงงานอุตสาหกรรมและพื้นที่อันตราย',
-          en: 'ID Industrial Engineering — design, supply and installation of intercom, PA/GA, network and CCTV systems for industrial plants and hazardous areas.',
+          th: 'ID Industrial Engineering — ออกแบบ จัดหา และติดตั้งระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบโทรศัพท์ ระบบเครือข่าย WAN/LAN กล้องวงจรปิด และระบบควบคุมการเข้าออก สำหรับโรงงานอุตสาหกรรมและพื้นที่อันตราย',
+          en: 'ID Industrial Engineering — design, supply and installation of intercom, PA/GA, telephone, WAN/LAN, CCTV and access control systems for industrial plants and hazardous areas.',
         }}
       />
 

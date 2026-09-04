@@ -1,11 +1,11 @@
 import { useParams } from 'react-router-dom'
-import { Badge, Button, Heading, ImagePlaceholder, Section } from '@/components/ui'
+import { Badge, Button, CoverImage, Heading, Section } from '@/components/ui'
 import { CheckIcon } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
-import { getProductCategories, getServiceBySlug, serviceDepth, ui } from '@/data'
+import { getServiceBySlug, serviceDepth, ui } from '@/data'
 
 /**
  * Service Detail — Phase 4
@@ -17,7 +17,6 @@ export default function ServiceDetail() {
   const { slug } = useParams()
   const { t } = useLocale()
   const { data: service, loading } = useAsyncData(() => getServiceBySlug(slug ?? ''), [slug])
-  const { data: categories } = useAsyncData(getProductCategories)
 
   if (loading) return null
   if (!service) return <NotFound />
@@ -25,10 +24,6 @@ export default function ServiceDetail() {
   // เนื้อหาเชิงลึกเป็น optional — บริการที่ยังไม่ได้เขียนส่วนนี้จะข้ามสาม section ไปเลย
   // ดีกว่าแสดงหัวข้อที่ไม่มีเนื้อหาอยู่ข้างใน
   const depth = serviceDepth[service.slug]
-
-  const related = (service.relatedProductCategorySlugs ?? [])
-    .map((s) => categories?.find((c) => c.slug === s))
-    .filter((c) => c !== undefined)
 
   return (
     <>
@@ -70,26 +65,8 @@ export default function ServiceDetail() {
               </p>
             ))}
           </div>
-          {/*
-            ครอบเป็น 4:3 ด้วย object-cover เพื่อให้ทั้งสี่หน้าบริการมีสัดส่วนเท่ากัน
-            ภาพต้นฉบับที่ IDIE ส่งมามีสัดส่วนต่างกัน (จตุรัส · 16:10 · 3:2)
-            ถ้าปล่อยตามสัดส่วนจริง ความสูงของบล็อกจะไม่เท่ากันในแต่ละหน้า
-            แล้วเว็บจะดูเหมือนแต่ละหน้าถูกทำคนละครั้งโดยคนละคน
-          */}
-          {service.cover ? (
-            <img
-              src={service.cover.src}
-              srcSet={service.cover.srcSet}
-              alt={t(service.cover.alt)}
-              width={service.cover.width}
-              height={service.cover.height}
-              loading="lazy"
-              decoding="async"
-              className="border-line rounded-card bg-surface-alt aspect-[4/3] w-full border object-cover"
-            />
-          ) : (
-            <ImagePlaceholder label={t(service.name)} size="1600 × 1200" />
-          )}
+          {/* กติกาการครอบภาพและเหตุผลอยู่ใน CoverImage — ใช้ตัวเดียวกับหน้ารวมบริการ */}
+          <CoverImage image={service.cover} label={t(service.name)} />
         </div>
       </Section>
 
@@ -204,23 +181,6 @@ export default function ServiceDetail() {
             </div>
           </Section>
         </>
-      )}
-
-      {related.length > 0 && (
-        <Section tone="alt">
-          <Heading level={2} eyebrow="PRODUCTS">
-            {t(ui.serviceDetail.relatedProductsHeading)}
-          </Heading>
-          <ul className="mt-6 flex flex-wrap gap-2">
-            {related.map((category) => (
-              <li key={category.slug}>
-                <Button to={`/products?category=${category.slug}`} variant="outline" size="sm">
-                  {t(category.name)}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        </Section>
       )}
 
       <Section tone="dark" spacing="lg" className="blueprint-grid">

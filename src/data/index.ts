@@ -11,16 +11,16 @@
 
 import type {
   Brand,
+  Datasheet,
   Industry,
+  Product,
   IndustrySlug,
   JobOpening,
   NewsArticle,
-  Product,
-  ProductCategory,
-  ProductFilter,
   Project,
   ReferenceCompany,
   Service,
+  LocalizedText,
 } from '@/types/content'
 
 import {
@@ -37,22 +37,25 @@ import { serviceDepth } from '@/data/service-content'
 import { industries } from '@/data/industries'
 import {
   brandBlurbs,
-  brandCategories,
+  brandSupplies,
   brandDocuments,
+  brandDownloadCentre,
   brands,
   sourcingStatement,
 } from '@/data/brands'
-import { productAreas, productCategories } from '@/data/product-categories'
+import { datasheetCategories, datasheetCategoryOrder, loadDatasheets } from '@/data/datasheets'
+import { loadProducts, PRODUCT_ATTRIBUTES } from '@/data/products'
 import { referenceCompanies } from '@/data/references'
 import { careersEmail, jobOpenings } from '@/data/careers'
-import { products } from '@/data/products'
-import { filterProducts } from '@/utils/filterProducts'
 
 export { ui } from '@/data/i18n'
-export { capabilities, companyFax, contactPerson, careersEmail, productAreas }
+export { capabilities, companyFax, contactPerson, careersEmail }
 export { serviceDepth }
 export type { ServiceDepth } from '@/data/service-content'
-export { brandBlurbs, brandCategories, brandDocuments, sourcingStatement }
+export { brandBlurbs, brandSupplies, brandDocuments, brandDownloadCentre, sourcingStatement }
+/* ชื่อหมวดสองภาษา — หน้าสินค้าและหน้าคลังเอกสารใช้ชุดเดียวกัน ห้ามทำสองชุด */
+export { datasheetCategories }
+export { PRODUCT_ATTRIBUTES }
 
 /* -------------------------------------------------------------------------- */
 /* Company                                                                     */
@@ -107,7 +110,7 @@ export async function getServiceBySlug(slug: string): Promise<Service | null> {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Industries / Brands / Product taxonomy                                      */
+/* Industries / Brands                                                         */
 /* -------------------------------------------------------------------------- */
 
 export async function getIndustries(): Promise<Industry[]> {
@@ -122,12 +125,160 @@ export async function getBrandById(id: string): Promise<Brand | null> {
   return brands.find((b) => b.id === id) ?? null
 }
 
-export async function getProductCategories(): Promise<ProductCategory[]> {
-  return [...productCategories].sort((a, b) => a.order - b.order)
+/** ดาต้าชีตหนึ่งหมวด พร้อมชื่อหมวดที่แปลแล้ว — component ไม่ต้องรู้จัก map ของ slug */
+export interface DatasheetGroup {
+  category: string
+  name: LocalizedText
+  items: Datasheet[]
+  /** จำนวนรายการในหมวด — หน้าสินค้าใช้ค่านี้โดยไม่ต้องส่งรายการทั้งก้อนมาด้วย */
+  count?: number
 }
 
-export async function getFeaturedProductCategories(): Promise<ProductCategory[]> {
-  return (await getProductCategories()).filter((c) => c.featured)
+/**
+ * ดาต้าชีตของแบรนด์หนึ่ง จัดกลุ่มตามหมวดและเรียงตามลำดับที่กำหนดไว้ใน datasheets.ts
+ *
+ * จัดกลุ่มที่ชั้นนี้ ไม่ใช่ในหน้าเว็บ เพราะเป็นตรรกะของ**ข้อมูล** ไม่ใช่ของการแสดงผล —
+ * วันที่ย้ายไปดึงจาก API ฝั่งเซิร์ฟเวอร์ควรส่งมาแบบจัดกลุ่มมาแล้วเช่นกัน
+ */
+export async function getDatasheetsByBrand(brandId: string): Promise<DatasheetGroup[]> {
+  const order = datasheetCategoryOrder[brandId] ?? []
+  const groups = new Map<string, Datasheet[]>()
+
+  for (const sheet of await loadDatasheets()) {
+    if (sheet.brandId !== brandId) continue
+    const bucket = groups.get(sheet.category)
+    if (bucket) bucket.push(sheet)
+    else groups.set(sheet.category, [sheet])
+  }
+
+  // หมวดที่ไม่ได้อยู่ในลำดับที่กำหนดไว้ไปต่อท้ายโดยเรียงตามตัวอักษร แทนที่จะหายไปเฉย ๆ
+  // — ผู้ผลิตเพิ่มโฟลเดอร์ใหม่ได้ตลอด และเอกสารที่หายไปเงียบ ๆ เป็นบั๊กที่ไม่มีใครเห็น
+  const rank = (category: string) => {
+    const index = order.indexOf(category)
+    return index === -1 ? order.length : index
+  }
+
+  return [...groups.entries()]
+    .sort(([a], [b]) => rank(a) - rank(b) || a.localeCompare(b))
+    .map(([category, items]) => ({
+      category,
+      name: datasheetCategories[category] ?? { th: category, en: category },
+      items,
+    }))
+}
+
+/** จำนวนดาต้าชีตของแบรนด์ — ใช้บอกจำนวนบนปุ่มก่อนที่ผู้ใช้จะกดเข้าไป */
+export async function countDatasheets(brandId: string): Promise<number> {
+  return (await loadDatasheets()).filter((sheet) => sheet.brandId === brandId).length
+}
+
+/* -------------------------------------------------------------------------- */
+/* สินค้า — ดึงจากเอกสารข้อมูลสินค้าของผู้ผลิต ดู scripts/build-products.py         */
+/* -------------------------------------------------------------------------- */
+
+export interface ProductFilter {
+  category?: string
+  brandId?: string
+  query?: string
+}
+
+/**
+ * กรองสินค้าตามหมวด แบรนด์ และคำค้น
+ *
+ * คำค้นดูทั้งชื่อและรหัสรุ่น และเทียบแบบตัดขีดกลางออกด้วย เพื่อให้พิมพ์ `xb15`
+ * เจอ `XB-15` และกลับกัน — วิศวกรพิมพ์รหัสรุ่นตามที่จำได้ ไม่ได้พิมพ์ตามที่ผู้ผลิตสะกด
+ */
+export async function getProducts(filter: ProductFilter = {}): Promise<Product[]> {
+  const needle = filter.query?.trim().toLowerCase() ?? ''
+  const bare = needle.replace(/-/g, '')
+
+  return (await loadProducts()).filter((product) => {
+    if (filter.category && product.category !== filter.category) return false
+    if (filter.brandId && product.brandId !== filter.brandId) return false
+    if (!needle) return true
+    const haystack = `${product.name} ${product.model ?? ''}`.toLowerCase()
+    return haystack.includes(needle) || haystack.replace(/-/g, '').includes(bare)
+  })
+}
+
+/**
+ * สินค้าตัวอย่างสำหรับหน้าแรก — คัดคนละหมวดกัน ไม่ใช่เอาหัวรายการมาเรียง
+ *
+ * ถ้าหยิบตามลำดับปกติจะได้ไฟสัญญาณแปดรุ่นติดกันซึ่งดูเหมือนเว็บขายของอย่างเดียว
+ * การกระจายหมวดทำให้ผู้อ่านเห็นความกว้างของสิ่งที่ IDIE จัดจำหน่ายในแถวเดียว
+ * เอาเฉพาะรุ่นที่มีภาพถ่ายจริง — การ์ดว่างบนหน้าแรกเสียมากกว่าได้
+ */
+export async function getFeaturedProducts(limit = 8): Promise<Product[]> {
+  const all = await loadProducts()
+  const picked: Product[] = []
+  const usedCategories = new Set<string>()
+
+  for (const product of all) {
+    if (picked.length >= limit) break
+    if (usedCategories.has(product.category) || !product.card) continue
+    if (product.gallery[0]?.kind !== 'photo') continue
+    usedCategories.add(product.category)
+    picked.push(product)
+  }
+  return picked
+}
+
+export async function getProductBySlug(slug: string): Promise<Product | null> {
+  return (await loadProducts()).find((product) => product.slug === slug) ?? null
+}
+
+/** สินค้ารุ่นอื่นในหมวดเดียวกัน — ใช้ท้ายหน้ารายละเอียด */
+export async function getRelatedProducts(product: Product, limit = 4): Promise<Product[]> {
+  const all = await loadProducts()
+  const sameCategory = all.filter(
+    (item) => item.slug !== product.slug && item.category === product.category,
+  )
+  // เติมด้วยรุ่นอื่นของแบรนด์เดียวกันเมื่อหมวดนั้นมีของไม่พอ ดีกว่าโชว์แถวที่ไม่เต็ม
+  const sameBrand = all.filter(
+    (item) =>
+      item.slug !== product.slug &&
+      item.category !== product.category &&
+      item.brandId === product.brandId,
+  )
+  return [...sameCategory, ...sameBrand].slice(0, limit)
+}
+
+/**
+ * หมวดสินค้าที่มีของจริงอยู่ พร้อมจำนวน — เรียงตามลำดับที่กำหนดไว้ใน datasheets.ts
+ *
+ * คำนวณจากสินค้าที่มีอยู่ ไม่ได้ประกาศรายการหมวดไว้ตายตัว — หมวดที่ไม่มีสินค้าสักชิ้น
+ * จะไม่โผล่เป็นชิปที่กดแล้วเจอหน้าว่าง ซึ่งเป็นบั๊กที่ผู้ใช้เจอก่อนเราเสมอ
+ *
+ * ส่ง `brandId` มาด้วยเมื่อผู้ใช้เลือกแบรนด์อยู่ — ไม่งั้นจะเห็นหมวดของอีกสองแบรนด์
+ * ปนมาในรายการ ทั้งที่กดแล้วผลลัพธ์เป็นศูนย์เพราะตัวกรองแบรนด์ยังค้างอยู่
+ */
+export async function getProductCategories(brandId?: string): Promise<DatasheetGroup[]> {
+  const counts = new Map<string, Product[]>()
+  for (const product of await loadProducts()) {
+    if (brandId && product.brandId !== brandId) continue
+    const bucket = counts.get(product.category)
+    if (bucket) bucket.push(product)
+    else counts.set(product.category, [product])
+  }
+
+  // ลำดับหมวดของแต่ละแบรนด์ถูกกำหนดไว้แยกกัน — หน้ารวมสินค้าใช้ลำดับแรกที่เจอหมวดนั้น
+  const order: string[] = []
+  for (const list of Object.values(datasheetCategoryOrder)) {
+    for (const category of list) if (!order.includes(category)) order.push(category)
+  }
+  const rank = (category: string) => {
+    const index = order.indexOf(category)
+    return index === -1 ? order.length : index
+  }
+
+  return [...counts.entries()]
+    .sort(([a], [b]) => rank(a) - rank(b) || a.localeCompare(b))
+    .map(([category, items]) => ({
+      category,
+      name: datasheetCategories[category] ?? { th: category, en: category },
+      items: [],
+      count: items.length,
+    }))
 }
 
 /* -------------------------------------------------------------------------- */
@@ -172,40 +323,10 @@ export async function getJobBySlug(slug: string): Promise<JobOpening | null> {
 }
 
 /* -------------------------------------------------------------------------- */
-/* Products — ข้อมูลจริงจาก catalog ของผู้ผลิตและเว็บ Industronic                 */
-/* -------------------------------------------------------------------------- */
-
-export async function getProducts(filter?: ProductFilter): Promise<Product[]> {
-  return filterProducts(products, filter)
-}
-
-export async function getProductBySlug(slug: string): Promise<Product | null> {
-  return products.find((p) => p.slug === slug) ?? null
-}
-
-export async function getFeaturedProducts(limit = 6): Promise<Product[]> {
-  return products.filter((p) => p.featured).slice(0, limit)
-}
-
-export async function getRelatedProducts(product: Product, limit = 4): Promise<Product[]> {
-  // ชิ้นที่อยู่หมวดเดียวกันก่อน แล้วค่อยเติมด้วยชิ้นที่ใช้พื้นที่เดียวกัน
-  const sameCategory = products.filter(
-    (p) => p.slug !== product.slug && p.categorySlug === product.categorySlug,
-  )
-  const sameArea = products.filter(
-    (p) =>
-      p.slug !== product.slug &&
-      p.categorySlug !== product.categorySlug &&
-      p.area.some((a) => product.area.includes(a)),
-  )
-  return [...sameCategory, ...sameArea].slice(0, limit)
-}
-
-/* -------------------------------------------------------------------------- */
 /* ข่าวสารและผลงาน — มาจาก API ไม่ใช่ไฟล์ใน src/data/                            */
 /*                                                                             */
 /* สองอย่างนี้เป็นเนื้อหาที่ IDIE เพิ่มเองผ่านหน้าแอดมิน จึงอยู่ใน MySQL ไม่ใช่ในโค้ด   */
-/* ที่เหลือทั้งหมด (บริษัท บริการ สินค้า แบรนด์ ลูกค้า) ยังเป็นไฟล์ในโฟลเดอร์นี้         */
+/* ที่เหลือทั้งหมด (บริษัท บริการ แบรนด์ เอกสาร ลูกค้า) ยังเป็นไฟล์ในโฟลเดอร์นี้        */
 /* เพราะเปลี่ยนแทบไม่ได้และไม่ควรให้แก้ผ่านหน้าเว็บโดยไม่ผ่านการรีวิว                   */
 /*                                                                             */
 /* API ตอบกลับเป็น `NewsArticle` และ `Project` ตัวเดียวกับที่ types ประกาศไว้        */

@@ -17,6 +17,7 @@ const ServiceDetail = lazy(() => import('@/pages/ServiceDetail'))
 const ProductList = lazy(() => import('@/pages/ProductList'))
 const ProductDetail = lazy(() => import('@/pages/ProductDetail'))
 const Brands = lazy(() => import('@/pages/Brands'))
+const BrandDatasheets = lazy(() => import('@/pages/BrandDatasheets'))
 const Reference = lazy(() => import('@/pages/Reference'))
 const ProjectList = lazy(() => import('@/pages/ProjectList'))
 const ProjectDetail = lazy(() => import('@/pages/ProjectDetail'))
@@ -31,7 +32,7 @@ const StyleGuide = lazy(() => import('@/pages/StyleGuide'))
  * หลังบ้าน — lazy ทุกหน้าเหมือนกัน แต่สำคัญกว่าหน้าอื่น
  *
  * ผู้เข้าชมเว็บ 99.9% ไม่มีวันเปิด /admin การ split ทำให้โค้ดฟอร์ม ตัวอัปโหลด
- * และตารางจัดการทั้งหมดไม่ถูกดาวน์โหลดโดยคนที่มาดูข้อมูลสินค้า
+ * และตารางจัดการทั้งหมดไม่ถูกดาวน์โหลดโดยคนที่มาอ่านข้อมูลบริการ
  * (ยังอยู่ในงบ initial JS ≤ 200KB gzip ตามที่ตั้งไว้ตั้งแต่ Phase 1)
  */
 const AdminShell = lazy(() => import('@/pages/admin/AdminShell'))
@@ -59,6 +60,11 @@ export const router = createBrowserRouter([
        * เพราะเนื้อหาส่วนใหญ่ของหน้าเดิม (ขั้นตอนทำงาน ข้อมูลเสนอราคา ประเด็นเทคนิค
        * สองในสามข้อ) ย้ายไปอยู่ที่นั่น
        *
+       * `explosion-proof-telephone-signalling` เปลี่ยนชื่อเป็น `telephone-system`
+       * ตาม Company Profile ที่จัดงานนี้เป็น Telephone System เต็มระบบ
+       * ไม่ใช่แค่การจัดจำหน่ายเครื่องกันระเบิด — เนื้อหาเดิมทั้งหมดย้ายตามไปด้วย
+       *
+       *
        * ทางฝั่งเซิร์ฟเวอร์มีตัวเดียวกันนี้ตอบ 301 ไว้ที่ `server/src/redirects.ts`
        * ให้คนที่เปิดลิงก์ตรง ๆ ได้สถานะที่ถูกต้อง — **แก้ที่ไหนต้องแก้อีกที่ด้วย**
        * ตัวนี้ยังจำเป็นอยู่ เพราะตอน dev ไม่มีเซิร์ฟเวอร์นั้นมาคั่น และการกดลิงก์
@@ -68,9 +74,14 @@ export const router = createBrowserRouter([
         path: 'services/network-cctv-system',
         element: <Navigate to="/services/cctv-system" replace />,
       },
+      {
+        path: 'services/explosion-proof-telephone-signalling',
+        element: <Navigate to="/services/telephone-system" replace />,
+      },
       { path: 'products', element: <ProductList /> },
       { path: 'products/:slug', element: <ProductDetail /> },
       { path: 'brands', element: <Brands /> },
+      { path: 'brands/:brandId/datasheets', element: <BrandDatasheets /> },
       { path: 'reference', element: <Reference /> },
       { path: 'projects', element: <ProjectList /> },
       { path: 'projects/:slug', element: <ProjectDetail /> },
@@ -89,7 +100,7 @@ export const router = createBrowserRouter([
   /**
    * หลังบ้าน — อยู่นอก <Layout> ของหน้าเว็บสาธารณะโดยตั้งใจ
    *
-   * ถ้าวางซ้อนใต้ Layout จะได้ header ที่มีเมนูสินค้า ปุ่มสลับภาษา และ footer
+   * ถ้าวางซ้อนใต้ Layout จะได้ header ที่มีเมนูหลัก ปุ่มสลับภาษา และ footer
    * ที่มีที่อยู่บริษัทติดมาด้วยทุกหน้าจัดการ ซึ่งไม่ได้ช่วยคนที่กำลังลงข่าว
    * และทำให้เมนูของสองระบบปนกันจนกดผิดได้ง่าย
    *
