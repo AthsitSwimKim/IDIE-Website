@@ -218,17 +218,22 @@ export const ui = {
     searchPlaceholder: { th: 'ชื่อรุ่นหรือชื่อสินค้า', en: 'Model or product name' },
     resultCount: { th: 'พบ {count} รายการ', en: '{count} products' },
     noImage: { th: 'ยังไม่มีภาพสินค้า', en: 'No product image yet' },
+    showingRange: {
+      th: 'แสดง {from}–{to} จากทั้งหมด {total} รายการ',
+      en: 'Showing {from}–{to} of {total} products',
+    },
+  },
+  pagination: {
+    label: { th: 'แบ่งหน้ารายการ', en: 'Pagination' },
+    previous: { th: 'ก่อนหน้า', en: 'Previous' },
+    next: { th: 'ถัดไป', en: 'Next' },
+    page: { th: 'ไปหน้า {page}', en: 'Go to page {page}' },
   },
 
   productDetail: {
     backToProducts: { th: 'กลับไปหน้าสินค้า', en: 'Back to products' },
     modelLabel: { th: 'รหัสรุ่น', en: 'Model' },
     featuresHeading: { th: 'คุณสมบัติและการทำงาน', en: 'Features and functions' },
-    documentHeading: { th: 'เอกสารข้อมูลสินค้า', en: 'Product datasheet' },
-    documentLead: {
-      th: 'ค่าทางเทคนิคทั้งหมด ทั้งมาตรฐานที่ผ่าน ระดับ IP ช่วงอุณหภูมิ และการจำแนกพื้นที่ อยู่ในเอกสารฉบับเต็มของผู้ผลิต เราไม่พิมพ์ซ้ำลงหน้าเว็บเพื่อไม่ให้มีค่าสองชุดที่อาจไม่ตรงกัน',
-      en: 'Every technical value — certifications, IP rating, temperature range and area classification — is in the manufacturer’s full datasheet. We do not retype them here, so there is never a second set of figures that might disagree.',
-    },
     photoNote: { th: 'กดที่ภาพเพื่อดูขนาดเต็ม', en: 'Tap the image to view it full size' },
     drawingNote: {
       th: 'ภาพแบบบอกขนาด — กดเพื่อดูขนาดเต็มและอ่านตัวเลข',

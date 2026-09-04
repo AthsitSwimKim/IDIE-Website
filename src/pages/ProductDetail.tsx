@@ -182,9 +182,7 @@ export default function ProductDetail() {
               </div>
             )}
 
-            <Heading level={2}>{t(ui.productDetail.documentHeading)}</Heading>
-            <p className="text-ink-muted mt-4">{t(ui.productDetail.documentLead)}</p>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-9 flex flex-wrap gap-3">
               <Button href={product.datasheetUrl} target="_blank">
                 <DocumentIcon aria-hidden="true" className="size-4 shrink-0" />
                 {t(ui.datasheets.title)}

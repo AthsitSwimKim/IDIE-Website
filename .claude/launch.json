@@ -32,6 +32,17 @@
         "4176"
       ],
       "port": 4176
+    },
+    {
+      "name": "idie-api",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "dev",
+        "--prefix",
+        "server"
+      ],
+      "port": 3001
     }
   ]
 }

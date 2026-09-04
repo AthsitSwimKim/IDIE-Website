@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom'
-import { Button, Heading, Section } from '@/components/ui'
+import { Button, Heading, Pagination, Section } from '@/components/ui'
 import { ProductCard } from '@/components/sections/ProductCard'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -14,6 +14,14 @@ import { cn } from '@/utils/cn'
  * เลื่อนไปหยุดตรงนั้นแล้วผู้ใช้ยังต้องเลื่อนต่อเองอีก ทั้งที่เพิ่งกดเลือกไป
  */
 const RESULTS_ID = 'product-results'
+
+/**
+ * จำนวนสินค้าต่อหน้า
+ *
+ * ตะแกรงกว้างสุดคือ 4 คอลัมน์ เลข 24 จึงลงตัวพอดีทุกขนาดจอ (12/8/6 แถว)
+ * ไม่มีแถวสุดท้ายที่เหลือใบเดียวโดด ๆ
+ */
+const PAGE_SIZE = 24
 
 /**
  * หน้าสินค้า — รายการสินค้าทั้งหมดพร้อมตัวกรองหมวดและแบรนด์
@@ -34,6 +42,7 @@ export default function ProductList() {
   const category = params.get('category') ?? undefined
   const brand = params.get('brand') ?? undefined
   const query = params.get('q') ?? ''
+  const requestedPage = Number(params.get('page')) || 1
 
   // ส่งแบรนด์ที่เลือกไปด้วย เพื่อให้ชิปหมวดเหลือเฉพาะหมวดที่แบรนด์นั้นมีของจริง
   const { data: categories } = useAsyncData(() => getProductCategories(brand), [brand])
@@ -45,11 +54,26 @@ export default function ProductList() {
 
   const hasFilter = Boolean(category || brand || query)
 
+  const total = products?.length ?? 0
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  // **บีบเลขหน้าให้อยู่ในช่วงที่มีจริง** — ผู้ใช้ที่อยู่หน้า 6 แล้วกดกรองแบรนด์
+  // จนเหลือของสองหน้า ต้องเห็นของ ไม่ใช่เห็นตะแกรงว่างเปล่าโดยไม่รู้ว่าเกิดอะไรขึ้น
+  const page = Math.min(Math.max(requestedPage, 1), totalPages)
+  const from = (page - 1) * PAGE_SIZE
+  const visible = products?.slice(from, from + PAGE_SIZE)
+
+  /** เปลี่ยนตัวกรองแล้วต้องกลับไปหน้าแรกเสมอ ไม่งั้นผลลัพธ์ชุดใหม่จะเปิดค้างกลางเล่ม */
   function setParam(key: string, value?: string) {
     const next = new URLSearchParams(params)
     if (value) next.set(key, value)
     else next.delete(key)
+    if (key !== 'page') next.delete('page')
     setParams(next, { replace: true })
+  }
+
+  function goToPage(value: number) {
+    setParam('page', value > 1 ? String(value) : undefined)
+    document.getElementById(RESULTS_ID)?.scrollIntoView()
   }
 
   /**
@@ -131,19 +155,50 @@ export default function ProductList() {
 
         <div id={RESULTS_ID} className="scroll-mt-24">
           <p className="text-ink-muted mt-10 text-sm">
-            {t(ui.products.resultCount).replace('{count}', String(products?.length ?? 0))}
+            {t(ui.products.resultCount).replace('{count}', String(total))}
           </p>
 
-          {products?.length === 0 ? (
+          {total === 0 ? (
             <p className="text-ink-muted mt-10">{t(ui.states.empty)}</p>
           ) : (
-            <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 lg:grid-cols-4">
-              {products?.map((product) => (
-                <li key={product.slug}>
-                  <ProductCard product={product} />
-                </li>
-              ))}
-            </ul>
+            <>
+              <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 lg:grid-cols-4">
+                {visible?.map((product) => (
+                  <li key={product.slug}>
+                    <ProductCard product={product} />
+                  </li>
+                ))}
+              </ul>
+
+              {/*
+                ข้อความบอกตำแหน่งอยู่ซ้าย ปุ่มเปลี่ยนหน้าอยู่ขวา — วางแบบเดียวกับ
+                หน้ารายการสินค้าของร้านค้าออนไลน์ทั่วไป สายตาจึงรู้ทันทีว่าอะไรคือ
+                "ตอนนี้อยู่ตรงไหน" และอะไรคือ "ปุ่มที่กดได้"
+
+                จอแคบจะตกลงมาเรียงบนล่างเอง โดยข้อความอยู่บนปุ่ม เพราะต้องอ่านก่อน
+                จะได้รู้ว่าควรกดต่อหรือพอแล้ว
+              */}
+              {totalPages > 1 && (
+                <div className="mt-12 flex flex-wrap items-center justify-between gap-4">
+                  <p className="text-ink-muted text-sm">
+                    {t(ui.products.showingRange)
+                      .replace('{from}', String(from + 1))
+                      .replace('{to}', String(from + (visible?.length ?? 0)))
+                      .replace('{total}', String(total))}
+                  </p>
+                  <Pagination
+                    page={page}
+                    totalPages={totalPages}
+                    onChange={goToPage}
+                    label={t(ui.pagination.label)}
+                    previousLabel={t(ui.pagination.previous)}
+                    nextLabel={t(ui.pagination.next)}
+                    pageLabel={t(ui.pagination.page)}
+                    className="ml-auto"
+                  />
+                </div>
+              )}
+            </>
           )}
         </div>
       </Section>
