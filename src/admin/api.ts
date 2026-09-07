@@ -1,4 +1,10 @@
-import type { AdminNews, AdminProject, AdminUser, UploadedImage } from '@/types/admin'
+import type {
+  AdminNews,
+  AdminProject,
+  AdminSiteReference,
+  AdminUser,
+  UploadedImage,
+} from '@/types/admin'
 
 /**
  * ตัวกลางเดียวที่คุยกับ API — ไม่มี component ไหนเรียก `fetch` เอง
@@ -136,6 +142,25 @@ export const adminProjects = {
       body: JSON.stringify(payload),
     }),
   remove: (id: number) => request<{ ok: true }>(`/api/admin/projects/${id}`, { method: 'DELETE' }),
+}
+
+export type SiteReferencePayload = Omit<AdminSiteReference, 'id'>
+
+export const adminSiteReferences = {
+  list: () => request<AdminSiteReference[]>('/api/admin/site-references'),
+  get: (id: number) => request<AdminSiteReference>(`/api/admin/site-references/${id}`),
+  create: (payload: SiteReferencePayload) =>
+    request<{ id: number }>('/api/admin/site-references', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+  update: (id: number, payload: SiteReferencePayload) =>
+    request<{ ok: true }>(`/api/admin/site-references/${id}`, {
+      method: 'PUT',
+      body: JSON.stringify(payload),
+    }),
+  remove: (id: number) =>
+    request<{ ok: true }>(`/api/admin/site-references/${id}`, { method: 'DELETE' }),
 }
 
 /**

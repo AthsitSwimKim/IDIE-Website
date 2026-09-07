@@ -41,6 +41,8 @@ const AdminNewsList = lazy(() => import('@/pages/admin/NewsList'))
 const AdminNewsEdit = lazy(() => import('@/pages/admin/NewsEdit'))
 const AdminProjectList = lazy(() => import('@/pages/admin/ProjectList'))
 const AdminProjectEdit = lazy(() => import('@/pages/admin/ProjectEdit'))
+const AdminSiteReferenceList = lazy(() => import('@/pages/admin/SiteReferenceList'))
+const AdminSiteReferenceEdit = lazy(() => import('@/pages/admin/SiteReferenceEdit'))
 
 export const router = createBrowserRouter([
   {
@@ -119,6 +121,9 @@ export const router = createBrowserRouter([
       { path: 'projects', element: <AdminProjectList /> },
       { path: 'projects/new', element: <AdminProjectEdit /> },
       { path: 'projects/:id', element: <AdminProjectEdit /> },
+      { path: 'site-references', element: <AdminSiteReferenceList /> },
+      { path: 'site-references/new', element: <AdminSiteReferenceEdit /> },
+      { path: 'site-references/:id', element: <AdminSiteReferenceEdit /> },
     ],
   },
 ])

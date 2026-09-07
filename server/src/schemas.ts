@@ -112,6 +112,18 @@ export const projectInput = z.object({
   gallery: z.array(imageAsset).max(20),
 })
 
+export const siteReferenceInput = z.object({
+  name: localizedText(300),
+  /** ใส่ "ไม่เปิดเผย / Confidential" ได้ เมื่อลูกค้าไม่อนุญาตให้เอ่ยชื่อ */
+  customer: localizedText(300),
+  location: localizedText(300),
+  /** ลำดับที่แอดมินจัดเอง เลขน้อยขึ้นก่อน */
+  position: z.number().int().min(0).max(9999),
+  status: publishState,
+  /** งานในพื้นที่หวงห้ามถ่ายรูปไม่ได้ จึงยอมให้ไม่มีภาพ */
+  image: imageAsset.nullable(),
+})
+
 export const loginInput = z.object({
   username: z.string().trim().min(1, 'กรอกชื่อผู้ใช้').max(64),
   password: z.string().min(1, 'กรอกรหัสผ่าน').max(200),
@@ -119,6 +131,7 @@ export const loginInput = z.object({
 
 export type NewsInput = z.infer<typeof newsInput>
 export type ProjectInput = z.infer<typeof projectInput>
+export type SiteReferenceInput = z.infer<typeof siteReferenceInput>
 
 /**
  * แปลงผลของ zod เป็นข้อความที่แอดมินอ่านรู้เรื่อง

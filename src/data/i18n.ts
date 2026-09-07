@@ -496,6 +496,8 @@ export const ui = {
       en: 'Send us a site layout or your area classification drawings and our engineers will work out which systems and equipment grades apply. Most projects need more than one of these working together anyway.',
     },
     referenceTitle: { th: 'องค์กรที่เคยร่วมงานกับเรา', en: 'Companies we have worked with' },
+    referenceProjectsHeading: { th: 'อ้างอิงหน้างาน', en: 'Site Reference' },
+    referenceLogosHeading: { th: 'ผลงานลูกค้าที่ไว้วางใจเรา', en: 'Client References' },
     referenceLead: {
       th: 'ได้รับความไว้วางใจจากองค์กรและคู่ค้าอุตสาหกรรมชั้นนำ ตั้งแต่โรงกลั่น ปิโตรเคมี โรงไฟฟ้า ไปจนถึงผู้รับเหมา EPC ระดับสากล',
       en: 'Trusted by leading companies and industrial partners — from refineries and petrochemical plants to power generation and international EPC contractors.',
@@ -505,6 +507,9 @@ export const ui = {
 
   labels: {
     locale: { th: 'ภาษา', en: 'Language' },
+    projectName: { th: 'ชื่อโครงการ', en: 'PROJECT NAME' },
+    customer: { th: 'ลูกค้า', en: 'CUSTOMER' },
+    location: { th: 'สถานที่', en: 'LOCATION' },
     category: { th: 'หมวดหมู่', en: 'Category' },
     menu: { th: 'เมนู', en: 'Menu' },
     closeMenu: { th: 'ปิดเมนู', en: 'Close menu' },

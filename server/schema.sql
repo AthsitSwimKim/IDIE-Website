@@ -118,6 +118,44 @@ CREATE TABLE IF NOT EXISTS projects (
 -- แยกตารางแทนการยัดเป็น JSON เพราะแต่ละบรรทัดเป็นคู่ th/en ที่ต้องบังคับครบทั้งคู่
 -- เหมือนกัน และ `position` ทำให้ลำดับที่แอดมินจัดไว้ไม่สลับตอนอ่านกลับมา
 -- ---------------------------------------------------------------------------
+/* -------------------------------------------------------------------------- */
+/* Site Reference — กล่องอ้างอิงหน้างานบนหน้า /reference                          */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * แยกจากตาราง `projects` โดยตั้งใจตามที่เจ้าของระบบกำหนด
+ *
+ * สองอย่างนี้เขียนถึงผู้อ่านคนละแบบ — `projects` เป็นหน้ารายละเอียดที่มีภาพรวม
+ * แนวทางวิศวกรรม และแกลเลอรี ส่วน Site Reference เป็นบรรทัดสั้น ๆ ที่ตอบว่า
+ * "เคยติดตั้งที่ไหน ให้ใคร ทำอะไรบ้าง" สำหรับคนที่กำลังประเมินว่าจะจ้างหรือไม่
+ * การแยกตารางทำให้แก้อันหนึ่งโดยไม่กระทบอีกอันได้
+ */
+CREATE TABLE IF NOT EXISTS site_references (
+  id            INT UNSIGNED  NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  name_th       VARCHAR(300)  NOT NULL,
+  name_en       VARCHAR(300)  NOT NULL,
+  customer_th   VARCHAR(300)  NOT NULL,
+  customer_en   VARCHAR(300)  NOT NULL,
+  location_th   VARCHAR(300)  NOT NULL,
+  location_en   VARCHAR(300)  NOT NULL,
+  -- ลำดับที่แอดมินจัดเอง ไม่ได้เรียงตามวันที่สร้าง เพราะงานที่อยากโชว์ก่อน
+  -- ไม่จำเป็นต้องเป็นงานล่าสุดเสมอไป
+  position      SMALLINT UNSIGNED NOT NULL DEFAULT 0,
+  status        ENUM('draft','published') NOT NULL DEFAULT 'draft',
+
+  image_src     VARCHAR(300)  NULL,
+  image_src_set VARCHAR(600)  NULL,
+  image_alt_th  VARCHAR(300)  NULL,
+  image_alt_en  VARCHAR(300)  NULL,
+  image_width   SMALLINT UNSIGNED NULL,
+  image_height  SMALLINT UNSIGNED NULL,
+
+  created_at    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at    DATETIME      NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+  KEY ix_site_references_public (status, position)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
 CREATE TABLE IF NOT EXISTS project_scope_items (
   id         INT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   project_id INT UNSIGNED NOT NULL,

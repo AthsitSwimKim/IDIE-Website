@@ -20,6 +20,7 @@ import type {
   Project,
   ReferenceCompany,
   Service,
+  SiteReference,
   LocalizedText,
 } from '@/types/content'
 
@@ -351,6 +352,16 @@ async function quiet<T>(load: () => Promise<T>, fallback: T): Promise<T> {
     console.error('[data] โหลดเนื้อหาจาก API ไม่สำเร็จ:', cause)
     return fallback
   }
+}
+
+/**
+ * กล่องอ้างอิงหน้างานบนหน้า /reference
+ *
+ * มาจากตาราง `site_references` ซึ่งแยกจาก `projects` โดยตั้งใจ — สองอย่างนี้
+ * เขียนถึงผู้อ่านคนละแบบ และเจ้าของระบบต้องการแก้แยกกันได้
+ */
+export async function getSiteReferences(): Promise<SiteReference[]> {
+  return fetchContent<SiteReference[]>('/api/site-references')
 }
 
 export async function getProjects(): Promise<Project[]> {

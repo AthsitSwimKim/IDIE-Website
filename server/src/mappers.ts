@@ -250,3 +250,52 @@ export function toAdminProject(
     }),
   }
 }
+
+/* -------------------------------------------------------------------------- */
+/* Site Reference                                                              */
+/* -------------------------------------------------------------------------- */
+
+export interface SiteReferenceRow {
+  id: number
+  name_th: string
+  name_en: string
+  customer_th: string
+  customer_en: string
+  location_th: string
+  location_en: string
+  position: number
+  status: 'draft' | 'published'
+  image_src: string | null
+  image_src_set: string | null
+  image_alt_th: string | null
+  image_alt_en: string | null
+  image_width: number | null
+  image_height: number | null
+}
+
+/**
+ * `image` เป็น null ได้ ต่างจาก `Project.cover` ที่ต้องมีเสมอ
+ *
+ * กล่องอ้างอิงหน้างานบางรายการเป็นงานที่ถ่ายรูปไม่ได้ (พื้นที่หวงห้าม) การบังคับ
+ * ให้มีภาพจะทำให้แอดมินต้องหารูปมาใส่ทั้งที่ไม่มี — ฝั่งหน้าเว็บจัดการกรณีไม่มีภาพเอง
+ */
+export function toSiteReference(row: SiteReferenceRow) {
+  return {
+    id: row.id,
+    name: text(row.name_th, row.name_en),
+    customer: text(row.customer_th, row.customer_en),
+    location: text(row.location_th, row.location_en),
+    image: toImage({
+      src: row.image_src,
+      src_set: row.image_src_set,
+      alt_th: row.image_alt_th,
+      alt_en: row.image_alt_en,
+      width: row.image_width,
+      height: row.image_height,
+    }),
+  }
+}
+
+export function toAdminSiteReference(row: SiteReferenceRow) {
+  return { ...toSiteReference(row), position: row.position, status: row.status }
+}

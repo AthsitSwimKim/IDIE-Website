@@ -268,6 +268,21 @@ export interface ReferenceCompany extends Placeholderable {
 /* Projects (ทำอะไร)                                                           */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * กล่องอ้างอิงหน้างานบนหน้า /reference
+ *
+ * คนละชุดข้อมูลกับ `Project` — อันนั้นเป็นหน้ารายละเอียดเต็ม อันนี้คือบรรทัดสรุป
+ * ที่ตอบว่า "เคยติดตั้งที่ไหน ให้ใคร ทำอะไร" สำหรับคนที่กำลังประเมินผู้รับเหมา
+ */
+export interface SiteReference {
+  id: number;
+  name: LocalizedText;
+  /** ใส่ "ไม่เปิดเผย / Confidential" ได้ เมื่อลูกค้าไม่อนุญาตให้เอ่ยชื่อ */
+  customer: LocalizedText;
+  location: LocalizedText;
+  image: ImageAsset | null;
+}
+
 export interface Project extends Placeholderable {
   slug: string;
   name: LocalizedText;

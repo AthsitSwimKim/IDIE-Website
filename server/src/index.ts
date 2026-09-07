@@ -13,6 +13,10 @@ import { authRouter, uploadRouter } from './routes/auth.ts'
 import { contactRouter } from './routes/contact.ts'
 import { adminNewsRouter, publicNewsRouter } from './routes/news.ts'
 import { adminProjectsRouter, publicProjectsRouter } from './routes/projects.ts'
+import {
+  adminSiteReferencesRouter,
+  publicSiteReferencesRouter,
+} from './routes/site-references.ts'
 
 const app = express()
 
@@ -109,6 +113,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/contact', contactRouter)
 app.use('/api/news', publicNewsRouter)
 app.use('/api/projects', publicProjectsRouter)
+app.use('/api/site-references', publicSiteReferencesRouter)
 
 /**
  * ทุกอย่างใต้ /api/admin ต้องล็อกอิน — บังคับที่จุดเดียวตรงนี้
@@ -120,6 +125,7 @@ const adminRouter = express.Router()
 adminRouter.use(requireAuth)
 adminRouter.use('/news', adminNewsRouter)
 adminRouter.use('/projects', adminProjectsRouter)
+adminRouter.use('/site-references', adminSiteReferencesRouter)
 adminRouter.use('/uploads', uploadRouter)
 app.use('/api/admin', adminRouter)
 

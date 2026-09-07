@@ -23,6 +23,7 @@ import { cn } from '@/utils/cn'
 const NAV = [
   { to: '/admin/news', label: 'ข่าวสาร' },
   { to: '/admin/projects', label: 'ผลงาน' },
+  { to: '/admin/site-references', label: 'อ้างอิงหน้างาน' },
 ]
 
 export default function AdminShell() {

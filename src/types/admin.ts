@@ -1,4 +1,4 @@
-import type { ImageAsset, NewsArticle, Project } from '@/types/content'
+import type { ImageAsset, NewsArticle, Project, SiteReference } from '@/types/content'
 
 /**
  * รูปร่างข้อมูลฝั่งแอดมิน — ต่างจากฝั่งสาธารณะสองจุด
@@ -35,4 +35,15 @@ export interface UploadedImage {
   srcSet?: string
   width: number
   height: number
+}
+
+/**
+ * ฝั่งแอดมินมี `position` กับ `status` เพิ่มจากฝั่งสาธารณะ
+ *
+ * `image` เป็น null ได้อยู่แล้วทั้งสองฝั่ง ต่างจากข่าวและผลงาน เพราะงานในพื้นที่
+ * หวงห้ามถ่ายรูปไม่ได้ — ดูเหตุผลเต็มใน server/src/mappers.ts
+ */
+export interface AdminSiteReference extends SiteReference {
+  position: number
+  status: PublishStatus
 }
