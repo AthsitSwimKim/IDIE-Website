@@ -1,4 +1,5 @@
-import { useSearchParams } from 'react-router-dom'
+import { useLayoutEffect } from 'react'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { Button, Heading, Pagination, Section } from '@/components/ui'
 import { ProductCard } from '@/components/sections/ProductCard'
 import { Seo } from '@/components/layout/Seo'
@@ -14,6 +15,15 @@ import { cn } from '@/utils/cn'
  * เลื่อนไปหยุดตรงนั้นแล้วผู้ใช้ยังต้องเลื่อนต่อเองอีก ทั้งที่เพิ่งกดเลือกไป
  */
 const RESULTS_ID = 'product-results'
+
+/**
+ * จุดหมายของลิงก์ที่มาจากหน้าอื่น — แถวตัวกรอง ไม่ใช่บล็อกผลลัพธ์
+ *
+ * ต่างจาก RESULTS_ID โดยตั้งใจ: คนที่กดตัวกรองอยู่บนหน้านี้แล้วรู้ว่าเพิ่งกดอะไรไป
+ * จึงพาลงไปดูผลลัพธ์ได้เลย ส่วนคนที่เพิ่งมาจากหน้าอื่นต้องเห็นว่าตอนนี้กรองอะไรอยู่
+ * และเปลี่ยนได้ตรงไหน ถ้าโยนไปที่รายการเลยจะเหมือนหน้าสินค้ามีของแค่ยี่ห้อเดียว
+ */
+const FILTERS_ID = 'product-filters'
 
 /**
  * จำนวนสินค้าต่อหน้า
@@ -38,6 +48,7 @@ const PAGE_SIZE = 24
 export default function ProductList() {
   const { t } = useLocale()
   const [params, setParams] = useSearchParams()
+  const { hash } = useLocation()
 
   const category = params.get('category') ?? undefined
   const brand = params.get('brand') ?? undefined
@@ -61,6 +72,30 @@ export default function ProductList() {
   const page = Math.min(Math.max(requestedPage, 1), totalPages)
   const from = (page - 1) * PAGE_SIZE
   const visible = products?.slice(from, from + PAGE_SIZE)
+
+  /**
+   * เข้ามาพร้อม hash (เช่นกดโลโก้แบรนด์จากหน้าแรก) ให้ไปโผล่ที่จุดนั้นเลย
+   *
+   * เบราว์เซอร์กระโดดไป anchor เองไม่ได้ในกรณีนี้ — ตอนเปลี่ยนเส้นทาง ชิปหมวดกับรายการ
+   * สินค้ายังโหลดไม่เสร็จ ความสูงของหน้าจึงยังไม่นิ่ง ถ้าเลื่อนตอนนั้นจะไปหยุดผิดที่
+   * ต้องรอ `products` มาถึงก่อนแล้วค่อยเลื่อน (ScrollToTop ปล่อยผ่านให้แล้วเมื่อมี hash)
+   */
+  useLayoutEffect(() => {
+    if (!hash || !products) return
+
+    /*
+      `behavior: 'instant'` และ `useLayoutEffect` — สองอย่างนี้ทำให้ผู้ใช้ไม่เห็นการเลื่อน
+
+      ค่าเริ่มต้นของเว็บคือ `scroll-behavior: smooth` ซึ่งดีตอนกดตัวกรองในหน้าเดียวกัน
+      (เห็นว่าอะไรขยับไปไหน) แต่ตอนเพิ่งข้ามมาจากหน้าอื่นมันกลายเป็นการไถหน้าจอให้ดู
+      ทั้งที่ผู้ใช้ยังไม่ทันอ่านอะไรเลย ที่นี่จึงกระโดดทันที
+
+      และทำใน layout effect ไม่ใช่ effect ธรรมดา — จะได้เลื่อนเสร็จก่อนเบราว์เซอร์วาด
+      เฟรมแรก ผู้ใช้เห็นหน้าที่อยู่ตำแหน่งถูกต้องตั้งแต่แรก ไม่ใช่เห็นหัวหน้าแวบหนึ่ง
+      แล้วค่อยกระตุกลงมา
+    */
+    document.getElementById(hash.slice(1))?.scrollIntoView({ behavior: 'instant' })
+  }, [hash, products])
 
   /** เปลี่ยนตัวกรองแล้วต้องกลับไปหน้าแรกเสมอ ไม่งั้นผลลัพธ์ชุดใหม่จะเปิดค้างกลางเล่ม */
   function setParam(key: string, value?: string) {
@@ -144,8 +179,16 @@ export default function ProductList() {
       </Section>
 
       <Section spacing="md">
-        {/* แบรนด์เป็นตัวกรองแรก — ลูกค้าส่วนใหญ่มาด้วยชื่อผู้ผลิตที่สเปกไว้แล้ว */}
-        <fieldset className="flex flex-wrap items-center gap-2 border-0 p-0">
+        {/*
+          แบรนด์เป็นตัวกรองแรก — ลูกค้าส่วนใหญ่มาด้วยชื่อผู้ผลิตที่สเปกไว้แล้ว
+
+          `id` ที่นี่คือจุดที่ลิงก์จากหน้าอื่นเลื่อนมาหยุด (เช่นกดโลโก้แบรนด์บนหน้าแรก)
+
+          **ไม่ต้องใส่ `scroll-mt-*`** — `html` ตั้ง `scroll-padding-top: 96px` ไว้แล้ว
+          สำหรับแถบหัวเว็บที่ลอยอยู่ ถ้าใส่ซ้ำค่าจะบวกกันเป็น 192px แล้วจะหยุดต่ำกว่า
+          จุดหมายไปครึ่งจอ (วัดมาแล้วตอนใส่ซ้ำ: หัวข้อ "แบรนด์" ต่ำจากหัวเว็บ 122px)
+        */}
+        <fieldset id={FILTERS_ID} className="flex flex-wrap items-center gap-2 border-0 p-0">
           <legend className="text-eyebrow text-ink-muted mb-3 uppercase">
             {t(ui.labels.brand)}
           </legend>

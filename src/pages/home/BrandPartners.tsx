@@ -50,8 +50,19 @@ export function BrandPartners() {
         {brands.map((brand, index) => (
           <li key={brand.id}>
             <Reveal delay={index * 70}>
-              {/* Link ไม่ใช่ <a> — ไม่งั้นกดแล้วโหลดหน้าใหม่ทั้งหน้า */}
-              <Link to={`/brands#${brand.id}`} className="group block">
+              {/*
+                กดแล้วไปหน้าสินค้าที่กรองแบรนด์นั้นไว้แล้ว ไม่ใช่ไปหน้าแบรนด์คู่ค้า —
+                คนที่กดโลโก้แบรนด์กำลังถามว่า "แบรนด์นี้มีของอะไรขาย" ไม่ได้ถามว่า
+                "แบรนด์นี้คือใคร" ปุ่มแบรนด์คู่ค้าด้านบนมีไว้ตอบคำถามหลังอยู่แล้ว
+                (ใช้ปลายทางเดียวกับปุ่มในหน้า /brands ซึ่งทำแบบนี้อยู่ก่อนแล้ว)
+
+                ต่อท้ายด้วย #product-filters ให้หน้าสินค้าเลื่อนลงมาหยุดที่แถวตัวกรอง
+                ผู้ใช้จึงเห็นทันทีว่ากำลังกรองแบรนด์ไหนอยู่ และเปลี่ยนได้ตรงไหน
+                โดยที่รายการสินค้าก็อยู่ในสายตาถัดลงไปแล้ว
+
+                Link ไม่ใช่ <a> — ไม่งั้นกดแล้วโหลดหน้าใหม่ทั้งหน้า
+              */}
+              <Link to={`/products?brand=${brand.id}#product-filters`} className="group block">
                 <span
                   className={cn(
                     'border-line bg-surface rounded-card flex aspect-3/2 items-center justify-center border p-5',

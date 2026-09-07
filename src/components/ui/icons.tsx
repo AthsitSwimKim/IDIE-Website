@@ -121,6 +121,16 @@ export function ExternalLinkIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
+/** วงแหวนโหลด — ตั้งใจให้วงไม่ครบรอบ จะได้เห็นว่ากำลังหมุนตอนใส่ `animate-spin` */
+export function SpinnerIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="9" opacity="0.3" />
+      <path d="M21 12a9 9 0 0 0-9-9" />
+    </svg>
+  )
+}
+
 /** เอกสารที่ดาวน์โหลดได้ — แผ่นกระดาษพับมุมพร้อมลูกศรลง */
 export function DocumentIcon(props: SVGProps<SVGSVGElement>) {
   return (
