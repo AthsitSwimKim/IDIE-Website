@@ -68,12 +68,18 @@ export default function Reference() {
         {!error && references && references.length > 0 && (
           /*
             เส้นคั่นบนพื้นขาวแทนการ์ดพื้นสี — `divide-y` วาดเส้นเฉพาะระหว่างแถว
-            ไม่ใช่ทุกแถว จึงไม่มีเส้นซ้อนสองชั้นตรงรอยต่อ ส่วนเส้นหัวท้ายปิดให้รายการจบในตัว
+            ไม่ใช่ทุกแถว จึงไม่มีเส้นซ้อนสองชั้นตรงรอยต่อ
+
+            มีแต่เส้นปิดท้าย ไม่มีเส้นบนสุด — หัวข้อของหมวดทำหน้าที่เปิดรายการอยู่แล้ว
+            เส้นที่คั่นระหว่างหัวข้อกับแถวแรกจึงเป็นเส้นส่วนเกิน
+
+            ใช้ `steel/40` หนา 2px แทน `border-line` ที่เป็นค่ามาตรฐานของระบบ เพราะเส้น
+            #e2e8f2 หนา 1px จางเกินกว่าจะคุมจังหวะสายตาในรายการที่แถวสูงราว 220px
 
             จำกัดความกว้างแล้วจัดกึ่งกลางหน้า ไม่ปล่อยให้ยาวเต็มคอนเทนเนอร์ — หัวข้อของหมวด
             ยังชิดซ้ายตามหัวข้ออื่นทั้งหน้า มีเฉพาะรายการที่อยู่ตรงกลาง ตามแบบที่เจ้าของระบบวาดมา
           */
-          <ul className="border-line divide-line mx-auto mt-7 max-w-4xl divide-y border-t border-b">
+          <ul className="divide-steel/40 border-steel/40 mx-auto mt-7 max-w-4xl divide-y-2 border-b-2">
             {references.map((item) => (
               <li key={item.id}>
                 <ReferenceRow item={item} />
@@ -148,14 +154,15 @@ function ReferenceRow({ item }: { item: SiteReference }) {
         กับภาพ (`items-center`) — รายละเอียดมีแค่สามบรรทัดซึ่งสั้นกว่าภาพเกือบทุกครั้ง
         ถ้าปล่อยชิดบนจะเหลือช่องว่างใต้ข้อความเป็นแถบใหญ่จนแถวดูเอียงขึ้นข้างบน
 
-        แถวที่ไม่มีภาพยังกันคอลัมน์ซ้ายไว้เท่าเดิม แต่ปล่อยว่าง ข้อความทุกแถวจึงเริ่มที่
-        ตำแหน่งเดียวกันเมื่อกวาดสายตาลงมา — ยกเว้นจอแคบที่เรียงเป็นแนวตั้ง ซึ่งไม่มี
-        คอลัมน์ให้เรียงอยู่แล้ว จึงซ่อนทิ้งไม่ให้เหลือช่องไฟค้าง
+        แถวที่ไม่มีภาพกันคอลัมน์ซ้ายไว้เท่าเดิมและปล่อยว่าง ไม่ใส่กรอบหรือไอคอนแทนที่
+        แต่ยังคง `aspect-4/3` ไว้ ความสูงของแถวและตำแหน่งข้อความจึงเท่ากับแถวที่มีภาพ
+        กวาดสายตาลงมาทั้งรายการแล้วไม่มีแถวไหนสะดุด — ยกเว้นจอแคบที่เรียงเป็นแนวตั้ง
+        ซึ่งไม่มีคอลัมน์ให้เรียงอยู่แล้ว จึงซ่อนทิ้งไม่ให้เหลือช่องไฟค้าง
       */}
       <div
         className={cn(
-          'rounded-card relative w-full shrink-0 overflow-hidden sm:w-56 lg:w-72',
-          item.image ? 'aspect-4/3' : 'hidden sm:block',
+          'rounded-card relative aspect-4/3 w-full shrink-0 overflow-hidden sm:w-56 lg:w-72',
+          !item.image && 'hidden sm:block',
         )}
       >
         {item.image && (
@@ -173,9 +180,21 @@ function ReferenceRow({ item }: { item: SiteReference }) {
       </div>
 
       <dl className="min-w-0 flex-1 text-base leading-relaxed">
-        <div className="flex flex-wrap items-baseline gap-x-2">
-          <dt className="text-steel">{t(ui.labels.projectName)}:</dt>
-          <dd className="text-ink text-lg font-semibold">{t(item.name)}</dd>
+        {/*
+          หัวข้อกับค่าไหลเป็นข้อความก้อนเดียวกัน (`inline`) ไม่ใช่กล่อง flex คนละใบ —
+          ของเดิมพอชื่อโครงการยาวเกินที่ว่างข้างหลังหัวข้อ ชื่อจะกระโดดลงบรรทัดใหม่ทั้งก้อน
+          เหลือ "ชื่อโครงการ:" ลอยอยู่บรรทัดบนคนเดียว แบบ inline ชื่อจะเริ่มต่อจากหัวข้อ
+          บรรทัดเดียวกัน แล้วค่อยตัดลงบรรทัดถัดไปเมื่อเต็มจริง ๆ
+
+          ใช้ `text-pretty` ไม่ใช่ `text-balance` — balance จะเฉลี่ยความยาวทุกบรรทัดให้
+          เท่ากัน ทำให้บางชื่อตัดลงบรรทัดใหม่ทั้งที่บรรทัดแรกยังเหลือที่ว่างอีกครึ่งบรรทัด
+          ส่วน pretty เติมบรรทัดแรกให้เต็มก่อนแล้วค่อยขึ้นบรรทัดใหม่ แค่กันไม่ให้บรรทัด
+          สุดท้ายเหลือคำเดียว (เบราว์เซอร์ที่ยังไม่รองรับจะตัดบรรทัดแบบปกติ ซึ่งก็คือ
+          พฤติกรรมที่ต้องการอยู่แล้ว)
+        */}
+        <div className="text-pretty">
+          <dt className="text-steel inline">{t(ui.labels.projectName)}:</dt>{' '}
+          <dd className="text-ink inline text-lg font-medium">{t(item.name)}</dd>
         </div>
 
         <Row label={t(ui.labels.customer)}>{t(item.customer)}</Row>
@@ -187,9 +206,9 @@ function ReferenceRow({ item }: { item: SiteReference }) {
 
 function Row({ label, children }: { label: string; children: React.ReactNode }) {
   return (
-    <div className="mt-1.5 flex flex-wrap items-baseline gap-x-2">
-      <dt className="text-steel">{label}:</dt>
-      <dd className="text-ink min-w-0 font-medium">{children}</dd>
+    <div className="mt-1.5">
+      <dt className="text-steel inline">{label}:</dt>{' '}
+      <dd className="text-ink inline">{children}</dd>
     </div>
   )
 }
