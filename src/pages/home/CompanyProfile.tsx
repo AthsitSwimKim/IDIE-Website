@@ -19,7 +19,7 @@ export function CompanyProfile() {
 
   return (
     <Section>
-      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+      <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-12">
         <Reveal>
           <Heading level={2} eyebrow="COMPANY PROFILE">
             {t(ui.home.companyTitle)}
@@ -61,23 +61,27 @@ export function CompanyProfile() {
 
         <Reveal delay={80}>
           {/*
-            แผงตราสัญลักษณ์เดียวกับหน้า About — ไฟล์เดียวใช้สองที่โดยตั้งใจ
-            ถ้าทำคนละภาพจะต้องมาไล่แก้สองจุดทุกครั้งที่ปรับตรา
+            แผนผังภาพรวมระบบ INTRON-X แทนแผงตราสัญลักษณ์เดิม (ก.ย. 2026)
 
-            `alt=""` เพราะเป็นภาพตกแต่ง ชื่อบริษัทอยู่ในหัวข้อและใน header อยู่แล้ว
+            `object-contain` กับสัดส่วนตามไฟล์จริง ไม่ใช่ `object-cover` ใน 4:3 แบบเดิม —
+            ภาพนี้เป็นแผนผังที่มีข้อมูลอยู่ทุกมุม ถ้าครอบตัดให้พอดีกรอบจะตัดอุปกรณ์
+            ที่ขอบซ้ายกับขวาหายไป กลายเป็นแผนผังที่อ่านแล้วไม่ครบ
 
-            TODO: ยังอยากได้ภาพอาคารสำนักงาน ทีมงาน หรือหน้างานติดตั้งจริงมาแทน
-            (ดู docs/data-requests.md หัวข้อภาพองค์กร)
+            มี `alt` เต็ม ๆ ไม่ใช่ `alt=""` เพราะเป็นเนื้อหา ไม่ใช่ของตกแต่ง — คนที่ใช้
+            โปรแกรมอ่านหน้าจอควรรู้ว่าภาพนี้บอกอะไร ไม่ใช่ข้ามไปเฉย ๆ
+
+            พื้นหลังของไฟล์โปร่งใส จึงกลืนกับพื้นขาวของ section เอง ไม่ต้องมีกรอบขาว
+            ซ้อนอีกชั้น แต่ยังใส่เส้นขอบบาง ๆ ไว้ให้ขอบเขตของภาพชัด
           */}
           <img
-            src="/images/brand/company-panel.webp"
-            srcSet="/images/brand/company-panel-800.webp 1x, /images/brand/company-panel.webp 2x"
-            alt=""
+            src="/images/home/intron-x-system.webp"
+            srcSet="/images/home/intron-x-system-800.webp 1x, /images/home/intron-x-system.webp 2x"
+            alt={t(ui.home.companyImageAlt)}
             width={1600}
-            height={1200}
+            height={990}
             loading="lazy"
             decoding="async"
-            className="rounded-card border-line aspect-[4/3] w-full border object-cover"
+            className="rounded-card border-line w-full border p-3"
           />
         </Reveal>
       </div>

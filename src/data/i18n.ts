@@ -132,6 +132,16 @@ export const ui = {
       th: '{years}+ ปีในสายระบบสื่อสารอุตสาหกรรม · ตั้งแต่ พ.ศ. 2549 · ระยอง ประเทศไทย',
       en: '{years}+ years in industrial communication · Since 2006 · Rayong, Thailand',
     },
+    /** ภาพหน้าปกแผ่นพับ INTRON-X ที่วางคู่พาดหัวหน้าแรก */
+    heroImageAlt: {
+      th: 'หน้าปกแผ่นพับ INTRON-X จาก INDUSTRONIC — “THE NEW X-PERIENCE” ก้าวต่อไปของระบบสื่อสารอุตสาหกรรมที่ปลอดภัย',
+      en: 'INTRON-X brochure cover from INDUSTRONIC — “THE NEW X-PERIENCE”, the next level of safe industrial communication',
+    },
+    /** แผนผังภาพรวมระบบที่วางคู่ย่อหน้าแนะนำบริษัทบนหน้าแรก */
+    companyImageAlt: {
+      th: 'แผนผังภาพรวมระบบ INTRON-X จาก INDUSTRONIC — หน่วยควบคุมต่อผ่านเครือข่ายไปยังลำโพง สถานีเรียก ไฟสัญญาณ และระบบภายนอกอย่าง Modbus TCP/IP และ CANopen',
+      en: 'INTRON-X system overview from INDUSTRONIC — controllers linked over the network to loudspeakers, call stations, signal beacons and external systems such as Modbus TCP/IP and CANopen',
+    },
     whyTitle: { th: 'ทำไมโรงงานถึงเลือก IDIE', en: 'Why plants choose IDIE' },
     brandsTitle: {
       th: 'ตัวแทนจำหน่ายผู้ผลิตชั้นนำจากยุโรป',
