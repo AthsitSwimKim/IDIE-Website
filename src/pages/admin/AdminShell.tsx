@@ -2,6 +2,7 @@ import { Suspense, useCallback, useEffect, useState } from 'react'
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Button, Container } from '@/components/ui'
 import { ErrorBoundary } from '@/components/layout/ErrorBoundary'
+import { Logo } from '@/components/layout/Logo'
 import { RouteFallback } from '@/components/layout/RouteFallback'
 import { auth } from '@/admin/api'
 import type { AdminUser } from '@/types/admin'
@@ -21,6 +22,11 @@ import { cn } from '@/utils/cn'
  */
 
 const NAV = [
+  /*
+    `end` ใช้เฉพาะลิงก์ภาพรวม — '/admin' เป็น prefix ของทุกหน้าในหลังบ้าน
+    ถ้าไม่กำกับไว้ NavLink จะขึ้นสถานะ active ค้างตลอดไม่ว่าจะอยู่หน้าไหน
+  */
+  { to: '/admin', label: 'ภาพรวม', end: true },
   { to: '/admin/news', label: 'ข่าวสาร' },
   { to: '/admin/projects', label: 'ผลงาน' },
   { to: '/admin/site-references', label: 'อ้างอิงหน้างาน' },
@@ -82,13 +88,22 @@ export default function AdminShell() {
       <header className="border-line bg-surface sticky top-0 z-40 border-b">
         <Container>
           <div className="flex flex-wrap items-center gap-x-6 gap-y-3 py-3">
-            <p className="text-eyebrow text-primary-600 uppercase">IDIE Administrator</p>
+            {/*
+              ตราสัญลักษณ์อย่างเดียว ไม่เอาชื่อบริษัทเต็ม — ข้อความ "IDIE Administrator"
+              ข้าง ๆ ทำหน้าที่บอกชื่อระบบอยู่แล้ว ถ้าใส่ wordmark ด้วยจะกลายเป็นชื่อบริษัท
+              สองชุดซ้อนกันบนแถบเดียว และกินที่ของเมนูบนจอแคบ
+            */}
+            <div className="flex items-center gap-3">
+              <Logo size="sm" markOnly />
+              <p className="text-eyebrow text-primary-600 uppercase">IDIE Administrator</p>
+            </div>
 
             <nav aria-label="เมนูหลังบ้าน" className="flex gap-1">
               {NAV.map((item) => (
                 <NavLink
                   key={item.to}
                   to={item.to}
+                  end={item.end ?? false}
                   className={({ isActive }) =>
                     cn(
                       'rounded-pill inline-flex min-h-11 items-center px-4 text-sm font-medium',

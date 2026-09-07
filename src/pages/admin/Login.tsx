@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Button } from '@/components/ui'
+import { Logo } from '@/components/layout/Logo'
 import { auth } from '@/admin/api'
 import { Field, TextInput } from '@/pages/admin/components/fields'
 
@@ -53,6 +54,17 @@ export default function AdminLogin() {
   return (
     <div className="bg-surface-alt grid min-h-dvh place-items-center p-6">
       <div className="border-line bg-surface rounded-card w-full max-w-md border p-8">
+        {/*
+          โลโก้บอกว่านี่คือระบบหลังบ้านของใคร — หน้านี้เป็นหน้าเดียวของหลังบ้านที่เปิดได้
+          ก่อนล็อกอิน และเป็นหน้าที่พนักงานอาจเปิดจากลิงก์ที่ส่งต่อกันมาโดยไม่เห็นหัวเว็บ
+
+          ไม่ทำเป็นลิงก์กลับหน้าแรก — คนที่มาถึงหน้านี้ตั้งใจจะล็อกอิน การเผลอกดโลโก้
+          แล้วหลุดออกไปหน้าเว็บสาธารณะทั้งที่กรอกชื่อผู้ใช้ไปแล้วเสียเวลากว่าที่ได้
+        */}
+        <div className="mb-6">
+          <Logo size="md" />
+        </div>
+
         <p className="text-eyebrow text-primary-600 uppercase">IDIE Administrator</p>
         <h1 className="text-h3 mt-2 font-semibold">เข้าสู่ระบบ</h1>
         <p className="text-ink-muted mt-2 text-sm">

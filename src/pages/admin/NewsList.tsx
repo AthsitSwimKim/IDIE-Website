@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { Badge, Button } from '@/components/ui'
 import { adminNews } from '@/admin/api'
 import { useAsyncData } from '@/hooks/useAsyncData'
+import { formatDate } from '@/pages/admin/formatDate'
 import type { AdminNews } from '@/types/admin'
 
 const CATEGORY_LABEL: Record<AdminNews['category'], string> = {
@@ -100,14 +101,24 @@ export default function AdminNewsList() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      disabled={busyId === item.id}
-                      onClick={() => void handleDelete(item)}
-                    >
-                      {busyId === item.id ? 'กำลังลบ…' : 'ลบ'}
-                    </Button>
+                    {/*
+                      ปุ่มแก้ไขซ้ำกับลิงก์ที่ชื่อรายการ แต่จงใจให้มี — คนที่ไม่คุ้นตารางแบบนี้
+                      จะมองหาปุ่มในคอลัมน์ "จัดการ" ไม่ได้เดาว่าต้องกดที่ชื่อ และการมีปุ่ม
+                      แก้ไขคู่กับปุ่มลบทำให้ปุ่มลบไม่ใช่ปุ่มเดียวที่กดได้ในแถว
+                    */}
+                    <div className="flex justify-end gap-1">
+                      <Button variant="ghost" size="sm" to={`/admin/news/${item.id}`}>
+                        แก้ไข
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={busyId === item.id}
+                        onClick={() => void handleDelete(item)}
+                      >
+                        {busyId === item.id ? 'กำลังลบ…' : 'ลบ'}
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}
@@ -117,18 +128,4 @@ export default function AdminNewsList() {
       )}
     </>
   )
-}
-
-/**
- * แสดงวันที่ตามโซนเวลาของเครื่องผู้ใช้
- *
- * ค่าที่ API ส่งมาเป็น ISO ที่ลงท้ายด้วย Z (UTC) เสมอ — `toLocaleDateString`
- * จึงแปลงกลับเป็นเวลาไทยให้เองบนเครื่องของทีมงาน ไม่ต้องคำนวณ offset เอง
- */
-function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString('th-TH', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  })
 }

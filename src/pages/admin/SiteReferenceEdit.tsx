@@ -10,6 +10,7 @@ import {
   TextInput,
   type FormImage,
 } from '@/pages/admin/components/fields'
+import { SaveConfirmDialog } from '@/pages/admin/components/SaveConfirmDialog'
 import type { PublishStatus } from '@/types/admin'
 import type { LocalizedText } from '@/types/content'
 
@@ -39,22 +40,37 @@ const empty = (): FormState => ({
  * /reference หน้าเดียว จึงไม่ต้องมี URL ประจำตัวและไม่ต้องกันชื่อซ้ำ
  */
 export default function AdminSiteReferenceEdit() {
-  const { id } = useParams()
+  const { id: routeId } = useParams()
   const navigate = useNavigate()
+
+  /**
+   * id ของรายการที่เพิ่งสร้างในหน้านี้ — เก็บไว้เองแทนการย้ายไปหน้าแก้ไข
+   *
+   * เดิมพอบันทึกสำเร็จจะ navigate ไป `/…/:id` ซึ่งเป็นคนละ route กับ `/…/new`
+   * component จึงถูก unmount แล้ว mount ใหม่ทั้งหน้า ผู้ใช้เห็นหน้ากระพริบเหมือนโหลด
+   * ใหม่ทุกครั้งที่กดบันทึก เก็บ id ไว้ใน state แล้วอยู่หน้าเดิมแทน การกดบันทึกครั้งถัดไป
+   * จะกลายเป็นการแก้ไขรายการเดิม ไม่ใช่สร้างซ้ำ
+   *
+   * ผลข้างเคียงที่ยอมรับ: URL ยังเป็น `/…/new` จนกว่าจะออกจากหน้า ถ้ารีเฟรชตรงนี้
+   * จะได้ฟอร์มเปล่า (ของที่บันทึกไปแล้วอยู่ในฐานข้อมูลครบ เปิดจากหน้ารายการได้)
+   */
+  const [createdId, setCreatedId] = useState<number | null>(null)
+  const id = routeId ?? (createdId === null ? undefined : String(createdId))
   const isNew = id === undefined
 
   const [form, setForm] = useState<FormState>(empty)
-  const [loading, setLoading] = useState(!isNew)
+  const [loading, setLoading] = useState(routeId !== undefined)
   const [saving, setSaving] = useState(false)
+  const [confirming, setConfirming] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    if (isNew) return
+    if (routeId === undefined) return
     let cancelled = false
 
     adminSiteReferences
-      .get(Number(id))
+      .get(Number(routeId))
       .then((item) => {
         if (cancelled) return
         setForm({
@@ -76,14 +92,25 @@ export default function AdminSiteReferenceEdit() {
     return () => {
       cancelled = true
     }
-  }, [id, isNew])
+  }, [routeId])
 
   function set<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }))
   }
 
-  async function handleSave(event: React.FormEvent) {
+  /**
+   * กดปุ่มบันทึกแล้วยังไม่บันทึกทันที — เปิดกล่องยืนยันก่อน
+   *
+   * แยกออกจาก `handleSave` เพราะการยืนยันเป็นกล่องของเว็บเอง ไม่ใช่ `window.confirm`
+   * ที่หยุดรอค่าตอบกลับได้ในบรรทัดเดียว ต้องรอผู้ใช้กดปุ่มในกล่องแล้วค่อยเรียกบันทึก
+   */
+  function handleSubmit(event: React.FormEvent) {
     event.preventDefault()
+    setConfirming(true)
+  }
+
+  async function handleSave() {
+    setConfirming(false)
     setSaving(true)
     setMessage(null)
     setFieldErrors({})
@@ -98,12 +125,10 @@ export default function AdminSiteReferenceEdit() {
     }
 
     try {
-      if (isNew) {
+      if (id === undefined) {
         const created = await adminSiteReferences.create(payload)
-        navigate(`/admin/site-references/${created.id}`, {
-          replace: true,
-          state: { message: 'สร้างรายการเรียบร้อยแล้ว' },
-        })
+        setCreatedId(created.id)
+        setMessage('สร้างรายการเรียบร้อยแล้ว')
       } else {
         await adminSiteReferences.update(Number(id), payload)
         setMessage('บันทึกแล้ว')
@@ -130,7 +155,7 @@ export default function AdminSiteReferenceEdit() {
   )
 
   return (
-    <form onSubmit={(event) => void handleSave(event)}>
+    <form onSubmit={handleSubmit}>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h1 className="text-h3 font-semibold">
           {isNew ? 'เพิ่มรายการอ้างอิงใหม่' : 'แก้ไขรายการอ้างอิง'}
@@ -212,6 +237,11 @@ export default function AdminSiteReferenceEdit() {
       </div>
 
       <div className="mt-10 flex justify-end">{actions}</div>
+      <SaveConfirmDialog
+        open={confirming}
+        onConfirm={() => void handleSave()}
+        onCancel={() => setConfirming(false)}
+      />
     </form>
   )
 }

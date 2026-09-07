@@ -100,14 +100,24 @@ export default function AdminProjectList() {
                     )}
                   </td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      disabled={busyId === item.id}
-                      onClick={() => void handleDelete(item)}
-                    >
-                      {busyId === item.id ? 'กำลังลบ…' : 'ลบ'}
-                    </Button>
+                    {/*
+                      ปุ่มแก้ไขซ้ำกับลิงก์ที่ชื่อรายการ แต่จงใจให้มี — คนที่ไม่คุ้นตารางแบบนี้
+                      จะมองหาปุ่มในคอลัมน์ "จัดการ" ไม่ได้เดาว่าต้องกดที่ชื่อ และการมีปุ่ม
+                      แก้ไขคู่กับปุ่มลบทำให้ปุ่มลบไม่ใช่ปุ่มเดียวที่กดได้ในแถว
+                    */}
+                    <div className="flex justify-end gap-1">
+                      <Button variant="ghost" size="sm" to={`/admin/projects/${item.id}`}>
+                        แก้ไข
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        disabled={busyId === item.id}
+                        onClick={() => void handleDelete(item)}
+                      >
+                        {busyId === item.id ? 'กำลังลบ…' : 'ลบ'}
+                      </Button>
+                    </div>
                   </td>
                 </tr>
               ))}

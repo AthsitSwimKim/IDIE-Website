@@ -36,6 +36,7 @@ const StyleGuide = lazy(() => import('@/pages/StyleGuide'))
  * (ยังอยู่ในงบ initial JS ≤ 200KB gzip ตามที่ตั้งไว้ตั้งแต่ Phase 1)
  */
 const AdminShell = lazy(() => import('@/pages/admin/AdminShell'))
+const AdminDashboard = lazy(() => import('@/pages/admin/Dashboard'))
 const AdminLogin = lazy(() => import('@/pages/admin/Login'))
 const AdminNewsList = lazy(() => import('@/pages/admin/NewsList'))
 const AdminNewsEdit = lazy(() => import('@/pages/admin/NewsEdit'))
@@ -114,7 +115,7 @@ export const router = createBrowserRouter([
     path: '/admin',
     element: <AdminShell />,
     children: [
-      { index: true, element: <Navigate to="/admin/news" replace /> },
+      { index: true, element: <AdminDashboard /> },
       { path: 'news', element: <AdminNewsList /> },
       { path: 'news/new', element: <AdminNewsEdit /> },
       { path: 'news/:id', element: <AdminNewsEdit /> },
