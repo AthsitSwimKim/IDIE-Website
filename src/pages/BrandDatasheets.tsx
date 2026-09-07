@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import type { Datasheet } from '@/types/content'
-import { Badge, Button, Heading, Section } from '@/components/ui'
+import { ArrowRight, Badge, Button, Heading, Section } from '@/components/ui'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -18,10 +18,14 @@ import { brandDownloadCentre, getBrandById, getDatasheetsByBrand, ui } from '@/d
  *
  * **ทำไมต้องมีช่องค้นหา** — ของ Industronic มี 169 ฉบับ การไล่อ่านทีละหมวดจนเจอ
  * ใช้เวลานานกว่าพิมพ์ชื่อรุ่นที่รู้อยู่แล้วมาก คนที่เปิดหน้านี้ส่วนใหญ่รู้ชื่อรุ่นมาก่อน
+ *
+ * **หมวดพับเก็บไว้ทั้งหมดตอนเปิดหน้า** — กางทุกหมวดพร้อมกันแปลว่าหน้าเดียวมีการ์ด
+ * 169 ใบ ผู้ใช้ต้องเลื่อนผ่านหมวดที่ไม่เกี่ยวข้องกว่าจะถึงหมวดที่ต้องการ
+ * พอพับไว้ รายชื่อหมวดทั้งหมดอยู่ในหน้าจอเดียว เลือกได้ทันทีว่าจะเปิดอันไหน
  */
 export default function BrandDatasheets() {
   const { brandId = '' } = useParams()
-  const { t, locale } = useLocale()
+  const { t } = useLocale()
   const [query, setQuery] = useState('')
 
   const { data: brand, loading } = useAsyncData(() => getBrandById(brandId), [brandId])
@@ -104,22 +108,64 @@ export default function BrandDatasheets() {
 
         {shown === 0 && <p className="text-ink-muted mt-12">{t(ui.datasheets.empty)}</p>}
 
-        {visible.map((group) => (
-          <section key={group.category} className="mt-14 first:mt-12">
-            <h2 className="border-line flex flex-wrap items-baseline gap-3 border-b pb-3">
-              <span className="text-h3 font-semibold">{t(group.name)}</span>
-              <span className="stat-figure text-ink-muted text-sm">{group.items.length}</span>
-            </h2>
+        {/*
+          รูปแบบเดียวกับหน้าดาวน์โหลดของ Industronic เอง — แต่ละหมวดเป็นกล่องมีเส้นขอบ
+          เรียงต่อกัน เส้นขอบของกล่องที่ติดกันซ้อนเป็นเส้นเดียว หัวข้อสีน้ำเงินเข้ม
+          และสว่างขึ้นตอนกาง ลูกศรชี้เฉียงลงเมื่อปิด หมุนเป็นชี้ขวาเมื่อเปิด
+        */}
+        <div className="mt-10 space-y-[-1px]">
+          {visible.map((group) => (
+            /*
+              ใช้ <details> ของเบราว์เซอร์ ไม่ได้เขียน accordion เอง — ได้การกดด้วย
+              คีย์บอร์ด การประกาศสถานะเปิด/ปิดให้โปรแกรมอ่านหน้าจอ และการค้นหาด้วย
+              Ctrl+F ที่กางหมวดให้อัตโนมัติ มาครบโดยไม่ต้องดูแล state เอง
 
-            <ul className="mt-7 grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 lg:grid-cols-4">
-              {group.items.map((sheet) => (
-                <li key={sheet.id}>
-                  <DatasheetCard sheet={sheet} locale={locale} />
-                </li>
-              ))}
-            </ul>
-          </section>
-        ))}
+              **key เปลี่ยนเมื่อสลับระหว่างมีคำค้นกับไม่มี** เพื่อบังคับให้ details
+              สร้างใหม่พร้อมสถานะกางตอนเริ่มค้นหา ไม่งั้นผู้ใช้จะเห็นแถวหมวดที่ปิดอยู่
+              แล้วเข้าใจว่าไม่เจออะไรเลย ส่วนระหว่างพิมพ์ต่อ key ไม่เปลี่ยน
+              หมวดที่ผู้ใช้ปิดเองจึงยังปิดอยู่
+            */
+            <details
+              key={`${group.category}-${needle ? 'search' : 'browse'}`}
+              open={Boolean(needle)}
+              className="border-line group relative border"
+            >
+              {/*
+                **ลูกศรกวาดจากเฉียงเป็นแนวนอนตอนเอาเมาส์ไปแตะ** — ลอกพฤติกรรมจาก
+                หน้าดาวน์โหลดของ Industronic ตรง ๆ (ของเขาหมุน -38.5° พร้อมเปลี่ยนสี
+                ทั้งลูกศรและตัวหนังสือ ใช้เวลา 0.35 วินาทีด้วยเส้นโค้งชะลอท้าย)
+
+                ทำหน้าที่จริง ไม่ใช่แค่ลูกเล่น — บอกว่าแถวนี้กดได้ ตั้งแต่ก่อนกด
+                และปลายลูกศรชี้ไปทางที่เนื้อหาจะกางออกมา
+
+                **transition ต้องระบุ `rotate` ไม่ใช่ `transform`** — Tailwind v4
+                คอมไพล์ `rotate-45` เป็นคุณสมบัติ `rotate` ของ CSS ไม่ได้เขียนลง
+                `transform` เหมือนเวอร์ชันก่อน ถ้าใส่ transform ลูกศรจะกระโดดทันที
+                โดยไม่มีการไล่ ซึ่งดูเหมือนโค้ดพัง มากกว่าดูเป็นของที่ตั้งใจ
+              */}
+              <summary className="focus-visible:outline-primary-600 flex cursor-pointer list-none items-center gap-3.5 px-4 py-4 focus-visible:outline-2 focus-visible:-outline-offset-2 [&::-webkit-details-marker]:hidden">
+                <ArrowRight
+                  aria-hidden="true"
+                  className="text-primary-800 group-hover:text-primary-600 group-open:text-primary-600 size-4 shrink-0 rotate-45 transition-[rotate,color] duration-350 ease-(--ease-out-expo) group-hover:rotate-0 group-open:rotate-0 motion-reduce:transition-none"
+                />
+                <span className="text-primary-800 group-open:text-primary-600 group-hover:text-primary-600 text-lg font-semibold transition-colors duration-350 ease-(--ease-out-expo)">
+                  {t(group.name)}
+                </span>
+                <span className="stat-figure text-ink-muted ml-auto text-sm">
+                  {group.items.length}
+                </span>
+              </summary>
+
+              <ul className="grid grid-cols-2 gap-6 px-4 pb-8 sm:grid-cols-3 lg:grid-cols-4">
+                {group.items.map((sheet) => (
+                  <li key={sheet.id}>
+                    <DatasheetCard sheet={sheet} />
+                  </li>
+                ))}
+              </ul>
+            </details>
+          ))}
+        </div>
       </Section>
 
       <Section tone="dark" spacing="lg" className="blueprint-grid">
@@ -153,7 +199,7 @@ function matches(sheet: Datasheet, needle: string): boolean {
   return haystack.includes(needle) || haystack.replace(/-/g, '').includes(needle.replace(/-/g, ''))
 }
 
-function DatasheetCard({ sheet, locale }: { sheet: Datasheet; locale: string }) {
+function DatasheetCard({ sheet }: { sheet: Datasheet }) {
   const { t } = useLocale()
 
   return (
@@ -172,7 +218,7 @@ function DatasheetCard({ sheet, locale }: { sheet: Datasheet; locale: string }) 
         กรอบสีเทาอ่อนรอบหน้ากระดาษ ทำให้เอกสารพื้นขาวมีขอบเขตชัดบนพื้นเว็บที่ก็ขาว
         และให้ผลเหมือนดูเอกสารวางบนโต๊ะ ซึ่งเป็นภาษาภาพเดียวกับหน้าดาวน์โหลดของผู้ผลิตเอง
       */}
-      <span className="bg-surface-alt border-line block overflow-hidden rounded-md border p-3 transition-shadow duration-(--duration-ui) group-hover:shadow-lift sm:p-4">
+      <span className="bg-surface-alt border-line block overflow-hidden rounded-md border p-4 transition-shadow duration-(--duration-ui) group-hover:shadow-lift sm:p-5">
         <img
           src={sheet.thumb.src}
           alt=""
@@ -190,11 +236,6 @@ function DatasheetCard({ sheet, locale }: { sheet: Datasheet; locale: string }) 
 
       <span className="text-ink-muted mt-1.5 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs">
         {sheet.model && <span className="stat-figure">{sheet.model}</span>}
-        <span>
-          {t(ui.datasheets.pages).replace('{n}', String(sheet.pages))}
-          {' · '}
-          {formatSize(sheet.sizeKb, locale)}
-        </span>
         {/* เอกสารบางฉบับผู้ผลิตออกมาเป็นภาษาเยอรมันเท่านั้น ต้องบอกก่อนกด ไม่ใช่ให้ไปเจอเอง */}
         {sheet.language === 'de' && <Badge tone="neutral">DE</Badge>}
       </span>
@@ -207,11 +248,4 @@ function DatasheetCard({ sheet, locale }: { sheet: Datasheet; locale: string }) 
       <span className="sr-only">{t(ui.datasheets.openPdf)}</span>
     </a>
   )
-}
-
-function formatSize(sizeKb: number, locale: string): string {
-  if (sizeKb < 1024) return `${sizeKb} KB`
-  return `${(sizeKb / 1024).toLocaleString(locale === 'th' ? 'th-TH' : 'en-GB', {
-    maximumFractionDigits: 1,
-  })} MB`
 }

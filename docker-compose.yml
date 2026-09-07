@@ -1,0 +1,57 @@
+# สแต็คสำหรับรันฝั่งหลังบ้านของเว็บ IDIE ด้วย Docker
+#
+# **เปิด Docker Desktop แล้วได้ครบ** — ทั้งสองบริการตั้ง restart: unless-stopped
+# จึงถูกปลุกขึ้นเองทุกครั้งที่ Docker เริ่มทำงาน ไม่ต้องสั่งอะไรเพิ่ม
+# (ก่อนหน้านี้ MySQL ถูกสร้างด้วย docker run มือเปล่าและ API รันด้วย npm
+#  พอ API ดับ หน้าข่าวสารกับผลงานก็ขึ้น "ไม่สามารถโหลดข้อมูลได้" โดยไม่มีใครรู้ตัว)
+#
+# ค่าตั้งทั้งหมดอ่านจาก server/.env ไฟล์เดียว ไม่มีรหัสผ่านอยู่ในไฟล์นี้:
+#   docker compose --env-file server/.env up -d
+#
+# ฝั่งหน้าเว็บยังรันด้วย npm run dev ตามเดิม เพราะต้องการ hot reload ตอนแก้โค้ด
+# และ Vite ส่งต่อ /api ไปที่พอร์ต 3001 ที่ api เปิดไว้อยู่แล้ว
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: idie-mysql
+    restart: unless-stopped
+    # ตั้ง charset ที่ระดับเซิร์ฟเวอร์ ไม่ใช่รายตาราง — ข้อมูลเป็นภาษาไทยทั้งหมด
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:?ต้องมี DB_PASSWORD ใน server/.env}
+      MYSQL_DATABASE: ${DB_NAME:-idie_website}
+    ports:
+      # พอร์ตฝั่งเครื่องคือ 3307 กันชนกับ MySQL ตัวอื่นที่อาจติดตั้งไว้แล้ว
+      - '${DB_PORT:-3307}:3306'
+    volumes:
+      - idie-mysql-data:/var/lib/mysql
+    healthcheck:
+      # api รอจนกว่าฐานข้อมูลจะรับ connection ได้จริง ไม่ใช่แค่คอนเทนเนอร์ขึ้น
+      test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-p${DB_PASSWORD}']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 30s
+
+  api:
+    build: ./server
+    container_name: idie-api
+    restart: unless-stopped
+    env_file: ./server/.env
+    environment:
+      # ทับค่าใน .env ซึ่งชี้ไปที่เครื่องตัวเอง — ในเครือข่ายของ compose
+      # ฐานข้อมูลอยู่ที่ชื่อบริการ db และใช้พอร์ตภายใน 3306 ไม่ใช่ 3307
+      DB_HOST: db
+      DB_PORT: 3306
+    ports:
+      - '${PORT:-3001}:3001'
+    volumes:
+      # รูปที่อัปโหลดเก็บบนดิสก์ของเครื่อง ไม่หายเวลา rebuild image
+      - ./server/uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  idie-mysql-data:

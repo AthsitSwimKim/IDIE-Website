@@ -9,6 +9,41 @@ Node + TypeScript + Express + MySQL · รูปเก็บเป็นไฟ�
 
 ---
 
+## รันด้วย Docker (วิธีที่ใช้อยู่)
+
+เปิด Docker Desktop แล้วได้ครบ ไม่ต้องสั่งอะไรเพิ่ม — ทั้งฐานข้อมูลและ API
+ตั้ง `restart: unless-stopped` ไว้ จึงถูกปลุกขึ้นเองทุกครั้งที่ Docker เริ่มทำงาน
+
+```bash
+docker compose --env-file server/.env up -d
+```
+
+| บริการ | คอนเทนเนอร์ | พอร์ตฝั่งเครื่อง |
+| --- | --- | --- |
+| MySQL | `idie-mysql` | 3307 |
+| API | `idie-api` | 3001 |
+
+ค่าตั้งทั้งหมดอ่านจาก `server/.env` ไฟล์เดียว ไม่มีรหัสผ่านอยู่ใน `docker-compose.yml`
+ในเครือข่ายของ compose ตัว API เห็นฐานข้อมูลที่ชื่อ `db` พอร์ต 3306 —
+compose จึงทับค่า `DB_HOST` กับ `DB_PORT` ใน `.env` ที่ชี้มาที่เครื่องตัวเองให้เอง
+
+**ฝั่งหน้าเว็บยังรันด้วย `npm run dev` ตามเดิม** เพราะต้องการ hot reload ตอนแก้โค้ด
+Vite ส่งต่อ `/api` ไปที่พอร์ต 3001 ที่คอนเทนเนอร์เปิดไว้
+
+คำสั่งที่ใช้บ่อย — **ต้องมี `--env-file server/.env` ทุกครั้ง** ไม่ใช่แค่ตอน `up`
+เพราะ compose ต้องอ่าน `DB_PASSWORD` มาแทนค่าในไฟล์ก่อนจะทำอะไรได้:
+
+```bash
+docker compose --env-file server/.env logs -f api       # ดู log ตอนไล่ปัญหา
+docker compose --env-file server/.env restart api       # รีสตาร์ตหลังแก้ค่าใน .env
+docker compose --env-file server/.env up -d --build api # rebuild หลังเพิ่ม dependency
+```
+
+รูปที่อัปโหลดผูก volume ไว้ที่ `server/uploads` บนเครื่อง จึงไม่หายตอน rebuild
+ส่วนข้อมูลใน MySQL อยู่ใน volume ชื่อ `idiewebsiteclaude_idie-mysql-data`
+
+---
+
 ## ติดตั้งครั้งแรก
 
 ### 1. สร้างฐานข้อมูลและตาราง

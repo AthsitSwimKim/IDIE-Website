@@ -218,7 +218,7 @@ export const ui = {
     searchPlaceholder: { th: 'ชื่อรุ่นหรือชื่อสินค้า', en: 'Model or product name' },
     resultCount: { th: 'พบ {count} รายการ', en: '{count} products' },
     noImage: { th: 'ยังไม่มีภาพสินค้า', en: 'No product image yet' },
-    distributedBrands: { th: 'แบรนด์ผู้จัดจำหน่าย', en: 'Brands we distribute' },
+    distributedBrands: { th: 'แบรนด์ผู้จัดจำหน่าย', en: 'Authorized Brands' },
     showingRange: {
       th: 'แสดง {from}–{to} จากทั้งหมด {total} รายการ',
       en: 'Showing {from}–{to} of {total} products',
@@ -261,7 +261,6 @@ export const ui = {
     totalCount: { th: 'ทั้งหมด {total} ฉบับ', en: '{total} documents' },
     resultCount: { th: 'พบ {shown} จาก {total} ฉบับ', en: '{shown} of {total} documents' },
     empty: { th: 'ไม่พบเอกสารที่ตรงกับคำค้น', en: 'No documents match that search' },
-    pages: { th: '{n} หน้า', en: '{n} pages' },
     openPdf: { th: '(ไฟล์ PDF เปิดในแท็บใหม่)', en: '(PDF, opens in a new tab)' },
   },
 
