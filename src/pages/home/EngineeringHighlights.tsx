@@ -1,8 +1,7 @@
 import { Container, Heading, IconFrame, KeepPhrases, Reveal, Section } from '@/components/ui'
 import type { LocalizedText } from '@/types/content'
-import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
-import { capabilities, getServices, ui } from '@/data'
+import { capabilities, ui } from '@/data'
 
 /**
  * Engineering Highlights — Home section 3
@@ -22,21 +21,20 @@ import { capabilities, getServices, ui } from '@/data'
  */
 const STEP_NOTES: LocalizedText[] = [
   {
-    th: 'สำรวจหน้างาน คำนวณการครอบคลุมเสียงและแสงสัญญาณ แล้วออกแบบระบบให้ตรงกับการจำแนกพื้นที่จริง',
-    en: 'Site survey, acoustic and visual coverage calculation, then a design matched to the actual area classification.',
+    th: 'สำรวจหน้างาน คำนวณระดับความดังเสียง เพื่อออกแบบระบบเตือนภัยให้ครอบคลุมพื้นที่จริง',
+    en: 'Site survey and sound pressure level calculation, so the warning system covers the actual area.',
   },
   {
-    th: 'จัดหาอุปกรณ์จากผู้ผลิตยุโรปและสหรัฐฯ พร้อมตรวจสอบมาตรฐานและใบรับรองที่โครงการกำหนด',
-    en: 'Procurement from European and US manufacturers, with certification and compliance checked against project specifications.',
+    th: 'คัดสรรอุปกรณ์จากผู้ผลิตชั้นนำในยุโรปและสหรัฐฯ พร้อมเอกสารรับรองมาตรฐานความปลอดภัยครบถ้วน',
+    en: 'Equipment selected from leading European and US manufacturers, with full safety certification documents.',
   },
   {
-    th: 'ติดตั้ง ทดสอบการใช้งาน และดูแลหลังส่งมอบ พร้อมอะไหล่และงานเปลี่ยนทดแทน',
-    en: 'Installation, commissioning and long-term support, including spare parts and replacement.',
+    th: 'ติดตั้ง ทดสอบระบบ และดูแลหลังส่งมอบ พร้อมบริการอะไหล่และงานเปลี่ยนทดแทน',
+    en: 'Installation, system testing and post-handover care, with spare parts and replacement service.',
   },
 ]
 export function EngineeringHighlights() {
   const { t } = useLocale()
-  const { data: services } = useAsyncData(getServices)
 
   return (
     <Section tone="alt" spacing="sm" bleed>
@@ -45,16 +43,31 @@ export function EngineeringHighlights() {
           <Heading level={2} eyebrow="ENGINEERING HIGHLIGHTS">
             {t(ui.home.highlightsTitle)}
           </Heading>
-          <p className="text-ink-muted mt-4">{t(ui.home.highlightsLead)}</p>
+          <p className="text-ink-muted mt-4">
+            <KeepPhrases>{t(ui.home.highlightsLead)}</KeepPhrases>
+          </p>
         </div>
 
-        <ol className="border-line bg-surface rounded-card shadow-card mt-10 grid divide-y border md:grid-cols-3 md:divide-x md:divide-y-0">
+        {/*
+          `divide-line` ต้องระบุเอง — ถ้าไม่ใส่ เส้นคั่นจะตกไปใช้ `currentColor`
+          ซึ่งคือสีตัวอักษร (ink เกือบดำ) เส้นจึงเข้มกว่าเส้นอื่นทั้งเว็บที่ใช้ #e2e8f2
+
+          จอแคบคั่นแนวนอน (`divide-y`) จอกว้างสลับเป็นแนวตั้ง (`md:divide-x md:divide-y-0`)
+          การ์ดสามใบเรียงซ้อนกันบนมือถือจึงยังแยกจากกันได้โดยไม่ต้องมีเส้นตั้งมาบีบ
+        */}
+        <ol className="border-line divide-line/55 bg-surface rounded-card shadow-card mt-10 grid divide-y border md:grid-cols-3 md:divide-x md:divide-y-0">
           {capabilities.map((capability, index) => (
             <li key={capability.id}>
               <Reveal delay={index * 70} className="flex h-full flex-col gap-4 p-7">
                 <div className="flex items-center gap-4">
-                  <IconFrame size="sm">
-                    <span className="stat-figure text-primary-600 text-sm font-bold">
+                  <IconFrame size="xs">
+                    {/*
+                      ตัวเลขใช้ text-lg ไม่ใช่ text-sm — กรอบมุมฉากกว้าง 40px เท่ากับ
+                      ความยาวแขนสองข้างพอดี ย่อกรอบลงไม่ได้เพราะแขนจะซ้อนกันจนกลาย
+                      เป็นกล่องทึบ จึงขยายตัวเลขให้เต็มกรอบแทน ช่องว่างบน-ล่างในกรอบ
+                      ลดจาก 8px เหลือราว 4px ตัวเลขจึงไม่ลอย
+                    */}
+                    <span className="stat-figure text-primary-600 text-lg font-bold">
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </IconFrame>
@@ -70,13 +83,6 @@ export function EngineeringHighlights() {
           ))}
         </ol>
 
-        {services && (
-          <p className="text-ink-muted mt-6 text-sm">
-            {t({ th: 'ครอบคลุม', en: 'Across' })}{' '}
-            <strong className="text-ink font-semibold">{services.length}</strong>{' '}
-            {t({ th: 'กลุ่มบริการหลัก', en: 'core service groups' })}
-          </p>
-        )}
       </Container>
     </Section>
   )

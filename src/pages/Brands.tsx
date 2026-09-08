@@ -134,7 +134,13 @@ export default function Brands() {
                 )}
 
                 <div className="mt-8 flex flex-wrap gap-3">
-                  <Button to={`/products?brand=${brand.id}`} withArrow>
+                  {/*
+                    ต่อ #product-filters เหมือนการ์ดแบรนด์บนหน้าแรก — หน้าสินค้าจะกระโดดไป
+                    หยุดที่แถวตัวกรองตั้งแต่เฟรมแรก (ดู FILTERS_ID ใน ProductList.tsx)
+                    คนที่กดมาจากหน้านี้จึงเห็นทันทีว่ากำลังกรองแบรนด์ไหนอยู่ ไม่ใช่ตกลงมา
+                    กลางรายการโดยไม่รู้ว่าตัวกรองถูกตั้งไว้แล้ว
+                  */}
+                  <Button to={`/products?brand=${brand.id}#product-filters`} withArrow>
                     {t(ui.brandsPage.viewProducts)}
                   </Button>
                   {/*

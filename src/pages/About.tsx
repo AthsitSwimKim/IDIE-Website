@@ -1,3 +1,4 @@
+import { ExpandIcon } from '@/components/ui/icons'
 import {
   Badge,
   Button,
@@ -194,7 +195,6 @@ export default function About() {
             {t(ui.about.certificatesHeading)}
           </Heading>
           <p className="text-ink-muted mt-4 max-w-prose">{t(ui.about.certificatesLead)}</p>
-          <p className="text-ink-muted mt-1 text-sm">{t(ui.about.certificatesViewFull)}</p>
 
           {/*
             แสดงเป็นแถวของเอกสาร ไม่ใช่การ์ดใบใหญ่ — หน้าที่ของส่วนนี้คือให้ผู้อ่าน
@@ -204,7 +204,15 @@ export default function About() {
             จำกัดความสูงเท่ากันทุกใบด้วย object-contain เพราะเอกสารมีทั้งแนวนอน (Industronic)
             และแนวตั้ง (FHF) ถ้าไม่คุมความสูงแถวจะเหลื่อมกันจนดูเหมือนวางผิด
           */}
-          <ul className="mt-8 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
+          {/*
+            ตะแกรงสองคอลัมน์เต็มความกว้างคอนเทนเนอร์ — ขอบซ้ายของการ์ดใบแรกตรงกับ
+            แนวหัวข้อ ขอบขวาของใบที่สองชนแนวขวาสุดของหน้า ไม่เหลือช่องโหว่เหมือนตอน
+            ใช้สามคอลัมน์กับเอกสารสองฉบับ
+
+            เอกสารฉบับที่สามในอนาคตจะตกลงแถวล่างชิดซ้าย ซึ่งถูกต้องแล้วสำหรับตะแกรง —
+            ถ้าอยากให้แถวที่ไม่เต็มอยู่กึ่งกลางต้องกลับไปใช้ flex-wrap แทน
+          */}
+          <ul className="mt-8 grid gap-x-8 gap-y-10 sm:grid-cols-2">
             {certificates.map((cert) => (
               <li key={cert.id}>
                 {cert.image && (
@@ -220,12 +228,37 @@ export default function About() {
                       เป็น <button> ไม่ใช่ <a> เพราะไม่ได้พาไปที่อื่น แค่เปิดของบนหน้าเดิม
                       ลิงก์ที่ไม่พาไปไหนทำให้ผู้ใช้ screen reader เข้าใจผิดว่ากำลังจะออกจากหน้า
 
-                      กล่องสูงเท่ากันทุกใบ + จัดภาพชิดล่าง — เอกสารแนวนอนกับแนวตั้งจึงยืนบน
-                      เส้นฐานเดียวกันเหมือนวางเรียงบนชั้น และคำบรรยายใต้ภาพอยู่ระดับเดียวกันทั้งแถว
+                      การ์ดล็อกสัดส่วน 4:3 ทุกใบ ขนาดกรอบจึงเท่ากันเป๊ะไม่ว่าเอกสารข้างในจะเป็น
+                      แนวนอนหรือแนวตั้ง คำบรรยายใต้การ์ดจึงอยู่ระดับเดียวกันทั้งแถวโดยอัตโนมัติ
+                      ตัวเอกสารจัดกึ่งกลางการ์ด ฉบับแนวตั้งจะเหลือที่ว่างซ้าย-ขวาเล็กน้อย
+                      ซึ่งเป็นระเบียบกว่าการปล่อยให้กรอบสูงไม่เท่ากันตามสัดส่วนกระดาษ
                     */
                     aria-label={t(ui.about.certificatesOpen).replace('{name}', t(cert.name))}
-                    className="group flex h-72 w-full cursor-pointer items-end justify-center"
+                    className="border-line bg-surface-alt rounded-card group relative flex aspect-4/3 w-full cursor-pointer items-center justify-center border p-5 transition-[translate,box-shadow] duration-(--duration-ui) ease-(--ease-out-expo) hover:-translate-y-1 hover:shadow-lift motion-reduce:translate-none sm:p-7"
                   >
+                    {/*
+                      ตั้ง transition เป็น `translate` ไม่ใช่ `transform` — Tailwind v4 คอมไพล์
+                      `-translate-y-1` เป็นคุณสมบัติ `translate` เดี่ยว ๆ (วัดแล้วได้ `translate: 0 -4px`
+                      ส่วน `transform` ยังเป็น none) ถ้าเขียน `transition-[transform,…]` การ์ดจะ
+                      กระตุกขึ้นทันทีแทนที่จะไถลขึ้น และ `motion-reduce:transform-none` ก็จะไม่มีผล
+
+                      ไอคอนขยายโผล่ตอนชี้เมาส์ — ประโยค "กดที่เอกสารเพื่อดูขนาดเต็ม"
+                      อยู่บนสุดของหมวด คนที่เลื่อนผ่านมาแล้วอาจไม่ทันอ่าน ไอคอนที่จุดนั้น
+                      บอกซ้ำตรงตำแหน่งที่มือกำลังจะกดพอดี
+
+                      `aria-hidden` เพราะเป็นการบอกซ้ำด้วยภาพ ปุ่มมีชื่อจาก aria-label อยู่แล้ว
+                      ผู้ใช้ screen reader ไม่ควรได้ยินคำว่า "ขยาย" ซ้อนเข้ามาอีกชั้น
+
+                      ต้องมี `z-10` — ภาพเอกสารมี `drop-shadow` ซึ่งทำให้มันสร้าง stacking
+                      context ของตัวเองแล้วขึ้นไปอยู่ชั้นเดียวกับ element ที่ absolute
+                      พอมันอยู่หลังกว่าใน DOM จึงวาดทับไอคอนนี้ (เห็นเป็นวงกลมโดนมุมเอกสารบัง)
+                    */}
+                    <span
+                      aria-hidden="true"
+                      className="border-line bg-surface text-primary-600 absolute top-3 right-3 z-10 flex size-9 items-center justify-center rounded-full border opacity-0 transition-opacity duration-(--duration-ui) group-hover:opacity-100"
+                    >
+                      <ExpandIcon className="size-4" strokeWidth={1.75} />
+                    </span>
                     <img
                       src={cert.image.src}
                       srcSet={cert.image.srcSet}
@@ -235,8 +268,20 @@ export default function About() {
                       height={cert.image.height}
                       loading="lazy"
                       decoding="async"
-                      /* เส้นขอบบาง ๆ จำเป็นจริง — เอกสารพื้นขาวบนพื้นขาวมองไม่ออกว่าขอบกระดาษอยู่ไหน */
-                      className="border-line max-h-full w-auto border object-contain transition-shadow duration-(--duration-ui) group-hover:shadow-lift"
+                      /*
+                        `size-full` + `object-contain` ไม่ใช่ `max-h-full w-auto` —
+                        ภาพเป็นลูกของ flex container การใส่ max ทั้งสองแกนทำให้เบราว์เซอร์
+                        บีบเฉพาะแกนเดียวจนสัดส่วนเพี้ยน (วัดได้: ใบแนวตั้ง 565×800 ถูกวาง
+                        ในกล่อง 518×374) แบบนี้กล่องเต็มพื้นที่การ์ดแล้วให้ object-contain
+                        จัดกึ่งกลางกับคุมสัดส่วนแทน ซึ่งเป็นงานที่มันทำได้ถูกต้องเสมอ
+
+                        ไม่มีเส้นขอบที่ตัวภาพแล้ว — ขอบจะไปล้อมกล่องที่ใหญ่กว่าตัวกระดาษ
+
+                        เงาใช้ `drop-shadow` ไม่ใช่ `shadow` (box-shadow) ด้วยเหตุผลเดียวกัน —
+                        box-shadow วาดรอบ**กล่อง**ซึ่งใหญ่กว่ากระดาษ ส่วน drop-shadow เดินตาม
+                        รูปทรงที่วาดจริง เงาจึงล้อมขอบกระดาษพอดีทั้งใบแนวนอนและแนวตั้ง
+                      */
+                      className="size-full object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
                     />
                   </button>
                 )}

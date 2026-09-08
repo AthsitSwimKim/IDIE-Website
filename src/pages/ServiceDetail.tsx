@@ -53,7 +53,23 @@ export default function ServiceDetail() {
               meta description ของหน้าด้วย จึงเน้นให้ต่างจากย่อหน้าที่เหลือ
               ส่วนที่ตามมาคือเนื้อหาเต็มจาก `serviceDepth.overviewDetail`
             */}
-            <p className="text-ink mt-5 text-lg leading-relaxed">{t(service.overview)}</p>
+            {/*
+              จัดชิดขอบทั้งสองข้างแบบ **inter-character** ไม่ใช่ค่าเริ่มต้น inter-word
+
+              ภาษาไทยไม่มีช่องว่างระหว่างคำ เบราว์เซอร์จึงยืดได้เฉพาะช่องว่างที่มีอยู่จริง
+              ในประโยค บรรทัดที่มีช่องว่างอยู่สองสามจุดต้องรับส่วนต่างทั้งบรรทัดไว้ที่จุด
+              เหล่านั้น กลายเป็นหลุมกลางบรรทัด (วัดจากหน้าจริงก่อนแก้: ช่องว่างปกติ 9px
+              แต่บางช่องถูกยืดเป็น 42–53px และเครื่องหมาย — ถูกดันไปลอยท้ายบรรทัด)
+
+              `inter-character` กระจายส่วนต่างไปตามช่องระหว่างตัวอักษรทุกตัวแทน ซึ่งเป็น
+              วิธีเดียวกับที่ใช้จัดข้อความจีน-ญี่ปุ่น วัดหลังแก้: ช่องว่างกว้างสุดเหลือ 6px
+
+              เบราว์เซอร์ที่ไม่รองรับ (Safari) จะตกกลับไปเป็น inter-word คือได้ขอบขวาตรง
+              เหมือนเดิมแต่มีหลุมแบบก่อนแก้ ไม่ได้พังลงไปกว่าที่เป็นอยู่
+            */}
+            <p className="text-ink mt-5 text-justify text-lg leading-relaxed [text-justify:inter-character]">
+              {t(service.overview)}
+            </p>
 
             {/*
               mt-6 (24px) ไม่ใช่ mt-4 — ระยะระหว่างย่อหน้าต้อง**มากกว่าระยะบรรทัด
@@ -62,7 +78,10 @@ export default function ServiceDetail() {
               ทั้งสี่ย่อหน้าจึงอ่านต่อกันเป็นพืดทั้งที่เป็นคนละประเด็น
             */}
             {depth?.overviewDetail.map((paragraph) => (
-              <p key={paragraph.en} className="text-ink-muted mt-6 leading-relaxed">
+              <p
+                key={paragraph.en}
+                className="text-ink-muted mt-6 text-justify leading-relaxed [text-justify:inter-character]"
+              >
                 {t(paragraph)}
               </p>
             ))}
@@ -171,13 +190,18 @@ export default function ServiceDetail() {
 
           <Section>
             <Heading level={2}>{t(ui.serviceDetail.notesHeading)}</Heading>
-            <p className="text-ink-muted mt-4 max-w-prose">{t(ui.serviceDetail.notesLead)}</p>
+            {/* จัดชิดขอบแบบ inter-character เหมือนหมวดภาพรวมงาน — เหตุผลเต็มอยู่ที่นั่น */}
+            <p className="text-ink-muted mt-4 max-w-prose text-justify [text-justify:inter-character]">
+              {t(ui.serviceDetail.notesLead)}
+            </p>
 
             <div className="mt-8 grid gap-6 lg:grid-cols-3">
               {depth.technicalNotes.map((note) => (
                 <article key={note.title.en} className="border-line rounded-card border p-6">
                   <h3 className="font-semibold">{t(note.title)}</h3>
-                  <p className="text-ink-muted mt-3 text-sm leading-relaxed">{t(note.body)}</p>
+                  <p className="text-ink-muted mt-3 text-justify text-sm leading-relaxed [text-justify:inter-character]">
+                    {t(note.body)}
+                  </p>
                 </article>
               ))}
             </div>

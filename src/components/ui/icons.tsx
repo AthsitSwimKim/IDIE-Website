@@ -131,6 +131,23 @@ export function SpinnerIcon(props: SVGProps<SVGSVGElement>) {
   )
 }
 
+/**
+ * ขยายดูเต็มจอ — ลูกศรชี้ออกสี่มุม
+ *
+ * เลือกมุมฉากสี่มุมแทนแว่นขยาย เพราะเข้ากับ motif corner-bracket ที่ใช้ทั้งเว็บ
+ * และสื่อว่า "เปิดดูใหญ่ขึ้นในที่เดิม" ไม่ใช่ "ค้นหา" ซึ่งแว่นขยายมักถูกอ่านแบบนั้น
+ */
+export function ExpandIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M9 3H5a2 2 0 0 0-2 2v4" />
+      <path d="M15 3h4a2 2 0 0 1 2 2v4" />
+      <path d="M15 21h4a2 2 0 0 0 2-2v-4" />
+      <path d="M9 21H5a2 2 0 0 1-2-2v-4" />
+    </svg>
+  )
+}
+
 /** เอกสารที่ดาวน์โหลดได้ — แผ่นกระดาษพับมุมพร้อมลูกศรลง */
 export function DocumentIcon(props: SVGProps<SVGSVGElement>) {
   return (

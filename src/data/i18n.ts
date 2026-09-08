@@ -152,8 +152,8 @@ export const ui = {
 
     highlightsTitle: { th: 'สิ่งที่เราทำให้ลูกค้า', en: 'What we do for our customers' },
     highlightsLead: {
-      th: 'ครบตั้งแต่ออกแบบระบบ จัดหาอุปกรณ์ที่ผ่านมาตรฐาน ไปจนถึงติดตั้งและดูแลหลังส่งมอบ',
-      en: 'From system design through certified equipment procurement to installation and long-term support.',
+      th: 'ครบวงจรตั้งแต่การออกแบบเชิงวิศวกรรม จัดหาอุปกรณ์มาตรฐาน จนถึงการติดตั้งและดูแลหลังส่งมอบ',
+      en: 'End to end — engineering design, certified equipment procurement, installation and long-term support.',
     },
 
     /**
@@ -186,8 +186,8 @@ export const ui = {
     },
 
     whyLead: {
-      th: 'สี่ข้อนี้ตรวจสอบได้จากข้อมูลบริษัท ไม่ใช่คำโฆษณา',
-      en: 'All four are verifiable from company records, not marketing claims.',
+      th: 'มาตรฐานและความเชี่ยวชาญที่ลูกค้าระดับอุตสาหกรรมไว้วางใจ',
+      en: 'Standards and expertise trusted by industrial customers.',
     },
 
     statsTitle: { th: 'ตัวเลขที่ตรวจสอบได้', en: 'Numbers you can verify' },
@@ -281,7 +281,6 @@ export const ui = {
       ที่ขนาดบนการ์ด คำใบ้จึงเป็นข้อความที่มองเห็น ไม่ใช่แค่ tooltip
       {name} ถูกแทนด้วยชื่อบริการตอน render
     */
-    diagramHint: { th: 'กดที่ผังเพื่อดูขนาดเต็ม', en: 'Tap the diagram to view it full size' },
     diagramOpen: { th: 'ดูผัง{name} ขนาดเต็ม', en: 'View the full-size {name} diagram' },
   },
 
@@ -333,10 +332,6 @@ export const ui = {
     certificatesOpen: {
       th: 'ดูเอกสารขนาดเต็ม: {name}',
       en: 'View full-size document: {name}',
-    },
-    certificatesViewFull: {
-      th: 'กดที่เอกสารเพื่อดูขนาดเต็ม',
-      en: 'Select a document to view it full size',
     },
   },
 
@@ -435,8 +430,8 @@ export const ui = {
   careers: {
     title: { th: 'ร่วมงานกับเรา', en: 'Careers' },
     lead: {
-      th: 'งานของเราคือระบบที่ต้องทำงานตอนเกิดเหตุจริง ไม่ใช่ระบบที่ติดตั้งไว้เฉย ๆ',
-      en: 'We build systems that have to work in an emergency — not systems that just sit there.',
+      th: 'เป็นส่วนหนึ่งของทีมผู้เชี่ยวชาญด้านระบบสื่อสารอุตสาหกรรม และเติบโตไปพร้อมกับโครงการชั้นนำระดับประเทศ',
+      en: 'Join a team of industrial communication specialists and grow alongside leading projects nationwide.',
     },
     openPositions: { th: 'ตำแหน่งที่เปิดรับ', en: 'Open positions' },
     responsibilities: { th: 'หน้าที่ความรับผิดชอบ', en: 'Responsibilities' },
@@ -454,8 +449,8 @@ export const ui = {
   contact: {
     title: { th: 'ติดต่อเรา', en: 'Contact us' },
     lead: {
-      th: 'ส่งสเปกงาน แบบผัง หรือคำถามทางเทคนิคมาได้ ทีมวิศวกรจะตอบกลับพร้อมข้อเสนอที่ตรงกับหน้างาน',
-      en: 'Send us a specification, layout or technical question and our engineers will come back with a proposal that fits the site.',
+      th: 'ปรึกษาหรือส่งรายละเอียดสเปก แบบผังงาน และข้อซักถามทางเทคนิค ทีมวิศวกรพร้อมตอบกลับด้วยแนวทางที่ตรงกับพื้นที่ใช้งานจริง',
+      en: 'Ask us anything, or send your specifications, layout drawings and technical questions. Our engineers will reply with an approach that fits the way the area is actually used.',
     },
     infoHeading: { th: 'ข้อมูลติดต่อ', en: 'Contact details' },
     formHeading: { th: 'แบบฟอร์มสอบถาม', en: 'Send an inquiry' },

@@ -39,7 +39,12 @@ export const company: CompanyInfo = {
     en: '69/13 Chanthaudom Road, Tambol Choengnoen, Muang Rayong, Rayong 21000, Thailand',
   },
   phone: ['+66 38 623000', '+66 87 616 0216'],
-  email: ['sales@idindustrial.com'],
+  /*
+    อีเมลที่สองเจ้าของเว็บแจ้งมาเอง (8 ก.ย. 2026) ไม่ได้อยู่บนเว็บเดิม
+    เรียงต่อท้ายไม่ใช่ขึ้นก่อน เพราะ sales@ เป็นอีเมลบริษัทที่ลูกค้าใช้ติดต่ออยู่แล้ว
+    ทั้งหน้าติดต่อเราและท้ายเว็บวนแสดงทุกค่าในอาเรย์นี้ ใส่ที่เดียวขึ้นทั้งสองที่
+  */
+  email: ['sales@idindustrial.com', 'pitthaya.rayong@gmail.com'],
   businessHours: {
     // TODO: confirm with IDIE — เว็บเดิมไม่ระบุเวลาทำการ
     th: '',

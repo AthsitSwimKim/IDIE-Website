@@ -1,4 +1,4 @@
-import { Badge, Button, Heading, Section } from '@/components/ui'
+import { Badge, Button, Heading, KeepPhrases, Section } from '@/components/ui'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
@@ -25,7 +25,9 @@ export default function Careers() {
         <Heading level={1} eyebrow="CAREERS">
           {t(ui.careers.title)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose text-lg">{t(ui.careers.lead)}</p>
+        <p className="text-ink-muted mt-4 max-w-prose text-lg">
+          <KeepPhrases>{t(ui.careers.lead)}</KeepPhrases>
+        </p>
       </Section>
 
       <Section>

@@ -289,7 +289,7 @@ export const capabilities = [
   },
   {
     id: 'procurement',
-    name: { th: 'จัดหาอุปกรณ์', en: 'Procurement' },
+    name: { th: 'จัดหาอุปกรณ์มาตรฐาน', en: 'Certified Procurement' },
   },
   {
     id: 'service',
