@@ -373,6 +373,11 @@ export const ui = {
       ข้อความสองชุดนี้ผู้เข้าชมเป็นคนอ่าน ไม่ใช่ทีมงาน — ห้ามใส่สถานะภายในของโครงการ
       หรือรายการข้อมูลที่ยังรอจากบริษัท เพราะหน้านี้ตกมาที่บล็อกนี้ตอนหลังบ้านล่มด้วย
     */
+    /** {from}/{to}/{total} ถูกแทนค่าตอน render — ดูรูปแบบเดียวกันที่ ui.products.showingRange */
+    showingRange: {
+      th: 'แสดง {from}–{to} จากทั้งหมด {total} ผลงาน',
+      en: 'Showing {from}–{to} of {total} projects',
+    },
     emptyTitle: { th: 'ยังไม่มีผลงานเผยแพร่ในขณะนี้', en: 'No projects published at the moment' },
     emptyBody: {
       th: 'เรากำลังรวบรวมโครงการที่ส่งมอบแล้วเพื่อเผยแพร่ ระหว่างนี้ดูรายชื่อองค์กรที่เคยร่วมงานกับเราได้ที่หน้าลูกค้าอ้างอิง',
@@ -397,6 +402,10 @@ export const ui = {
     lead: {
       th: 'ข่าวสารและความเคลื่อนไหวของบริษัท',
       en: 'Company news and updates.',
+    },
+    showingRange: {
+      th: 'แสดง {from}–{to} จากทั้งหมด {total} ข่าว',
+      en: 'Showing {from}–{to} of {total} articles',
     },
     /* เช่นเดียวกับหน้าผลงาน — ข้อความที่ผู้เข้าชมอ่าน ไม่ใช่สถานะงานของทีม */
     emptyTitle: { th: 'ยังไม่มีข่าวสารใหม่ในขณะนี้', en: 'No news updates at the moment' },

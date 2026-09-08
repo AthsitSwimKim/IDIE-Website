@@ -1,5 +1,5 @@
 import { useSearchParams } from 'react-router-dom'
-import { Button, EmptyState, Heading, Section } from '@/components/ui'
+import { Button, EmptyState, Heading, Pagination, Section } from '@/components/ui'
 import { AlertCircleIcon, LayersIcon, RefreshIcon } from '@/components/ui/icons'
 import { ProjectCard } from '@/components/sections/ProjectCard'
 import { Seo } from '@/components/layout/Seo'
@@ -24,6 +24,18 @@ import { cn } from '@/utils/cn'
  * **แสดงเฉพาะอุตสาหกรรมที่มีผลงานจริง** ไม่ใช่ทั้ง 8 กลุ่ม — ปุ่มกรองที่กดแล้ว
  * ได้หน้าว่างทุกครั้งทำให้ผู้อ่านคิดว่าเว็บพัง
  */
+
+/** จุดที่พาสายตากลับมาหลังเปลี่ยนหน้า — บล็อกผลลัพธ์ ไม่ใช่หัวหน้าหรือแถวตัวกรอง */
+const RESULTS_ID = 'project-results'
+
+/**
+ * จำนวนผลงานต่อหน้า
+ *
+ * 12 ลงตัวกับตะแกรงทั้งสามขนาด (1 / 2 / 3 คอลัมน์) แถวสุดท้ายจึงไม่มีช่องโหว่
+ * น้อยกว่าหน้าสินค้าที่ใช้ 24 เพราะการ์ดผลงานสูงกว่าการ์ดสินค้าเกือบเท่าตัว
+ */
+const PAGE_SIZE = 12
+
 export default function ProjectList() {
   const { t } = useLocale()
   const [params, setParams] = useSearchParams()
@@ -39,11 +51,38 @@ export default function ProjectList() {
     ? (projects ?? []).filter((project) => project.industry === industry)
     : (projects ?? [])
 
-  function setIndustry(slug?: string) {
+  const total = filtered.length
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE))
+  /*
+    บีบเลขหน้าให้อยู่ในช่วงที่มีจริง — คนที่อยู่หน้า 3 แล้วกดกรองจนเหลือของหน้าเดียว
+    ต้องเห็นของ ไม่ใช่เห็นตะแกรงว่างโดยไม่รู้ว่าเกิดอะไรขึ้น
+  */
+  const page = Math.min(Math.max(Number(params.get('page')) || 1, 1), totalPages)
+  const from = (page - 1) * PAGE_SIZE
+  const visible = filtered.slice(from, from + PAGE_SIZE)
+
+  function setParam(key: string, value?: string) {
     const next = new URLSearchParams(params)
-    if (slug) next.set('industry', slug)
-    else next.delete('industry')
+    if (value) next.set(key, value)
+    else next.delete(key)
+    // เปลี่ยนตัวกรองแล้วต้องกลับไปหน้าแรก ไม่งั้นผลลัพธ์ชุดใหม่จะเปิดค้างกลางเล่ม
+    if (key !== 'page') next.delete('page')
     setParams(next, { replace: true })
+  }
+
+  function setIndustry(slug?: string) {
+    setParam('industry', slug)
+  }
+
+  /**
+   * เปลี่ยนหน้าแล้วพากลับขึ้นไปที่หัวรายการ ไม่ปล่อยให้ค้างอยู่ท้ายหน้าเดิม
+   *
+   * ไม่ระบุ behavior โดยตั้งใจ ให้ตกไปใช้ `scroll-behavior` ของ CSS ซึ่งสลับเป็น auto
+   * ให้เองเมื่อผู้ใช้เปิด prefers-reduced-motion — เหตุผลเดียวกับหน้าสินค้า
+   */
+  function goToPage(value: number) {
+    setParam('page', value > 1 ? String(value) : undefined)
+    document.getElementById(RESULTS_ID)?.scrollIntoView()
   }
 
   return (
@@ -83,18 +122,40 @@ export default function ProjectList() {
         )}
 
         {projects && projects.length > 0 && (
-          <ul
-            className={cn(
-              'grid gap-5 sm:grid-cols-2 lg:grid-cols-3',
-              available.length > 1 && 'mt-8',
+          <div id={RESULTS_ID} className={cn(available.length > 1 && 'mt-8')}>
+            <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {visible.map((project) => (
+                <li key={project.slug}>
+                  <ProjectCard project={project} />
+                </li>
+              ))}
+            </ul>
+
+            {/*
+              ข้อความบอกตำแหน่งอยู่ซ้าย ปุ่มเปลี่ยนหน้าอยู่ขวา — วางแบบเดียวกับหน้าสินค้า
+              ทั้งเว็บจึงมีจังหวะเดียวกัน ไม่ต้องเรียนรู้ใหม่ทีละหน้า
+            */}
+            {totalPages > 1 && (
+              <div className="mt-12 flex flex-wrap items-center justify-between gap-4">
+                <p className="text-ink-muted text-sm">
+                  {t(ui.projects.showingRange)
+                    .replace('{from}', String(from + 1))
+                    .replace('{to}', String(from + visible.length))
+                    .replace('{total}', String(total))}
+                </p>
+                <Pagination
+                  page={page}
+                  totalPages={totalPages}
+                  onChange={goToPage}
+                  label={t(ui.pagination.label)}
+                  previousLabel={t(ui.pagination.previous)}
+                  nextLabel={t(ui.pagination.next)}
+                  pageLabel={t(ui.pagination.page)}
+                  className="ml-auto"
+                />
+              </div>
             )}
-          >
-            {filtered.map((project) => (
-              <li key={project.slug}>
-                <ProjectCard project={project} />
-              </li>
-            ))}
-          </ul>
+          </div>
         )}
 
         {/*
