@@ -54,7 +54,7 @@ export function HomeServices() {
                 </span>
 
                 <span className="text-ink-muted flex-1 text-sm">
-                  {t(service.shortDescription)}
+                  <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
                 </span>
 
                 <ArrowRight

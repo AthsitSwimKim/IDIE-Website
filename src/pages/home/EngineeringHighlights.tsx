@@ -1,4 +1,5 @@
-import { Container, Heading, IconFrame, Reveal, Section } from '@/components/ui'
+import { Container, Heading, IconFrame, KeepPhrases, Reveal, Section } from '@/components/ui'
+import type { LocalizedText } from '@/types/content'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
 import { capabilities, getServices, ui } from '@/data'
@@ -12,6 +13,27 @@ import { capabilities, getServices, ui } from '@/data'
  * ใช้ layout แบบ strip ที่คร่อมรอยต่อระหว่าง section ตาม mockup ที่ลูกค้าอนุมัติ —
  * ต่างจาก grid ธรรมดาและช่วยเชื่อม Company Profile เข้ากับ Services
  */
+
+/**
+ * คำอธิบายของแต่ละขั้น เรียงตามลำดับที่แสดง
+ *
+ * ย้ายออกมาจากใน JSX ที่เดิมเขียนเป็น `index === 0 && …` สามชุดซ้อนกัน เพื่อให้ครอบ
+ * ด้วย `KeepPhrases` ได้ — คอมโพเนนต์นั้นรับ**สตริงเดียว** ไม่รับ element ซ้อน
+ */
+const STEP_NOTES: LocalizedText[] = [
+  {
+    th: 'สำรวจหน้างาน คำนวณการครอบคลุมเสียงและแสงสัญญาณ แล้วออกแบบระบบให้ตรงกับการจำแนกพื้นที่จริง',
+    en: 'Site survey, acoustic and visual coverage calculation, then a design matched to the actual area classification.',
+  },
+  {
+    th: 'จัดหาอุปกรณ์จากผู้ผลิตยุโรปและสหรัฐฯ พร้อมตรวจสอบมาตรฐานและใบรับรองที่โครงการกำหนด',
+    en: 'Procurement from European and US manufacturers, with certification and compliance checked against project specifications.',
+  },
+  {
+    th: 'ติดตั้ง ทดสอบการใช้งาน และดูแลหลังส่งมอบ พร้อมอะไหล่และงานเปลี่ยนทดแทน',
+    en: 'Installation, commissioning and long-term support, including spare parts and replacement.',
+  },
+]
 export function EngineeringHighlights() {
   const { t } = useLocale()
   const { data: services } = useAsyncData(getServices)
@@ -38,23 +60,11 @@ export function EngineeringHighlights() {
                   </IconFrame>
                   <h3 className="font-semibold">{t(capability.name)}</h3>
                 </div>
-                <p className="text-ink-muted text-sm">
-                  {index === 0 &&
-                    t({
-                      th: 'สำรวจหน้างาน คำนวณการครอบคลุมเสียงและแสงสัญญาณ แล้วออกแบบระบบให้ตรงกับการจำแนกพื้นที่จริง',
-                      en: 'Site survey, acoustic and visual coverage calculation, then a design matched to the actual area classification.',
-                    })}
-                  {index === 1 &&
-                    t({
-                      th: 'จัดหาอุปกรณ์จากผู้ผลิตยุโรปและสหรัฐฯ พร้อมตรวจสอบมาตรฐานและใบรับรองที่โครงการกำหนด',
-                      en: 'Procurement from European and US manufacturers, with certification and compliance checked against project specifications.',
-                    })}
-                  {index === 2 &&
-                    t({
-                      th: 'ติดตั้ง ทดสอบการใช้งาน และดูแลหลังส่งมอบ พร้อมอะไหล่และงานเปลี่ยนทดแทน',
-                      en: 'Installation, commissioning and long-term support, including spare parts and replacement.',
-                    })}
-                </p>
+                {STEP_NOTES[index] && (
+                  <p className="text-ink-muted text-sm">
+                    <KeepPhrases>{t(STEP_NOTES[index])}</KeepPhrases>
+                  </p>
+                )}
               </Reveal>
             </li>
           ))}

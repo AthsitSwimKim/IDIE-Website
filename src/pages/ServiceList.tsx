@@ -59,7 +59,9 @@ export default function ServiceList() {
                 <Heading level={2}>
                   <KeepPhrases>{t(service.name)}</KeepPhrases>
                 </Heading>
-                <p className="text-ink-muted mt-4 max-w-prose">{t(service.shortDescription)}</p>
+                <p className="text-ink-muted mt-4 max-w-prose">
+                  <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
+                </p>
 
                 <h3 className="text-eyebrow text-ink-muted mt-7 uppercase">
                   {t(ui.serviceDetail.scopeHeading)}

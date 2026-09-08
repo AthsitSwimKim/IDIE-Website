@@ -3,6 +3,7 @@ import {
   Button,
   Heading,
   ImageLightbox,
+  KeepPhrases,
   KeepWords,
   PendingContent,
   Section,
@@ -138,7 +139,9 @@ export default function About() {
               </span>
               <div>
                 <h3 className="font-semibold">{t(service.name)}</h3>
-                <p className="text-ink-muted mt-1 text-sm">{t(service.shortDescription)}</p>
+                <p className="text-ink-muted mt-1 text-sm">
+                  <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
+                </p>
               </div>
             </li>
           ))}

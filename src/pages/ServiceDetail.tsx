@@ -1,5 +1,5 @@
 import { useParams } from 'react-router-dom'
-import { Badge, Button, CoverImage, Heading, Section } from '@/components/ui'
+import { Badge, Button, CoverImage, Heading, KeepPhrases, Section } from '@/components/ui'
 import { CheckIcon } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
@@ -33,7 +33,9 @@ export default function ServiceDetail() {
         <Heading level={1} eyebrow="SERVICE">
           {t(service.name)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose text-lg">{t(service.shortDescription)}</p>
+        <p className="text-ink-muted mt-4 max-w-prose text-lg">
+          <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
+        </p>
         <div className="mt-8">
           <Button to="/services" variant="ghost">
             {t(ui.serviceDetail.backToServices)}
