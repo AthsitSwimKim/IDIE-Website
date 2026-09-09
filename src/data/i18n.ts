@@ -297,8 +297,8 @@ export const ui = {
   about: {
     title: { th: 'เกี่ยวกับเรา', en: 'About us' },
     lead: {
-      th: 'ประวัติบริษัท ขอบเขตงาน ทีมงาน และมาตรฐานที่ IDIE ยึดถือ',
-      en: 'Company background, scope of work, team and the standards IDIE works to.',
+      th: 'มุ่งมั่นส่งมอบโซลูชันวิศวกรรมที่แม่นยำ พร้อมมาตรฐานความปลอดภัยสูงสุดสำหรับโรงงานอุตสาหกรรม',
+      en: 'Committed to delivering precise engineering solutions with the highest safety standards for industrial plants.',
     },
     profileHeading: { th: 'ข้อมูลบริษัท', en: 'Company profile' },
     scopeHeading: { th: 'ขอบเขตงานของเรา', en: 'Our scope of work' },
@@ -493,8 +493,8 @@ export const ui = {
   pages: {
     servicesTitle: { th: 'บริการของ IDIE', en: 'Our services' },
     servicesLead: {
-      th: 'ครอบคลุมตั้งแต่การออกแบบและงานวิศวกรรม การจัดหาอุปกรณ์ ไปจนถึงการติดตั้งและบริการหลังการขาย ทุกกลุ่มงานอยู่บนโจทย์เดียวกัน คือระบบต้องทำงานได้ในวันที่เกิดเหตุจริง ไม่ใช่แค่วันที่ตรวจรับ',
-      en: 'From design and engineering through procurement to installation and after-sales service. Every one of them answers the same brief: the system has to work on the day something happens, not only on the day it is accepted.',
+      th: 'โซลูชันครบวงจรตั้งแต่งานออกแบบ จัดหา ติดตั้ง และดูแลรักษา มุ่งเน้นความปลอดภัยสูงสุดและเสถียรภาพการทำงานในระยะยาว',
+      en: 'End-to-end solutions from design and procurement through installation and maintenance, built around maximum safety and long-term operational stability.',
     },
     /** ป้ายบอกว่าหน้ารายละเอียดมีอะไรให้อ่านต่อ — แสดงเฉพาะบริการที่เขียนเนื้อหาส่วนลึกไว้แล้ว */
     servicesDepthHint: {

@@ -33,13 +33,7 @@ export default function ServiceList() {
         <Heading level={1} eyebrow="OUR SERVICES">
           {t(ui.pages.servicesTitle)}
         </Heading>
-        {/*
-          max-w-3xl แทน max-w-prose ที่ใช้กับย่อหน้านำหน้าอื่น — prose คิดออกมาได้
-          697px ซึ่งพอดีจนคำว่า "ขาย" ท้ายวลี "บริการหลังการขาย" เกินไป 28px
-          แล้วไปยืนอยู่ต้นบรรทัดที่สองคำเดียว กว้างขึ้นเป็น 768px แล้วทั้งวลีอยู่
-          บรรทัดแรกครบ โดยยังเป็นสองบรรทัดเท่าเดิม
-        */}
-        <p className="text-ink-muted mt-4 max-w-3xl">
+        <p className="text-ink-muted mt-4 max-w-prose">
           <KeepPhrases>{t(ui.pages.servicesLead)}</KeepPhrases>
         </p>
       </Section>

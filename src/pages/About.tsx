@@ -47,7 +47,9 @@ export default function About() {
         <Heading level={1} eyebrow="ABOUT US">
           {t(ui.about.title)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose">{t(ui.about.lead)}</p>
+        <p className="text-ink-muted mt-4 max-w-prose">
+          <KeepPhrases>{t(ui.about.lead)}</KeepPhrases>
+        </p>
       </Section>
 
       {company && (
