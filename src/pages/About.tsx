@@ -6,7 +6,6 @@ import {
   ImageLightbox,
   KeepPhrases,
   KeepWords,
-  PendingContent,
   Section,
 } from '@/components/ui'
 import { useState } from 'react'
@@ -20,10 +19,13 @@ import { yearsOfExperience } from '@/config'
 /**
  * About Us — Phase 4
  *
- * ส่วนที่มีข้อมูลจริง (profile, ขอบเขตงาน, อุตสาหกรรม, ผู้ติดต่อ) ประกอบเต็ม
- * ส่วนที่บริษัทยังไม่เคยเผยแพร่ที่ไหนเลย (ประวัติ, vision/mission, ทีม)
- * แสดงเป็น PendingContent พร้อมระบุว่าต้องขออะไร แทนที่จะซ่อนทิ้ง —
- * เพราะคนรีวิวเว็บต้องเห็นว่าหน้านี้จะมีอะไรบ้าง ไม่ใช่เห็นหน้าโล่งแล้วคิดว่างานไม่เสร็จ
+ * ประกอบจากข้อมูลที่บริษัทให้มาจริงทั้งหน้า — ข้อมูลบริษัท ขอบเขตงาน อุตสาหกรรม
+ * ผู้ติดต่อ และหนังสือแต่งตั้งจากผู้ผลิต
+ *
+ * เคยมีสามช่องที่ประกาศว่า "รอข้อมูลจากบริษัท" (ประวัติ · วิสัยทัศน์และพันธกิจ · ทีมงาน)
+ * ไว้ให้คนรีวิวเห็นว่าหน้านี้จะมีอะไรต่อ ถอดออกตามที่เจ้าของเว็บสั่ง (ก.ย. 2026) —
+ * หน้าที่ประกาศว่าตัวเองยังไม่เสร็จให้ลูกค้าเห็น มีราคาแพงกว่าหน้าที่สั้นแต่ครบ
+ * ถ้าวันหนึ่งได้ข้อมูลสามอย่างนั้นมา ให้เพิ่มเป็น section ที่มีเนื้อหาจริงไปเลย
  */
 export default function About() {
   const { t } = useLocale()
@@ -164,27 +166,9 @@ export default function About() {
         </ul>
       </Section>
 
-      <Section tone="alt">
-        <div className="grid gap-8 lg:grid-cols-2">
-          <div>
-            <Heading level={2}>{t(ui.about.historyHeading)}</Heading>
-            <PendingContent className="mt-5" need={t(ui.about.historyNeed)} />
-          </div>
-          <div>
-            <Heading level={2}>{t(ui.about.visionHeading)}</Heading>
-            <PendingContent className="mt-5" need={t(ui.about.visionNeed)} />
-          </div>
-          <div>
-            <Heading level={2}>{t(ui.about.teamHeading)}</Heading>
-            <PendingContent className="mt-5" need={t(ui.about.teamNeed)} />
-          </div>
-        </div>
-      </Section>
-
       {/*
-        การแต่งตั้งจากผู้ผลิตได้ section ของตัวเอง ไม่ใช่ช่องหนึ่งในตาราง PendingContent
-        เหมือนเดิม เพราะตอนนี้เป็นข้อมูลจริงและเป็นหลักฐานที่มีน้ำหนักที่สุดในหน้านี้
-        สำหรับผู้ซื้องานพื้นที่อันตราย — ข้อความในการ์ดสรุปตามถ้อยคำบนเอกสารตัวจริง
+        การแต่งตั้งจากผู้ผลิตได้ section ของตัวเอง เพราะเป็นหลักฐานที่มีน้ำหนักที่สุด
+        ในหน้านี้สำหรับผู้ซื้องานพื้นที่อันตราย — ข้อความในการ์ดสรุปตามถ้อยคำบนเอกสารตัวจริง
 
         getCertificates() กรองฉบับที่ `status: 'expired'` ออกและเรียงจากใหม่ไปเก่าให้แล้ว
         หน้านี้จึงไม่ต้องจัดลำดับหรือคัดกรองเอง — IDIE แจ้ง (ส.ค. 2026) ว่าไม่ให้เผยแพร่
@@ -192,7 +176,7 @@ export default function About() {
         ถ้าเพิ่มฉบับใหม่ที่หมดอายุเข้ามา มันจะไม่ขึ้นหน้าเว็บโดยตั้งใจ ไม่ใช่บั๊ก
       */}
       {certificates && certificates.length > 0 && (
-        <Section>
+        <Section tone="alt">
           <Heading level={2} eyebrow="AUTHORISATIONS">
             {t(ui.about.certificatesHeading)}
           </Heading>

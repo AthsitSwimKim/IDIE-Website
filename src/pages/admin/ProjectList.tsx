@@ -42,8 +42,8 @@ export default function AdminProjectList() {
         <div className="border-line bg-surface rounded-card mt-6 border border-dashed p-10 text-center">
           <p className="font-medium">ยังไม่มีผลงานในระบบ</p>
           <p className="text-ink-muted mx-auto mt-2 max-w-prose text-sm">
-            ผลงานชิ้นแรกที่เผยแพร่จะเปิดหน้า /projects ให้ใช้งานจริง
-            แทนบล็อกที่ตอนนี้เขียนว่ารอข้อมูลจากบริษัท
+            ผลงานชิ้นแรกที่เผยแพร่จะขึ้นบนหน้า /projects ทันที
+            ตอนนี้หน้านั้นแจ้งผู้เข้าชมว่ายังไม่มีผลงานให้แสดง
           </p>
         </div>
       )}

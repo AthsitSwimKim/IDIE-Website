@@ -30,13 +30,3 @@ export function Badge({ tone = 'neutral', className, children }: BadgeProps) {
   )
 }
 
-/**
- * ป้ายบอกว่าเนื้อหานี้ยังเป็น placeholder รอข้อมูลจริงจาก IDIE
- *
- * แสดงเฉพาะตอน dev — ทำให้ทีมเห็นทันทีว่าส่วนไหนยังไม่จริง
- * โดยไม่ต้องเปิดไฟล์ data และกันไม่ให้ mock หลุดขึ้น production โดยไม่มีใครสังเกต
- */
-export function PlaceholderBadge({ children }: { children?: ReactNode }) {
-  if (!import.meta.env.DEV) return null
-  return <Badge tone="warning">{children ?? 'รอข้อมูลจริงจาก IDIE'}</Badge>
-}

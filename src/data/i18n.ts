@@ -284,16 +284,6 @@ export const ui = {
     diagramOpen: { th: 'ดูผัง{name} ขนาดเต็ม', en: 'View the full-size {name} diagram' },
   },
 
-  /** บล็อกที่ใช้เมื่อ section มีโครงแล้วแต่ยังไม่ได้รับข้อมูลจากบริษัท */
-  pending: {
-    badge: { th: 'รอข้อมูลจากบริษัท', en: 'Awaiting company data' },
-    needHeading: { th: 'ข้อมูลที่ต้องใช้', en: 'What we need' },
-    contactPrompt: {
-      th: 'ระหว่างนี้ติดต่อทีมงานเพื่อขอข้อมูลได้โดยตรง',
-      en: 'In the meantime, contact our team for the information directly.',
-    },
-  },
-
   about: {
     title: { th: 'เกี่ยวกับเรา', en: 'About us' },
     lead: {
@@ -308,21 +298,6 @@ export const ui = {
     },
     industriesHeading: { th: 'อุตสาหกรรมที่ให้บริการ', en: 'Industries we serve' },
     contactPersonHeading: { th: 'ผู้ติดต่อหลัก', en: 'Primary contact' },
-    historyHeading: { th: 'ประวัติและพัฒนาการ', en: 'History and milestones' },
-    historyNeed: {
-      th: 'ปีสำคัญของบริษัท เช่น ปีที่เริ่มเป็นตัวแทนแต่ละแบรนด์ ปีที่ขยายทีม หรือโครงการแรกในแต่ละอุตสาหกรรม',
-      en: 'Key years such as when each brand distributorship began, team expansions, or the first project in each industry.',
-    },
-    visionHeading: { th: 'วิสัยทัศน์และพันธกิจ', en: 'Vision and mission' },
-    visionNeed: {
-      th: 'ข้อความวิสัยทัศน์และพันธกิจฉบับทางการของบริษัท ทั้งภาษาไทยและอังกฤษ',
-      en: 'The company’s official vision and mission statements, in both Thai and English.',
-    },
-    teamHeading: { th: 'ทีมงาน', en: 'Our team' },
-    teamNeed: {
-      th: 'โครงสร้างทีม จำนวนวิศวกร และรูปทีมงาน (ตอนนี้มีเพียงชื่อผู้จัดการทั่วไปจากเว็บเดิม)',
-      en: 'Team structure, number of engineers and team photos (only the general manager is published today).',
-    },
     certificatesHeading: { th: 'การแต่งตั้งจากผู้ผลิต', en: 'Manufacturer authorisations' },
     certificatesLead: {
       th: 'หนังสือรับรองที่ผู้ผลิตออกให้โดยตรง ระบุขอบเขตและพื้นที่ที่ IDIE ได้รับแต่งตั้ง',
