@@ -426,6 +426,47 @@ export interface InquiryPayload {
  * ไม่งั้นเขาจะเดินจากไปโดยคิดว่าบริษัทได้รับคำถามแล้ว ซึ่งเป็นความเสียหาย
  * ที่แก้ทีหลังไม่ได้ (ต่างจากข่าวที่โหลดไม่ขึ้น ซึ่งแค่หน้าว่าง)
  */
+/**
+ * บันทึกการเข้าชมหนึ่งครั้ง แล้วคืนยอดรวมผู้เข้าชมทั้งหมด
+ *
+ * คืน `null` เมื่อเรียกไม่สำเร็จ ไม่โยน error — ต่างจาก `submitInquiry` ตรงที่
+ * ผู้เข้าชมไม่ได้ร้องขอสิ่งนี้และไม่ต้องรู้ว่ามันล้ม ท้ายเว็บแค่ไม่แสดงตัวนับ
+ *
+ * ไม่ใช้ `fetchContent` เพราะตัวนั้นเป็น GET สำหรับอ่านเนื้อหา ส่วนตัวนี้เป็น POST
+ * ที่เปลี่ยนข้อมูลบนเซิร์ฟเวอร์ (GET ที่เขียนข้อมูลจะถูกนับซ้ำโดยตัวโหลดล่วงหน้า
+ * ของเบราว์เซอร์และบอตที่ไล่เก็บลิงก์)
+ */
+export async function getVisitorTotal(): Promise<number | null> {
+  try {
+    const response = await fetch('/api/visitors')
+    if (!response.ok) return null
+
+    const body = (await response.json()) as { total?: unknown }
+    return typeof body.total === 'number' ? body.total : null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * บันทึกการเข้าชมหนึ่งครั้ง แล้วคืนยอดรวมผู้เข้าชมทั้งหมด
+ *
+ * ต่างจาก `getVisitorTotal` ตรงที่ตัวนี้**นับเพิ่ม** ถ้าเบราว์เซอร์นี้ยังไม่ถูกนับวันนี้
+ * ท้ายเว็บสาธารณะเรียกตัวนี้ ส่วนแดชบอร์ดหลังบ้านเรียกตัวบน — ไม่งั้นทีมงานที่เปิด
+ * แดชบอร์ดวันละหลายรอบจะปั่นตัวเลขของตัวเองจนดูไม่ออกว่าลูกค้าเข้าจริงแค่ไหน
+ */
+export async function recordVisit(): Promise<number | null> {
+  try {
+    const response = await fetch('/api/visitors', { method: 'POST' })
+    if (!response.ok) return null
+
+    const body = (await response.json()) as { total?: unknown }
+    return typeof body.total === 'number' ? body.total : null
+  } catch {
+    return null
+  }
+}
+
 export async function submitInquiry(payload: InquiryPayload): Promise<void> {
   let response: Response
   try {

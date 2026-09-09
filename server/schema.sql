@@ -186,6 +186,25 @@ CREATE TABLE IF NOT EXISTS project_images (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ---------------------------------------------------------------------------
+-- ตัวนับผู้เข้าชมเว็บไซต์ที่แสดงท้ายหน้าเว็บ
+--
+-- แถวเดียวตายตัว (id = 1) ไม่ได้เก็บทีละครั้งที่มีคนเข้า เพราะสิ่งที่หน้าเว็บ
+-- ต้องการคือ "ยอดรวม" อย่างเดียว การเก็บทุกครั้งจะได้ตารางที่โตไม่หยุด
+-- และต้อง COUNT ทั้งตารางทุกครั้งที่มีคนเปิดเว็บ เพื่อได้ตัวเลขเดียวกัน
+--
+-- ถ้าวันหนึ่งต้องการสถิติแยกตามวันหรือตามหน้า ให้ใช้ analytics ที่ออกแบบมา
+-- เพื่อการนั้น ไม่ใช่ขยายตารางนี้ให้กลายเป็นระบบวิเคราะห์ครึ่งใบ
+-- ---------------------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS visitor_counter (
+  id         TINYINT UNSIGNED NOT NULL PRIMARY KEY,
+  total      BIGINT UNSIGNED  NOT NULL DEFAULT 0,
+  updated_at DATETIME         NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- INSERT IGNORE — รัน schema.sql ซ้ำได้โดยไม่รีเซ็ตตัวเลขที่นับมาแล้ว
+INSERT IGNORE INTO visitor_counter (id, total) VALUES (1, 0);
+
+-- ---------------------------------------------------------------------------
 -- เซสชันของ express-session (express-mysql-session สร้างเองได้ แต่ประกาศไว้ที่นี่
 -- ให้เห็นครบในไฟล์เดียว และกันไม่ให้ผู้ใช้ฐานข้อมูลของแอปต้องมีสิทธิ์ CREATE TABLE)
 -- ---------------------------------------------------------------------------

@@ -31,6 +31,7 @@ export const ui = {
     contactHeading: { th: 'ติดต่อ', en: 'Get in touch' },
     fax: { th: 'แฟกซ์', en: 'Fax' },
     rights: { th: 'สงวนลิขสิทธิ์', en: 'All rights reserved.' },
+    visitorsHeading: { th: 'ผู้เข้าชมเว็บไซต์', en: 'Site visitors' },
   },
 
   brandsPage: {

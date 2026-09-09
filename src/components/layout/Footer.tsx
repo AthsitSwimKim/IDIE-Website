@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Container } from '@/components/ui'
 import { Logo, COMPANY_NAME } from '@/components/layout/Logo'
+import { VisitorCounter } from '@/components/layout/VisitorCounter'
 import { footerColumns } from '@/components/layout/nav-items'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
@@ -51,6 +52,7 @@ export function Footer() {
           <div className="lg:col-span-1">
             <Logo tone="dark" />
             <p className="mt-5 max-w-xs text-sm">{t(ui.footer.tagline)}</p>
+            <VisitorCounter />
           </div>
 
           {footerColumns.map((column) => (

@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Badge, Button } from '@/components/ui'
 import { adminNews, adminProjects, adminSiteReferences } from '@/admin/api'
+import { getVisitorTotal } from '@/data'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { formatDate } from '@/pages/admin/formatDate'
 import type { AdminNews, AdminProject, AdminSiteReference, PublishStatus } from '@/types/admin'
@@ -33,7 +34,17 @@ interface DraftItem {
  */
 export default function AdminDashboard() {
   const { data, loading, error, reload } = useAsyncData(() =>
-    Promise.all([adminNews.list(), adminProjects.list(), adminSiteReferences.list()]),
+    /*
+      ยอดผู้เข้าชมต่อท้ายชุดเดิม และ `getVisitorTotal` คืน null เองเมื่อเรียกไม่สำเร็จ
+      ไม่โยน error — ตัวเลขประกอบตัวเดียวต้องไม่ทำให้ทั้งแดชบอร์ดขึ้นหน้าผิดพลาด
+      ทั้งที่ข่าวและผลงานโหลดมาได้ครบ
+    */
+    Promise.all([
+      adminNews.list(),
+      adminProjects.list(),
+      adminSiteReferences.list(),
+      getVisitorTotal(),
+    ]),
   )
 
   return (
@@ -56,7 +67,14 @@ export default function AdminDashboard() {
 
       {loading && !data && <p className="text-ink-muted mt-6 text-sm">กำลังโหลด…</p>}
 
-      {data && <DashboardBody news={data[0]} projects={data[1]} references={data[2]} />}
+      {data && (
+        <DashboardBody
+          news={data[0]}
+          projects={data[1]}
+          references={data[2]}
+          visitors={data[3]}
+        />
+      )}
     </>
   )
 }
@@ -65,10 +83,13 @@ function DashboardBody({
   news,
   projects,
   references,
+  visitors,
 }: {
   news: AdminNews[]
   projects: AdminProject[]
   references: AdminSiteReference[]
+  /** `null` = เรียก API ไม่สำเร็จ — ซ่อนกล่องไปเลย ไม่แสดงเลข 0 ที่ทำให้เข้าใจผิด */
+  visitors: number | null
 }) {
   /*
     รวมร่างจากทั้งสามชุดเป็นรายการเดียว — คนที่เปิดหลังบ้านอยากรู้ว่า "มีอะไรค้าง"
@@ -126,6 +147,8 @@ function DashboardBody({
         />
       </div>
 
+      {visitors !== null && <VisitorPanel total={visitors} />}
+
       <section className="mt-10">
         <h2 className="text-lg font-semibold">ร่างที่ยังไม่ได้เผยแพร่</h2>
         <p className="text-ink-muted mt-1 text-sm">
@@ -179,6 +202,35 @@ function DashboardBody({
         )}
       </section>
     </>
+  )
+}
+
+/**
+ * ยอดผู้เข้าชมเว็บไซต์สาธารณะ
+ *
+ * แยกออกมาเป็นแถวของตัวเอง ไม่ปนกับการ์ดสามใบข้างบน เพราะเป็นตัวเลขคนละชนิด —
+ * สามใบนั้นคือ "ของที่เราลงไว้" ซึ่งกดเข้าไปแก้ได้ ส่วนอันนี้คือ "คนที่เข้ามาดู"
+ * ซึ่งแก้อะไรไม่ได้ การวางปนกันจะชวนให้เข้าใจว่ามันเป็นของชุดเดียวกัน
+ *
+ * มีคำอธิบายวิธีนับกำกับไว้ด้วย เพราะตัวเลขที่ไม่บอกว่านับอย่างไรจะถูกตีความ
+ * ผิดเสมอ — คนอ่านมักคิดว่าเป็นจำนวนหน้าที่ถูกเปิด แล้วสงสัยว่าทำไมน้อยจัง
+ */
+function VisitorPanel({ total }: { total: number }) {
+  return (
+    <section className="border-line bg-surface rounded-card mt-4 flex flex-wrap items-end justify-between gap-x-8 gap-y-4 border p-6">
+      <div>
+        <h2 className="text-ink-muted text-sm font-medium">ผู้เข้าชมเว็บไซต์</h2>
+        <p className="mt-3 flex items-baseline gap-2">
+          <span className="stat-figure text-h2 font-semibold">{total.toLocaleString('th-TH')}</span>
+          <span className="text-ink-muted text-sm">ครั้ง</span>
+        </p>
+      </div>
+
+      <p className="text-ink-muted max-w-prose text-xs">
+        นับหนึ่งครั้งต่อหนึ่งเบราว์เซอร์ต่อวัน ไม่ได้นับทุกหน้าที่เปิด — คนเดิมที่กดดูสิบหน้า
+        ในการเข้าครั้งเดียวจึงนับเป็นหนึ่ง ตัวเลขนี้แสดงอยู่ท้ายหน้าเว็บสาธารณะด้วย
+      </p>
+    </section>
   )
 }
 

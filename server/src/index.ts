@@ -18,6 +18,7 @@ import {
   publicSiteReferencesRouter,
 } from './routes/site-references.ts'
 import { adminUsersRouter } from './routes/users.ts'
+import { visitorsRouter } from './routes/visitors.ts'
 
 const app = express()
 
@@ -115,6 +116,8 @@ app.use('/api/contact', contactRouter)
 app.use('/api/news', publicNewsRouter)
 app.use('/api/projects', publicProjectsRouter)
 app.use('/api/site-references', publicSiteReferencesRouter)
+// สาธารณะ — ตัวนับผู้เข้าชมต้องทำงานกับทุกคนที่เปิดเว็บ ไม่ใช่เฉพาะคนที่ล็อกอิน
+app.use('/api/visitors', visitorsRouter)
 
 /**
  * ทุกอย่างใต้ /api/admin ต้องล็อกอิน — บังคับที่จุดเดียวตรงนี้
