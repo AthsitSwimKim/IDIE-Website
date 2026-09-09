@@ -150,7 +150,7 @@ export default function ServiceDetail() {
                     >
                       {String(index + 1).padStart(2, '0')}
                     </span>
-                    <span className="text-sm">{t(step)}</span>
+                    <span>{t(step)}</span>
                   </li>
                 ))}
               </ol>
@@ -175,7 +175,7 @@ export default function ServiceDetail() {
                 {depth.quoteChecklist.map((item) => (
                   <li
                     key={item.en}
-                    className="border-line bg-surface rounded-card flex gap-3 border p-4 text-sm"
+                    className="border-line bg-surface rounded-card flex gap-3 border p-4"
                   >
                     <CheckIcon
                       aria-hidden="true"
@@ -198,8 +198,8 @@ export default function ServiceDetail() {
             <div className="mt-8 grid gap-6 lg:grid-cols-3">
               {depth.technicalNotes.map((note) => (
                 <article key={note.title.en} className="border-line rounded-card border p-6">
-                  <h3 className="font-semibold">{t(note.title)}</h3>
-                  <p className="text-ink-muted mt-3 text-justify text-sm leading-relaxed [text-justify:inter-character]">
+                  <h3 className="text-h3 font-semibold">{t(note.title)}</h3>
+                  <p className="text-ink-muted mt-3 text-justify leading-relaxed [text-justify:inter-character]">
                     {t(note.body)}
                   </p>
                 </article>

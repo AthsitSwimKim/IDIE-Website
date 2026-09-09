@@ -25,7 +25,12 @@ export function ContactCta() {
           Contact
         </p>
 
-        <h2 className="text-h1 mt-5 font-bold text-balance text-white uppercase">
+        {/*
+          ขนาด H2 ตามมาตรฐาน (28px) ไม่ใช่ H1 เหมือนเดิม — กล่องนี้เป็น section หนึ่ง
+          เท่ากับหัวข้ออื่นในหน้า การให้ขนาดเท่าพาดหัวหน้าทำให้ลำดับชั้นเพี้ยน
+          ตัวมันเด่นอยู่แล้วด้วยพื้นกรมท่า ตัวพิมพ์ใหญ่ และปุ่มสีขาวใต้ข้อความ
+        */}
+        <h2 className="text-h2 mt-5 font-bold text-balance text-white uppercase">
           {t(ui.home.contactCtaTitle)}
         </h2>
 

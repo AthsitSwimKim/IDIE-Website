@@ -53,7 +53,7 @@ export function HomeServices() {
                   </span>
                 </span>
 
-                <span className="text-ink-muted flex-1 text-sm">
+                <span className="text-ink-muted flex-1">
                   <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
                 </span>
 

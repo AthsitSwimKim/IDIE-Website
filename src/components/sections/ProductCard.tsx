@@ -47,7 +47,7 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </span>
 
-      <span className="mt-3 block text-sm leading-snug font-semibold group-hover:underline">
+      <span className="mt-3 block text-base leading-snug font-semibold group-hover:underline sm:text-lg">
         {product.name}
       </span>
       {product.model && (

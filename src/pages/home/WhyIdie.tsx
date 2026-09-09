@@ -32,9 +32,9 @@ export function WhyIdie() {
               <IconFrame size="sm">
                 <span aria-hidden="true" className="bg-primary-600 size-2 rounded-full" />
               </IconFrame>
-              <h3 className="mt-5 font-semibold">{t(prop.title)}</h3>
+              <h3 className="text-h3 mt-5 font-semibold">{t(prop.title)}</h3>
               {/* จัดชิดขอบแบบ inter-character เหมือนหน้าบริการ — เหตุผลเต็มอยู่ใน ServiceDetail */}
-              <p className="text-ink-muted mt-2 text-justify text-sm [text-justify:inter-character]">
+              <p className="text-ink-muted mt-2 text-justify [text-justify:inter-character]">
                 {t(prop.description)}
               </p>
             </Card>

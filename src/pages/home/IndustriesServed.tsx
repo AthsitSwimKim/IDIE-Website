@@ -41,8 +41,8 @@ export function IndustriesServed() {
                 aria-hidden="true"
                 className="bg-accent-glow/70 mb-4 block h-px w-full max-w-16"
               />
-              <h3 className="font-semibold text-white">{t(industry.name)}</h3>
-              <p className="mt-2 text-sm text-white/60">{t(industry.description)}</p>
+              <h3 className="text-h3 font-semibold text-white">{t(industry.name)}</h3>
+              <p className="mt-2 text-white/60">{t(industry.description)}</p>
             </Reveal>
           </li>
         ))}

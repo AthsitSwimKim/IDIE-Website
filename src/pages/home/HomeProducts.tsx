@@ -17,8 +17,14 @@ export function HomeProducts() {
 
   if (!products?.length) return null
 
+  /*
+    พื้นขาว ไม่ใช่เทา — เดิม แบรนด์คู่ค้า / สินค้า / ลูกค้าอ้างอิง เป็นเทาติดกันสามอัน
+    รวมความสูง 2,235px กลายเป็นพื้นเรียบยาวที่ไม่มีเส้นแบ่งให้ตาพัก และมองไม่ออกว่า
+    สามเรื่องนี้เป็นคนละหัวข้อกัน สลับตรงกลางเป็นขาวแล้วกลับมาเข้าจังหวะอ่อน-เข้ม-อ่อน
+    เหมือนที่ทั้งหน้าใช้อยู่
+  */
   return (
-    <Section tone="alt">
+    <Section>
       {/* items-start กัน flex-col ยืดปุ่มให้เต็มความกว้างบนจอแคบ */}
       <div className="flex flex-col items-start gap-6 md:flex-row md:items-end md:justify-between">
         <div className="max-w-2xl">

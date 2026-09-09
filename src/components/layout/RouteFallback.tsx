@@ -22,7 +22,7 @@ export function RouteFallback() {
 
   return (
     // <output> มี role="status" ในตัว โปรแกรมอ่านหน้าจอจึงประกาศข้อความนี้เองเมื่อมันโผล่มา
-    <output aria-live="polite" className="grid min-h-[calc(100dvh-5rem)] place-items-center px-6">
+    <output aria-live="polite" className="grid min-h-[calc(100dvh-4.5625rem)] lg:min-h-[calc(100dvh-5.625rem)] place-items-center px-6">
       <p className="text-ink-muted flex flex-col items-center gap-5 text-sm">
         <SpinnerIcon
           aria-hidden="true"

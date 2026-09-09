@@ -38,8 +38,8 @@ export function NewsCard({ article }: { article: NewsArticle }) {
           </time>
         </span>
 
-        <span className="group-hover:text-primary-600 mt-3 font-semibold">{t(article.title)}</span>
-        <span className="text-ink-muted mt-2 line-clamp-3 flex-1 text-sm">
+        <span className="group-hover:text-primary-600 mt-3 text-lg font-semibold">{t(article.title)}</span>
+        <span className="text-ink-muted mt-2 line-clamp-3 flex-1">
           {t(article.excerpt)}
         </span>
       </span>

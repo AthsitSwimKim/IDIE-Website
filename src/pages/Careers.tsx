@@ -52,10 +52,10 @@ export default function Careers() {
 
                 <div className="mt-7 grid gap-8 md:grid-cols-2">
                   <div>
-                    <h4 className="text-eyebrow text-ink-muted uppercase">
+                    <h4 className="text-ink text-base font-semibold">
                       {t(ui.careers.responsibilities)}
                     </h4>
-                    <ul className="mt-3 space-y-2.5 text-sm">
+                    <ul className="mt-4 space-y-2.5">
                       {job.responsibilities.map((item) => (
                         <li key={item.en} className="flex gap-3">
                           <span
@@ -69,10 +69,10 @@ export default function Careers() {
                   </div>
 
                   <div>
-                    <h4 className="text-eyebrow text-ink-muted uppercase">
+                    <h4 className="text-ink text-base font-semibold">
                       {t(ui.careers.qualifications)}
                     </h4>
-                    <ul className="mt-3 space-y-2.5 text-sm">
+                    <ul className="mt-4 space-y-2.5">
                       {job.qualifications.map((item) => (
                         <li key={item.en} className="flex gap-3">
                           <span

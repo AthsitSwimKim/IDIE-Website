@@ -106,7 +106,7 @@ export default function ProjectDetail() {
               {project.scopeOfWork.map((item, index) => (
                 <li
                   key={index}
-                  className="border-line rounded-card flex gap-3 border p-4 text-sm"
+                  className="border-line rounded-card flex gap-3 border p-4"
                 >
                   <span aria-hidden="true" className="text-primary-600 font-bold">
                     {String(index + 1).padStart(2, '0')}

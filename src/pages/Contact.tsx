@@ -156,13 +156,13 @@ export default function Contact() {
 
             {company && (
               <dl className="border-line mt-6 divide-y border-t border-b">
-                <div className="py-4">
+                <div className="py-5">
                   <dt className="text-eyebrow text-ink-muted uppercase">
                     {t(ui.contact.address)}
                   </dt>
                   <dd className="mt-2">{t(company.address)}</dd>
                 </div>
-                <div className="py-4">
+                <div className="py-5">
                   <dt className="text-eyebrow text-ink-muted uppercase">{t(ui.contact.phone)}</dt>
                   <dd className="mt-2 space-y-1">
                     {company.phone.map((number) => (
@@ -180,7 +180,7 @@ export default function Contact() {
                     </p>
                   </dd>
                 </div>
-                <div className="py-4">
+                <div className="py-5">
                   <dt className="text-eyebrow text-ink-muted uppercase">{t(ui.contact.email)}</dt>
                   <dd className="mt-2">
                     {company.email.map((address) => (
@@ -195,7 +195,7 @@ export default function Contact() {
                     ))}
                   </dd>
                 </div>
-                <div className="py-4">
+                <div className="py-5">
                   <dt className="text-eyebrow text-ink-muted uppercase">
                     {t(ui.contact.contactPerson)}
                   </dt>
@@ -273,8 +273,8 @@ export default function Contact() {
 
             {submitted ? (
               <output className="border-success/40 bg-success/5 rounded-card mt-6 block border p-6">
-                <h3 className="font-semibold">{t(ui.contact.submittedTitle)}</h3>
-                <p className="text-ink-muted mt-2 text-sm">{t(ui.contact.submittedBody)}</p>
+                <h3 className="text-h3 font-semibold">{t(ui.contact.submittedTitle)}</h3>
+                <p className="text-ink-muted mt-2">{t(ui.contact.submittedBody)}</p>
                 <div className="mt-5 flex flex-wrap gap-3">
                   {/*
                     ใช้ `contactPerson.email` ไม่ใช่ `company.email[0]` — ต้องเป็น

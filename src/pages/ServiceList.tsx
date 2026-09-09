@@ -65,12 +65,17 @@ export default function ServiceList() {
                   <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
                 </p>
 
-                <h3 className="text-eyebrow text-ink-muted mt-7 uppercase">
+                {/*
+                  ขนาดเท่าเนื้อความ (18px) ไม่ใช่ป้าย 14px — ป้ายนี้กำกับรายการที่อยู่
+                  ใต้มันโดยตรง ถ้าเล็กกว่ารายการจะดูเหมือนหมายเหตุที่หลุดมา
+                  ไม่ใช่หัวข้อของรายการ แยกตัวเองจากเนื้อหาด้วยน้ำหนักและสีเข้มแทน
+                */}
+                <h3 className="text-ink mt-7 text-base font-semibold">
                   {t(ui.serviceDetail.scopeHeading)}
                 </h3>
-                <ul className="mt-3 space-y-2">
+                <ul className="mt-4 space-y-2">
                   {service.scope.map((item) => (
-                    <li key={item.en} className="text-ink-muted flex gap-2.5 text-sm">
+                    <li key={item.en} className="text-ink-muted flex gap-2.5">
                       <span
                         aria-hidden="true"
                         className="bg-primary-600 mt-2 size-1 shrink-0 rounded-full"

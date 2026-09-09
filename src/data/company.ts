@@ -26,8 +26,10 @@ export const company: CompanyInfo = {
      เอกสารฉบับย่อไม่ได้ปฏิเสธ)
   */
   about: {
-    th: 'บริษัท ไอดี อินดัสเตรียล เอ็นจิเนียริ่ง จำกัด เป็นบริษัทวิศวกรรม ตัวแทนจำหน่าย และงานบริการ ที่เชี่ยวชาญด้านการออกแบบและงานวิศวกรรม รวมถึงการจัดหาระบบสื่อสารสำหรับโรงงาน ได้แก่ ระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบโทรศัพท์ ระบบเครือข่าย WAN/LAN ระบบกล้องวงจรปิด และระบบควบคุมการเข้าออก ครอบคลุมอุตสาหกรรมเคมี ปิโตรเคมี น้ำมันและก๊าซ โรงงานเหล็ก โรงไฟฟ้า และเหมืองแร่',
-    en: 'ID Industrial Engineering Co.,Ltd. is an engineering, distribution and service company specialising in design and engineering, and in the procurement of communication systems — intercom, public address and warning alarm, telephone, WAN/LAN, CCTV and access control. Our field of service covers the chemical, petrochemical, oil and gas, steel plant, power plant and mining industries.',
+    th:
+      'บริษัท ไอดี อินดัสเตรียล เอ็นจิเนียริ่ง จำกัด เป็นผู้เชี่ยวชาญด้านงานวิศวกรรม ออกแบบ จัดหา และติดตั้งระบบสื่อสารความปลอดภัยสำหรับโรงงานอุตสาหกรรม\n\nครอบคลุมระบบอินเตอร์คอม ระบบเตือนภัย โทรศัพท์ เครือข่าย WAN/LAN กล้องวงจรปิด และระบบควบคุมการเข้าออก รองรับกลุ่มอุตสาหกรรมหนัก ทั้งปิโตรเคมี น้ำมันและก๊าซ โรงเหล็ก โรงไฟฟ้า และเหมืองแร่',
+    en:
+      'ID Industrial Engineering Co.,Ltd. is an engineering, distribution and service company specialising in design and engineering, and in the procurement of communication systems — intercom, public address and warning alarm, telephone, WAN/LAN, CCTV and access control.\n\nOur field of service covers the chemical, petrochemical, oil and gas, steel plant, power plant and mining industries.',
   },
   vision: {
     th: '',

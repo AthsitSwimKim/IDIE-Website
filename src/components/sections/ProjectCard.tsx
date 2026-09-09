@@ -40,9 +40,9 @@ export function ProjectCard({ project }: { project: Project }) {
           {project.year && <span className="text-ink-muted text-xs">{project.year}</span>}
         </span>
 
-        <span className="group-hover:text-primary-600 mt-3 font-semibold">{t(project.name)}</span>
+        <span className="group-hover:text-primary-600 mt-3 text-lg font-semibold">{t(project.name)}</span>
         <span className="text-ink-muted mt-1 text-sm">{t(project.client)}</span>
-        <span className="text-ink-muted mt-2 line-clamp-2 flex-1 text-sm">
+        <span className="text-ink-muted mt-2 line-clamp-2 flex-1">
           {t(project.location)}
         </span>
       </span>

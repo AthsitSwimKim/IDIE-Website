@@ -33,8 +33,8 @@ export function Header() {
   useEffect(() => {
     const sentinel = sentinelRef.current
     if (!sentinel) return
-    // sentinel วางไว้ที่ระยะ 80px จากยอดเอกสาร: ตราบใดที่ยังเห็นมันอยู่ในจอ
-    // แปลว่ายังไม่ได้เลื่อนพ้น hero — พอเลื่อนเกิน 80px มันจะหลุดจอแล้ว header เปลี่ยนเป็นทึบ
+    // sentinel วางไว้ที่ระยะ 96px จากยอดเอกสาร (ต่ำกว่าขอบล่างของแถบ 90px เล็กน้อย):
+    // ตราบใดที่ยังเห็นมันอยู่ในจอ แปลว่ายังไม่ได้เลื่อนพ้นแถบ พอเลื่อนเกินแล้วจึงใส่เงา
     const observer = new IntersectionObserver(([entry]) => setAtTop(entry.isIntersecting))
     observer.observe(sentinel)
     return () => observer.disconnect()
@@ -42,7 +42,7 @@ export function Header() {
 
   return (
     <>
-      <div ref={sentinelRef} aria-hidden="true" className="absolute top-20 left-0 h-px w-px" />
+      <div ref={sentinelRef} aria-hidden="true" className="absolute top-24 left-0 h-px w-px" />
 
       <header
         className={cn(
@@ -52,8 +52,25 @@ export function Header() {
         )}
       >
         <Container>
-          <div className="flex items-center justify-between gap-6 py-3">
-            <Logo to="/" />
+          {/*
+              จอคอม (lg ขึ้นไป) สูง 89px + เส้นขอบล่าง 1px = 90px ตามที่เจ้าของเว็บกำหนด
+              ส่วนมือถือกับแท็บเล็ตใช้ 72px + ขอบ = 73px เพราะแถบ 110px กินพื้นที่จอ
+              มือถือมากเกินไป และมันเป็นแถบที่ตรึงอยู่ตลอดเวลาที่เลื่อนอ่าน
+              (ก.ย. 2026 เดิม 70px ที่เกิดจากระยะขอบ py-3 บวกความสูงโลโก้)
+
+              ใช้ min-h ไม่ใช่ h — ถ้าวันหนึ่งเนื้อหาในแถบสูงเกิน 109px (เช่นเพิ่ม
+              บรรทัดใต้โลโก้) แถบจะขยายตามแทนที่จะให้เนื้อหาล้นออกนอกกรอบ
+
+              เปลี่ยนค่านี้เมื่อไหร่ ต้องแก้อีกสองที่ให้ตรงกัน: scroll-padding-top
+              ใน theme.css และความสูงที่ RouteFallback หักออกจากความสูงจอ
+            */}
+            <div className="flex min-h-[72px] items-center justify-between gap-6 lg:min-h-[89px]">
+            {/*
+              size="lg" ตั้งแต่แถบสูงขึ้นเป็น 110px — ตราขนาดเดิม (44px) เหลือช่องว่าง
+              บน-ล่างข้างละ 33px จนดูเหมือนวางลอยกลางแถบเปล่า ขนาด 56px เหลือข้างละ
+              26px ซึ่งได้สัดส่วนกับความสูงใหม่
+            */}
+            <Logo to="/" size="lg" />
 
             {/*
               เมนูเดสก์ท็อปเริ่มที่ xl (1280) ไม่ใช่ lg (1024)

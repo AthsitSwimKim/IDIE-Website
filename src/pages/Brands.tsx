@@ -120,10 +120,15 @@ export default function Brands() {
 
                 {covered.length > 0 && (
                   <div className="mt-7">
-                    <h3 className="text-eyebrow text-ink-muted uppercase">
+                    {/*
+                      ขนาดเท่าเนื้อความ (18px) ไม่ใช่ป้าย 14px — ป้ายนี้กำกับรายการที่อยู่
+                      ใต้มันโดยตรง ถ้าเล็กกว่ารายการจะดูเหมือนหมายเหตุที่หลุดมา
+                      ไม่ใช่หัวข้อของรายการ แยกตัวเองจากเนื้อหาด้วยน้ำหนักและสีเข้มแทน
+                    */}
+                    <h3 className="text-ink text-base font-semibold">
                       {t(ui.brandsPage.suppliesHeading)}
                     </h3>
-                    <ul className="mt-3 flex flex-wrap gap-2">
+                    <ul className="mt-4 flex flex-wrap gap-2">
                       {covered.map((item) => (
                         <li key={item.en}>
                           <Badge tone="brand">{t(item)}</Badge>

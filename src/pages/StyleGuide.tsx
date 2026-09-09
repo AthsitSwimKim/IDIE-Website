@@ -144,11 +144,11 @@ export default function StyleGuide() {
             <IconFrame size="sm">
               <span aria-hidden="true" className="bg-primary-600 size-2 rounded-full" />
             </IconFrame>
-            <h3 className="mt-4 font-semibold">Static card</h3>
+            <h3 className="text-h3 mt-4 font-semibold">Static card</h3>
             <p className="text-ink-muted mt-2 text-sm">ไม่มีลิงก์ — ไม่มี hover lift</p>
           </Card>
           <Card to="/services" className="p-6">
-            <h3 className="font-semibold">Interactive card</h3>
+            <h3 className="text-h3 font-semibold">Interactive card</h3>
             <p className="text-ink-muted mt-2 text-sm">มีลิงก์ — hover แล้วยกขึ้น</p>
           </Card>
           <Card className="space-y-2 p-6">

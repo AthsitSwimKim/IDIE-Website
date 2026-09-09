@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useParams } from 'react-router-dom'
 import type { ProductImage } from '@/types/content'
 import { Badge, Button, Heading, ImageLightbox, Section } from '@/components/ui'
-import { DocumentIcon } from '@/components/ui/icons'
+import { DocumentIcon, ExpandIcon } from '@/components/ui/icons'
 import { ProductCard } from '@/components/sections/ProductCard'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
@@ -95,12 +95,16 @@ export default function ProductDetail() {
                 {/*
                   กดที่ภาพเพื่อดูขนาดเต็ม — ภาพแบบบอกขนาดอ่านตัวเลขไม่ออกที่ขนาดบนหน้า
                   ใช้ป๊อปอัปตัวเดียวกับหนังสือแต่งตั้งในหน้าเกี่ยวกับเราและผังระบบหน้าบริการ
+
+                  บอกว่ากดได้ด้วยตัวชี้ zoom-in กับป้ายไอคอนมุมขวาบน แทนบรรทัดข้อความ
+                  ใต้ภาพแบบเดิม — คำแนะนำที่เป็นข้อความอยู่ห่างจากสิ่งที่มันอธิบาย
+                  ผู้อ่านต้องกวาดตาลงไปเจอเองถึงจะรู้ ส่วนสัญญาณที่อยู่บนภาพเห็นพร้อมกับภาพเลย
                 */}
                 <button
                   type="button"
                   onClick={() => setZoomed(hero)}
                   aria-label={t(ui.productDetail.viewFull).replace('{name}', product.name)}
-                  className="border-line rounded-card block w-full cursor-pointer overflow-hidden border bg-white p-6"
+                  className="border-line rounded-card group relative block w-full cursor-zoom-in overflow-hidden border bg-white p-6"
                 >
                   <img
                     src={hero.src}
@@ -110,6 +114,18 @@ export default function ProductDetail() {
                     decoding="async"
                     className="mx-auto block max-h-[420px] w-auto max-w-full object-contain"
                   />
+
+                  {/*
+                    จางไว้ตั้งแต่แรก ไม่ได้ซ่อนจนมองไม่เห็น — คนที่ใช้จอสัมผัสไม่มี hover
+                    ให้ทำ ถ้าซ่อนจนกว่าจะชี้ก็เท่ากับไม่มีสัญญาณอะไรเลยบนมือถือ
+                    z-10 กันกรณีที่ภาพสร้าง stacking context ของตัวเองแล้วทับป้ายนี้
+                  */}
+                  <span
+                    aria-hidden="true"
+                    className="border-line bg-surface text-ink-muted absolute top-3 right-3 z-10 grid size-8 place-items-center rounded-full border opacity-45 backdrop-blur-[2px] transition-opacity duration-(--duration-ui) group-hover:opacity-100"
+                  >
+                    <ExpandIcon className="size-4" strokeWidth={1.75} />
+                  </span>
                 </button>
 
                 {product.gallery.length > 1 && (
@@ -146,14 +162,6 @@ export default function ProductDetail() {
                     ))}
                   </ul>
                 )}
-
-                <p className="text-ink-muted mt-4 text-sm">
-                  {t(
-                    hero.kind === 'drawing'
-                      ? ui.productDetail.drawingNote
-                      : ui.productDetail.photoNote,
-                  )}
-                </p>
               </>
             ) : (
               <p className="text-ink-muted">{t(ui.products.noImage)}</p>
@@ -170,7 +178,7 @@ export default function ProductDetail() {
                 <Heading level={2}>{t(ui.productDetail.featuresHeading)}</Heading>
                 <ul className="mt-5 space-y-2.5">
                   {product.features.map((feature) => (
-                    <li key={feature} className="text-ink-muted flex gap-3 text-sm leading-relaxed">
+                    <li key={feature} className="text-ink-muted flex gap-3 leading-relaxed">
                       <span
                         aria-hidden="true"
                         className="bg-primary-600 mt-2 size-1.5 shrink-0 rounded-full"

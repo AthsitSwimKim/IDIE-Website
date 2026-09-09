@@ -246,11 +246,6 @@ export const ui = {
     backToProducts: { th: 'กลับไปหน้าสินค้า', en: 'Back to products' },
     modelLabel: { th: 'รหัสรุ่น', en: 'Model' },
     featuresHeading: { th: 'คุณสมบัติและการทำงาน', en: 'Features and functions' },
-    photoNote: { th: 'กดที่ภาพเพื่อดูขนาดเต็ม', en: 'Tap the image to view it full size' },
-    drawingNote: {
-      th: 'ภาพแบบบอกขนาด — กดเพื่อดูขนาดเต็มและอ่านตัวเลข',
-      en: 'Dimensional drawing — tap to view full size and read the figures',
-    },
     viewFull: { th: 'ดูภาพของ {name} ขนาดเต็ม', en: 'View the full-size image of {name}' },
     thumbPhoto: { th: 'ดูภาพถ่ายที่ {n}', en: 'Show photo {n}' },
     thumbDrawing: { th: 'ดูภาพแบบที่ {n}', en: 'Show drawing {n}' },
@@ -277,12 +272,6 @@ export const ui = {
 
   media: {
     awaitingPhoto: { th: 'รอภาพจริงจาก IDIE', en: 'Awaiting photo from IDIE' },
-    /*
-      ผังระบบบนหน้าบริการกดดูขนาดเต็มได้ — ป้ายกำกับในผังเล็กเกินกว่าจะอ่านออก
-      ที่ขนาดบนการ์ด คำใบ้จึงเป็นข้อความที่มองเห็น ไม่ใช่แค่ tooltip
-      {name} ถูกแทนด้วยชื่อบริการตอน render
-    */
-    diagramOpen: { th: 'ดูผัง{name} ขนาดเต็ม', en: 'View the full-size {name} diagram' },
   },
 
   about: {

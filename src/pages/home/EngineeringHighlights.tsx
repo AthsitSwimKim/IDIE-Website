@@ -25,7 +25,7 @@ const STEP_NOTES: LocalizedText[] = [
     en: 'Site survey and sound pressure level calculation, so the warning system covers the actual area.',
   },
   {
-    th: 'คัดสรรอุปกรณ์จากผู้ผลิตชั้นนำในยุโรปและสหรัฐฯ พร้อมเอกสารรับรองมาตรฐานความปลอดภัยครบถ้วน',
+    th: 'คัดสรรอุปกรณ์จากผู้ผลิตชั้นนำในยุโรปและสหรัฐฯ พร้อมเอกสารรับรองมาตรฐานความปลอดภัยครบครัน',
     en: 'Equipment selected from leading European and US manufacturers, with full safety certification documents.',
   },
   {
@@ -58,9 +58,21 @@ export function EngineeringHighlights() {
         <ol className="border-line divide-line/55 bg-surface rounded-card shadow-card mt-10 grid divide-y border md:grid-cols-3 md:divide-x md:divide-y-0">
           {capabilities.map((capability, index) => (
             <li key={capability.id}>
-              <Reveal delay={index * 70} className="flex h-full flex-col gap-4 p-7">
+              {/*
+                  p-5 ไม่ใช่ p-7 — คำอธิบายการ์ดที่ 2 ยาว 342px ที่ขนาดตัวอักษร 16px
+                  ส่วนคอลัมน์เดิม (p-7) เหลือ 337px ที่จอ 1440 และ 316px ที่จอ 1280
+                  จึงตกไปบรรทัดที่สาม การลดขอบเหลือ 20px ทำให้ได้ 353px และ 340px
+                  ตามลำดับ ทั้งสามการ์ดจึงจบใน 2 บรรทัดเท่ากันตั้งแต่จอ 1280 ขึ้นไป
+                */}
+                <Reveal delay={index * 70} className="flex h-full flex-col gap-4 p-5">
                 <div className="flex items-center gap-4">
-                  <IconFrame size="xs">
+                  {/*
+                    ดันลง 2px — วัดแล้วกึ่งกลางกรอบตรงกับกึ่งกลางหมึกของหัวข้อพอดี
+                    (ต่างกัน 0px) แต่ตาคนอ่านมองว่ากรอบลอยสูงกว่า เพราะวรรณยุกต์ไทย
+                    ดันขอบหมึกด้านบนขึ้นไปโดยที่ตัวอักษรจริงยังอยู่ต่ำกว่านั้น
+                    ศูนย์กลางเชิงสายตาของข้อความไทยจึงต่ำกว่าศูนย์กลางเชิงเรขาคณิต
+                  */}
+                  <IconFrame size="xs" className="translate-y-[2px]">
                     {/*
                       ตัวเลขใช้ text-lg ไม่ใช่ text-sm — กรอบมุมฉากกว้าง 40px เท่ากับ
                       ความยาวแขนสองข้างพอดี ย่อกรอบลงไม่ได้เพราะแขนจะซ้อนกันจนกลาย
@@ -71,7 +83,7 @@ export function EngineeringHighlights() {
                       {String(index + 1).padStart(2, '0')}
                     </span>
                   </IconFrame>
-                  <h3 className="font-semibold">{t(capability.name)}</h3>
+                  <h3 className="text-h3 font-semibold">{t(capability.name)}</h3>
                 </div>
                 {STEP_NOTES[index] && (
                   <p className="text-ink-muted text-sm">

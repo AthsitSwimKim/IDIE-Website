@@ -6,7 +6,7 @@ type HeadingAlign = 'start' | 'center'
 
 const levelClass: Record<HeadingLevel, string> = {
   1: 'text-h1 font-bold',
-  2: 'text-h2 font-bold',
+  2: 'text-h2 font-semibold',
   3: 'text-h3 font-semibold',
   4: 'text-lg font-semibold',
 }

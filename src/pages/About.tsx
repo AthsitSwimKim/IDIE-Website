@@ -62,7 +62,25 @@ export default function About() {
                 {/* ชื่อบริษัทเป็นชื่อเฉพาะ — ห้ามให้เบราว์เซอร์หั่นกลางคำตามพจนานุกรม */}
                 <KeepWords>{t(company.legalName)}</KeepWords>
               </Heading>
-              <p className="text-ink-muted mt-6">{t(company.about)}</p>
+              {/*
+                ข้อความแนะนำบริษัทเก็บเป็นสตริงเดียวที่มีบรรทัดว่างคั่น แล้วแยกเป็น
+                <p> ตอนแสดง — ไม่ได้แยกเป็นสองฟิลด์ในข้อมูล เพราะหน้าแรกใช้ข้อความ
+                ชุดเดียวกันนี้ ถ้าแยกฟิลด์แล้วมีคนเติมย่อหน้าที่สามวันหลัง จะต้องไล่แก้
+                ทุกหน้าที่แสดงมัน — ตัวคั่นทำให้เพิ่มย่อหน้าได้จากไฟล์ข้อมูลที่เดียว
+              */}
+              <div className="text-ink-muted mt-6 space-y-4">
+                {/*
+                  เคยใส่ `text-balance` เพื่อกันบรรทัดสุดท้ายสั้นกุด แล้วถอดออกตอนที่คุม
+                  "อุตสาหกรรมหนัก" ไม่ให้ถูกตัด — วัดที่คอลัมน์ 560px หลังคุมวลีแล้ว
+                  การตัดบรรทัดปกติได้ 502/517/380 ซึ่งไล่จากยาวไปสั้นตามธรรมชาติ
+                  ส่วน balance ได้ 417/460/522 ที่ไล่จากสั้นไปยาวจนดูเหมือนบันไดกลับหัว
+                */}
+                {t(company.about).split('\n\n').map((paragraph) => (
+                  <p key={paragraph}>
+                    <KeepPhrases>{paragraph}</KeepPhrases>
+                  </p>
+                ))}
+              </div>
 
               {/*
                 `items-baseline` ไม่ใช่ค่าเริ่มต้น — ป้ายกำกับเป็น text-sm (บรรทัดสูง 23px)
@@ -72,11 +90,12 @@ export default function About() {
                 ไม่ว่าขนาดตัวอักษรสองฝั่งจะต่างกันแค่ไหน และค่าที่ยาวหลายบรรทัด
                 (ที่อยู่) ก็ยังจับกับบรรทัดแรกอยู่ดี
 
-                py-4 เท่ากับตารางข้อมูลติดต่อในหน้า Contact — เป็นตารางแบบเดียวกัน
-                ระยะควรเท่ากัน
+                py-5 เท่ากับตารางข้อมูลติดต่อในหน้า Contact — เป็นตารางแบบเดียวกัน
+                ระยะควรเท่ากัน ค่านี้ผ่านการไล่ปรับกับเจ้าของเว็บหลายรอบ
+                (16 → 20 → 24 → 22 → 20px) จนลงตัวที่ 20px แก้ทั้งสองหน้าพร้อมกันทุกครั้ง
               */}
               <dl className="border-line mt-8 divide-y border-t border-b">
-                <div className="flex items-baseline gap-6 py-4">
+                <div className="flex items-baseline gap-6 py-5">
                   <dt className="text-ink-muted w-40 shrink-0 text-sm">
                     {t({ th: 'ก่อตั้ง', en: 'Established' })}
                   </dt>
@@ -87,13 +106,13 @@ export default function About() {
                     </span>
                   </dd>
                 </div>
-                <div className="flex items-baseline gap-6 py-4">
+                <div className="flex items-baseline gap-6 py-5">
                   <dt className="text-ink-muted w-40 shrink-0 text-sm">
                     {t({ th: 'สำนักงาน', en: 'Office' })}
                   </dt>
                   <dd>{t(company.address)}</dd>
                 </div>
-                <div className="flex items-baseline gap-6 py-4">
+                <div className="flex items-baseline gap-6 py-5">
                   <dt className="text-ink-muted w-40 shrink-0 text-sm">
                     {t(ui.about.contactPersonHeading)}
                   </dt>
@@ -106,8 +125,10 @@ export default function About() {
             </div>
 
             {/*
-              แผงตราสัญลักษณ์บนพื้น blueprint grid — สร้างจากตราที่ IDIE ส่งมา (ส.ค. 2026)
-              มาแทน ImagePlaceholder เดิมที่รอภาพอาคารสำนักงาน
+              แผงตราสัญลักษณ์พื้นอ่อน — เดิมเป็นภาพตราขนาดใหญ่เต็มกรอบบนพื้นกรมท่า
+              ซึ่งดึงน้ำหนักสายตาไปทางขวาจนดูเหมือนป้ายโฆษณามากกว่าภาพประกอบโปรไฟล์
+              (เจ้าของเว็บทักมา ก.ย. 2026) ตอนนี้เป็นตราขนาดปกติวางกลางพื้นเทาอ่อน
+              เดียวกับที่ใช้ทั้งเว็บ น้ำหนักจึงถ่วงกับก้อนข้อความฝั่งซ้ายได้
 
               `alt=""` เพราะเป็นภาพตกแต่งล้วน — ชื่อบริษัทอยู่ในหัวข้อข้าง ๆ อยู่แล้ว
               ถ้าใส่ alt เป็นชื่อบริษัท screen reader จะอ่านซ้ำสองรอบ
@@ -116,16 +137,18 @@ export default function About() {
               (ดู docs/data-requests.md หัวข้อภาพองค์กร) — ภาพจริงสื่อความน่าเชื่อถือ
               ได้มากกว่าตราสัญลักษณ์ซึ่งผู้อ่านเห็นบน header อยู่แล้วทุกหน้า
             */}
-            <img
-              src="/images/brand/company-panel.webp"
-              srcSet="/images/brand/company-panel-800.webp 1x, /images/brand/company-panel.webp 2x"
-              alt=""
-              width={1600}
-              height={1200}
-              loading="lazy"
-              decoding="async"
-              className="rounded-card border-line aspect-[4/3] w-full border object-cover"
-            />
+            <div className="border-line rounded-card bg-surface-alt blueprint-grid-light grid aspect-[4/3] w-full place-items-center border p-10 sm:p-14">
+              <img
+                src="/images/brand/idie-logo-360.webp"
+                srcSet="/images/brand/idie-logo-180.webp 1x, /images/brand/idie-logo-360.webp 2x"
+                alt=""
+                width={360}
+                height={242}
+                loading="lazy"
+                decoding="async"
+                className="h-auto w-full max-w-[220px]"
+              />
+            </div>
           </div>
         </Section>
       )}
@@ -143,8 +166,8 @@ export default function About() {
                 {String(index + 1).padStart(2, '0')}
               </span>
               <div>
-                <h3 className="font-semibold">{t(service.name)}</h3>
-                <p className="text-ink-muted mt-1 text-sm">
+                <h3 className="text-h3 font-semibold">{t(service.name)}</h3>
+                <p className="text-ink-muted mt-1">
                   <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
                 </p>
               </div>

@@ -14,7 +14,8 @@ type LogoSize = 'sm' | 'md' | 'lg'
 const markSize: Record<LogoSize, string> = {
   sm: 'h-8',
   md: 'h-10 sm:h-11',
-  lg: 'h-12 sm:h-14',
+  /* ใช้เฉพาะแถบบนของเว็บ — 52px ในแถบ 90px เหลือขอบบน-ล่างข้างละ 18.5px */
+  lg: 'h-12 lg:h-13',
 }
 
 /**
@@ -24,7 +25,13 @@ const markSize: Record<LogoSize, string> = {
 const wordmarkSize: Record<LogoSize, string> = {
   sm: 'text-[0.65rem] leading-[1.45]',
   md: 'text-[0.7rem] leading-[1.45] sm:text-xs',
-  lg: 'text-sm leading-[1.45]',
+  /*
+    13px ไม่ใช่ 16px — ชื่อบริษัทสองบรรทัดที่ 16px สูงรวม 46px เทียบกับตรา 52px
+    แทบเท่ากัน ทำให้ข้อความแย่งความเด่นไปจากตราจนก้อนโลโก้ดูหนักไปทางขวา
+    ที่ 13px สูงรวม 38px = 72% ของตรา ซึ่งอ่านเป็นคำอธิบายข้างตราตามที่ควรเป็น
+    (เดิมค่านี้ผูกกับ text-sm ที่ขยับจาก 15px เป็น 16px ตอนตั้งสเกลใหม่)
+  */
+  lg: 'text-xs leading-[1.45]',
 }
 
 export interface LogoProps {

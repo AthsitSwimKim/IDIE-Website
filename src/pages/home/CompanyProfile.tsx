@@ -1,4 +1,4 @@
-import { Button, Heading, Reveal, Section } from '@/components/ui'
+import { Button, Heading, KeepPhrases, Reveal, Section } from '@/components/ui'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
 import { getCompany, ui } from '@/data'
@@ -24,7 +24,14 @@ export function CompanyProfile() {
           <Heading level={2} eyebrow="COMPANY PROFILE">
             {t(ui.home.companyTitle)}
           </Heading>
-          <p className="text-ink-muted mt-6 max-w-prose">{t(company.about)}</p>
+          {/* ข้อความชุดเดียวกับหน้าเกี่ยวกับเรา — คั่นย่อหน้าด้วยบรรทัดว่างในข้อมูล */}
+          <div className="text-ink-muted mt-6 max-w-prose space-y-4">
+            {t(company.about).split('\n\n').map((paragraph) => (
+              <p key={paragraph}>
+                <KeepPhrases>{paragraph}</KeepPhrases>
+              </p>
+            ))}
+          </div>
 
           <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-5">
             <div>
