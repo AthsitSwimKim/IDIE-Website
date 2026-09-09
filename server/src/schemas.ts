@@ -129,6 +129,47 @@ export const loginInput = z.object({
   password: z.string().min(1, 'กรอกรหัสผ่าน').max(200),
 })
 
+/* -------------------------------------------------------------------------- */
+/* บัญชีผู้ใช้หลังบ้าน                                                            */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * ความยาวรหัสผ่านขั้นต่ำ — ตัวเลขเดียวกับ `scripts/create-user.ts`
+ *
+ * บัญชีที่สร้างจากหน้าเว็บกับจากบรรทัดคำสั่งเข้าระบบเดียวกัน ถ้าสองทางบังคับ
+ * ไม่เท่ากัน กฎที่หลวมกว่าจะกลายเป็นกฎจริงของทั้งระบบโดยไม่มีใครตั้งใจ
+ */
+export const MIN_PASSWORD_LENGTH = 12
+
+const password = z
+  .string()
+  .min(MIN_PASSWORD_LENGTH, `รหัสผ่านต้องยาวอย่างน้อย ${MIN_PASSWORD_LENGTH} ตัวอักษร`)
+  .max(200, 'รหัสผ่านยาวเกินไป')
+
+/**
+ * ชื่อผู้ใช้ — ตัวพิมพ์เล็กเท่านั้น เหมือนที่ `create-user` บังคับ
+ *
+ * ถ้ายอมให้มีตัวพิมพ์ใหญ่ จะได้ "Somchai" กับ "somchai" เป็นคนละบัญชีที่มองด้วยตา
+ * แยกไม่ออกบนตาราง แล้ววันหนึ่งจะมีคนล็อกอินไม่ได้เพราะพิมพ์ชื่อตัวเองผิดปลอก
+ */
+const username = z
+  .string()
+  .trim()
+  .regex(/^[a-z0-9._-]{3,64}$/, 'ใช้ได้เฉพาะ a-z 0-9 จุด ขีดล่าง ขีดกลาง ยาว 3–64 ตัว')
+
+export const createUserInput = z.object({
+  username,
+  displayName: z.string().trim().min(1, 'กรอกชื่อที่แสดง').max(120),
+  password,
+})
+
+export const changeOwnPasswordInput = z.object({
+  currentPassword: z.string().min(1, 'กรอกรหัสผ่านปัจจุบัน').max(200),
+  newPassword: password,
+})
+
+export const setPasswordInput = z.object({ newPassword: password })
+
 export type NewsInput = z.infer<typeof newsInput>
 export type ProjectInput = z.infer<typeof projectInput>
 export type SiteReferenceInput = z.infer<typeof siteReferenceInput>

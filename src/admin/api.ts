@@ -1,4 +1,5 @@
 import type {
+  AdminAccount,
   AdminNews,
   AdminProject,
   AdminSiteReference,
@@ -105,6 +106,42 @@ export const auth = {
     }).then((r) => r.user),
 
   logout: () => request<{ ok: true }>('/api/auth/logout', { method: 'POST' }),
+}
+
+/* -------------------------------------------------------------------------- */
+/* บัญชีผู้ใช้หลังบ้าน                                                            */
+/* -------------------------------------------------------------------------- */
+
+/**
+ * ทุก endpoint อยู่ใต้ /api/admin จึงต้องล็อกอินก่อนเสมอ
+ *
+ * `changeOwnPassword` แยกจาก `setPassword` โดยตั้งใจ ไม่ใช่ตัวเดียวกันที่ส่ง id
+ * ของตัวเอง — อันแรกต้องกรอกรหัสเดิม อันหลังไม่ต้อง ถ้ารวมเป็นตัวเดียวแล้ววันหนึ่ง
+ * มีคนเผลอทำให้เงื่อนไขหลุด จะกลายเป็นว่าใครก็ตั้งรหัสของตัวเองใหม่ได้โดยไม่ต้องรู้รหัสเดิม
+ */
+export const adminUsers = {
+  list: () => request<AdminAccount[]>('/api/admin/users'),
+
+  create: (payload: { username: string; displayName: string; password: string }) =>
+    request<{ id: number }>('/api/admin/users', {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }),
+
+  remove: (id: number) => request<{ ok: true }>(`/api/admin/users/${id}`, { method: 'DELETE' }),
+
+  /** ตั้งรหัสใหม่ให้บัญชีอื่นที่ลืมรหัสผ่าน */
+  setPassword: (id: number, newPassword: string) =>
+    request<{ ok: true }>(`/api/admin/users/${id}/password`, {
+      method: 'POST',
+      body: JSON.stringify({ newPassword }),
+    }),
+
+  changeOwnPassword: (currentPassword: string, newPassword: string) =>
+    request<{ ok: true }>('/api/admin/users/me/password', {
+      method: 'POST',
+      body: JSON.stringify({ currentPassword, newPassword }),
+    }),
 }
 
 /* -------------------------------------------------------------------------- */

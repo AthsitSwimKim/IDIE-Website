@@ -17,6 +17,7 @@ import {
   adminSiteReferencesRouter,
   publicSiteReferencesRouter,
 } from './routes/site-references.ts'
+import { adminUsersRouter } from './routes/users.ts'
 
 const app = express()
 
@@ -127,6 +128,7 @@ adminRouter.use('/news', adminNewsRouter)
 adminRouter.use('/projects', adminProjectsRouter)
 adminRouter.use('/site-references', adminSiteReferencesRouter)
 adminRouter.use('/uploads', uploadRouter)
+adminRouter.use('/users', adminUsersRouter)
 app.use('/api/admin', adminRouter)
 
 // เส้นทางใต้ /api ที่ไม่ตรงอันไหนเลย ต้องตอบ JSON 404 ไม่ใช่ตกไปที่ SPA fallback

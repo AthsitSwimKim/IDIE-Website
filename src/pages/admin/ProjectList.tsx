@@ -1,34 +1,20 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge, Button } from '@/components/ui'
 import { adminProjects } from '@/admin/api'
 import { useAsyncData } from '@/hooks/useAsyncData'
+import { ConfirmDialog } from '@/pages/admin/components/ConfirmDialog'
+import { useDeleteConfirm } from '@/pages/admin/components/useDeleteConfirm'
 import type { AdminProject } from '@/types/admin'
 import { INDUSTRY_LABEL } from '@/pages/admin/industryLabels'
 
 export default function AdminProjectList() {
   const [reloadKey, setReloadKey] = useState(0)
   const { data, loading, error } = useAsyncData(adminProjects.list, [reloadKey])
-  const [busyId, setBusyId] = useState<number | null>(null)
-
-  const handleDelete = useCallback(async (item: AdminProject) => {
-    if (
-      !window.confirm(
-        `ลบผลงาน "${item.name.th}" ถาวรหรือไม่? ขอบเขตงานและภาพประกอบทั้งหมดจะถูกลบไปด้วย`,
-      )
-    ) {
-      return
-    }
-    setBusyId(item.id)
-    try {
-      await adminProjects.remove(item.id)
-      setReloadKey((key) => key + 1)
-    } catch (cause) {
-      window.alert(cause instanceof Error ? cause.message : 'ลบไม่สำเร็จ')
-    } finally {
-      setBusyId(null)
-    }
-  }, [])
+  const remove = useDeleteConfirm<AdminProject>(
+    (item) => adminProjects.remove(item.id),
+    () => setReloadKey((key) => key + 1),
+  )
 
   return (
     <>
@@ -112,10 +98,9 @@ export default function AdminProjectList() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        disabled={busyId === item.id}
-                        onClick={() => void handleDelete(item)}
+                        onClick={() => remove.ask(item)}
                       >
-                        {busyId === item.id ? 'กำลังลบ…' : 'ลบ'}
+                        ลบ
                       </Button>
                     </div>
                   </td>
@@ -125,6 +110,23 @@ export default function AdminProjectList() {
           </table>
         </div>
       )}
+
+      <ConfirmDialog
+        open={remove.target !== null}
+        title="ลบผลงานนี้ถาวร?"
+        confirmLabel="ลบถาวร"
+        busyLabel="กำลังลบ…"
+        tone="danger"
+        busy={remove.busy}
+        error={remove.error}
+        onConfirm={() => void remove.confirm()}
+        onCancel={remove.cancel}
+      >
+        <p>
+          “{remove.target?.name.th}” จะถูกลบออกจากระบบถาวร พร้อมขอบเขตงานและภาพประกอบทั้งหมด
+        </p>
+        <p>การลบย้อนกลับไม่ได้ ถ้าไม่แน่ใจให้เปลี่ยนสถานะเป็น “ร่าง” แทนการลบ</p>
+      </ConfirmDialog>
     </>
   )
 }

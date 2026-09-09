@@ -1,8 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge, Button } from '@/components/ui'
 import { adminSiteReferences } from '@/admin/api'
 import { useAsyncData } from '@/hooks/useAsyncData'
+import { ConfirmDialog } from '@/pages/admin/components/ConfirmDialog'
+import { useDeleteConfirm } from '@/pages/admin/components/useDeleteConfirm'
 import type { AdminSiteReference } from '@/types/admin'
 
 /**
@@ -16,20 +18,10 @@ export default function AdminSiteReferenceList() {
   // แล้วตัดออกเอง ซึ่งจะทำให้สิ่งที่เห็นบนจอกับในฐานข้อมูลไม่ตรงกันเมื่อการลบล้ม
   const [reloadKey, setReloadKey] = useState(0)
   const { data, loading, error } = useAsyncData(adminSiteReferences.list, [reloadKey])
-  const [busyId, setBusyId] = useState<number | null>(null)
-
-  const handleDelete = useCallback(async (item: AdminSiteReference) => {
-    if (!window.confirm(`ลบรายการ "${item.name.th}" ถาวรหรือไม่? การลบย้อนกลับไม่ได้`)) return
-    setBusyId(item.id)
-    try {
-      await adminSiteReferences.remove(item.id)
-      setReloadKey((key) => key + 1)
-    } catch (cause) {
-      window.alert(cause instanceof Error ? cause.message : 'ลบไม่สำเร็จ')
-    } finally {
-      setBusyId(null)
-    }
-  }, [])
+  const remove = useDeleteConfirm<AdminSiteReference>(
+    (item) => adminSiteReferences.remove(item.id),
+    () => setReloadKey((key) => key + 1),
+  )
 
   return (
     <>
@@ -118,10 +110,9 @@ export default function AdminSiteReferenceList() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        disabled={busyId === item.id}
-                        onClick={() => void handleDelete(item)}
+                        onClick={() => remove.ask(item)}
                       >
-                        {busyId === item.id ? 'กำลังลบ…' : 'ลบ'}
+                        ลบ
                       </Button>
                     </div>
                   </td>
@@ -131,6 +122,23 @@ export default function AdminSiteReferenceList() {
           </table>
         </div>
       )}
+
+      <ConfirmDialog
+        open={remove.target !== null}
+        title="ลบรายการนี้ถาวร?"
+        confirmLabel="ลบถาวร"
+        busyLabel="กำลังลบ…"
+        tone="danger"
+        busy={remove.busy}
+        error={remove.error}
+        onConfirm={() => void remove.confirm()}
+        onCancel={remove.cancel}
+      >
+        <p>
+          “{remove.target?.name.th}” จะถูกลบออกจากระบบถาวร และหายจากหน้าลูกค้าอ้างอิงทันที
+        </p>
+        <p>การลบย้อนกลับไม่ได้ ถ้าไม่แน่ใจให้เปลี่ยนสถานะเป็น “ร่าง” แทนการลบ</p>
+      </ConfirmDialog>
     </>
   )
 }

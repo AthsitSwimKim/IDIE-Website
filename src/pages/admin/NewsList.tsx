@@ -1,8 +1,10 @@
-import { useCallback, useState } from 'react'
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge, Button } from '@/components/ui'
 import { adminNews } from '@/admin/api'
 import { useAsyncData } from '@/hooks/useAsyncData'
+import { ConfirmDialog } from '@/pages/admin/components/ConfirmDialog'
+import { useDeleteConfirm } from '@/pages/admin/components/useDeleteConfirm'
 import { formatDate } from '@/pages/admin/formatDate'
 import type { AdminNews } from '@/types/admin'
 
@@ -19,20 +21,10 @@ export default function AdminNewsList() {
   // แล้วตัดออกเอง ซึ่งจะทำให้สิ่งที่เห็นบนจอกับในฐานข้อมูลไม่ตรงกันเมื่อการลบล้ม
   const [reloadKey, setReloadKey] = useState(0)
   const { data, loading, error } = useAsyncData(adminNews.list, [reloadKey])
-  const [busyId, setBusyId] = useState<number | null>(null)
-
-  const handleDelete = useCallback(async (item: AdminNews) => {
-    if (!window.confirm(`ลบข่าว "${item.title.th}" ถาวรหรือไม่? การลบย้อนกลับไม่ได้`)) return
-    setBusyId(item.id)
-    try {
-      await adminNews.remove(item.id)
-      setReloadKey((key) => key + 1)
-    } catch (cause) {
-      window.alert(cause instanceof Error ? cause.message : 'ลบไม่สำเร็จ')
-    } finally {
-      setBusyId(null)
-    }
-  }, [])
+  const remove = useDeleteConfirm<AdminNews>(
+    (item) => adminNews.remove(item.id),
+    () => setReloadKey((key) => key + 1),
+  )
 
   return (
     <>
@@ -113,10 +105,9 @@ export default function AdminNewsList() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        disabled={busyId === item.id}
-                        onClick={() => void handleDelete(item)}
+                        onClick={() => remove.ask(item)}
                       >
-                        {busyId === item.id ? 'กำลังลบ…' : 'ลบ'}
+                        ลบ
                       </Button>
                     </div>
                   </td>
@@ -126,6 +117,23 @@ export default function AdminNewsList() {
           </table>
         </div>
       )}
+
+      <ConfirmDialog
+        open={remove.target !== null}
+        title="ลบข่าวนี้ถาวร?"
+        confirmLabel="ลบถาวร"
+        busyLabel="กำลังลบ…"
+        tone="danger"
+        busy={remove.busy}
+        error={remove.error}
+        onConfirm={() => void remove.confirm()}
+        onCancel={remove.cancel}
+      >
+        <p>
+          “{remove.target?.title.th}” จะถูกลบออกจากระบบถาวร และหายจากหน้าข่าวสารทันที
+        </p>
+        <p>การลบย้อนกลับไม่ได้ ถ้าไม่แน่ใจให้เปลี่ยนสถานะเป็น “ร่าง” แทนการลบ</p>
+      </ConfirmDialog>
     </>
   )
 }

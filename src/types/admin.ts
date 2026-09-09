@@ -29,6 +29,17 @@ export interface AdminUser {
   displayName: string
 }
 
+/**
+ * บัญชีในหน้าจัดการผู้ใช้ — `AdminUser` ที่มีวันสร้างเพิ่มมา
+ *
+ * แยกจาก `AdminUser` เพราะอันนั้นคือ "ใครกำลังใช้งานอยู่" ซึ่งเก็บใน session
+ * และต้องเล็กที่สุดเท่าที่ UI ต้องใช้ ส่วนอันนี้คือแถวในตารางจัดการบัญชี
+ */
+export interface AdminAccount extends AdminUser {
+  /** ISO string — ฝั่งเว็บเป็นคนแปลงเป็นเวลาไทยตอนแสดง */
+  createdAt: string
+}
+
 /** ผลลัพธ์ของการอัปโหลดรูป — ตรงกับ `StoredImage` ที่เซิร์ฟเวอร์ส่งกลับ */
 export interface UploadedImage {
   src: string
