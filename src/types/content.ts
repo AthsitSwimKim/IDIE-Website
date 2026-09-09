@@ -78,6 +78,15 @@ export interface CompanyInfo extends Placeholderable {
   vision: LocalizedText;
   mission: LocalizedText[];
   address: LocalizedText;
+  /**
+   * ที่อยู่รูปแบบท้ายเว็บ — ขึ้นบรรทัดใหม่ตรงจุดที่เขียน \n ไว้ในค่าจริง
+   *
+   * แยกจาก `address` เพราะสองที่ต้องการคนละอย่าง: หน้าติดต่อเราและหน้าเกี่ยวกับเรา
+   * วางที่อยู่ในคอลัมน์กว้าง จึงอยากได้บรรทัดเดียวที่ปล่อยให้เบราว์เซอร์ตัดเอง
+   * ส่วนท้ายเว็บเป็นคอลัมน์แคบที่เจ้าของเว็บกำหนดจุดขึ้นบรรทัดเอง และมีชื่อประเทศ
+   * ต่อท้ายสำหรับผู้อ่านต่างชาติ ซึ่งไม่ได้อยู่ใน `address`
+   */
+  addressFooter: LocalizedText;
   phone: string[];
   email: string[];
   businessHours: LocalizedText;

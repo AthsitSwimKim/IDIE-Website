@@ -109,7 +109,9 @@ export default function ServiceList() {
           <Heading level={2} eyebrow="NEXT STEP">
             {t(ui.pages.servicesCtaTitle)}
           </Heading>
-          <p className="mt-4 text-white/70">{t(ui.pages.servicesCtaLead)}</p>
+          <p className="mt-4 text-white/70">
+            <KeepPhrases>{t(ui.pages.servicesCtaLead)}</KeepPhrases>
+          </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Button to="/contact" variant="onDark">
               {t(ui.actions.contactInquiry)}

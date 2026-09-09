@@ -36,7 +36,20 @@ export const company: CompanyInfo = {
   mission: [],
   address: {
     th: '69/13 ถนนจันทอุดม ตำบลเชิงเนิน อำเภอเมืองระยอง จังหวัดระยอง 21000',
-    en: '69/13 Chanthaudom Road, Tambol Choengnoen, Muang Rayong, Rayong 21000, Thailand',
+    /*
+      ช่องว่างใน "Mueang Rayong District," เป็น non-breaking space (U+00A0) ไม่ใช่ช่องว่างธรรมดา
+      ไม่งั้นหน้าติดต่อเราตัดเป็น "…Sub-district, Mueang / Rayong District" ที่บรรทัดแรกจบด้วย
+      คำว่า "Mueang" โดด ๆ ก้อนนี้กว้าง 215px จึงยังอยู่ในกล่องที่แคบที่สุดของหน้ามือถือได้
+    */
+    en: '69/13 Chanthaudom Road, Choeng Noen Sub-district, Mueang Rayong District, Rayong 21000',
+  },
+  /*
+    จุดขึ้นบรรทัดเป็นค่าที่เจ้าของเว็บกำหนดมาเอง ไม่ใช่การตัดของเบราว์เซอร์
+    ทั้งสองภาษาแบ่งคนละแบบ ไทยสองบรรทัด อังกฤษสี่บรรทัดโดยมีชื่อประเทศต่อท้าย
+  */
+  addressFooter: {
+    th: '69/13 ถนนจันทอุดม ตำบลเชิงเนิน\nอำเภอเมืองระยอง จังหวัดระยอง 21000',
+    en: '69/13 Chanthaudom Road, Choeng Noen Sub-district,\nMueang Rayong District, Rayong\n21000\nThailand',
   },
   phone: ['+66 38 623000', '+66 87 616 0216'],
   /*

@@ -204,8 +204,8 @@ export const ui = {
       en: "Let's engineer your next solution.",
     },
     contactCtaLead: {
-      th: 'ส่งสเปกงาน แบบผัง หรือการจำแนกพื้นที่มาให้เรา แล้วเราจะช่วยเลือกอุปกรณ์และวางระบบให้ตรงกับหน้างานจริง',
-      en: 'Send us your specification, layout or area classification and we will help you select equipment and design a system that fits the actual site.',
+      th: 'สามารถส่งสเปก แบบผัง หรือสอบถามรายละเอียดทางเทคนิค ทีมวิศวกรของเราพร้อมให้คำปรึกษาและข้อเสนอที่ตอบโจทย์หน้างาน',
+      en: 'Send us a specification or layout, or ask about technical details — our engineers are ready to advise and propose an approach that answers what the site needs.',
     },
 
     outlineTitle: { th: 'โครงหน้า Home', en: 'Home page outline' },
@@ -502,12 +502,12 @@ export const ui = {
       en: 'Installation process and safety standards in detail',
     },
     servicesCtaTitle: {
-      th: 'ไม่แน่ใจว่างานของคุณอยู่ในกลุ่มไหน',
-      en: 'Not sure which of these your project falls under?'
+      th: 'ยังไม่แน่ใจว่าหน้างานของคุณต้องใช้ระบบแบบไหน?',
+      en: 'Not sure which system your site needs?'
     },
     servicesCtaLead: {
-      th: 'ส่งผังหน้างานหรือเอกสารจำแนกพื้นที่มาให้เรา ทีมวิศวกรจะช่วยดูว่าต้องใช้ระบบแบบไหนและอุปกรณ์ระดับไหน — หลายโครงการต้องใช้มากกว่าหนึ่งกลุ่มร่วมกันอยู่แล้ว',
-      en: 'Send us a site layout or your area classification drawings and our engineers will work out which systems and equipment grades apply. Most projects need more than one of these working together anyway.',
+      th: 'ส่งผังหน้างานหรือรายละเอียดโครงการมาให้เรา ทีมวิศวกรจะช่วยประเมินระบบและอุปกรณ์ที่เหมาะสมให้',
+      en: 'Send us a site layout or project details and our engineers will assess which systems and equipment suit it.',
     },
     referenceTitle: { th: 'องค์กรที่เคยร่วมงานกับเรา', en: 'Companies we have worked with' },
     referenceProjectsHeading: { th: 'อ้างอิงหน้างาน', en: 'Site Reference' },

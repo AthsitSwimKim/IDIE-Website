@@ -38,7 +38,16 @@ export function Footer() {
   return (
     <footer className="bg-navy-900 text-white/70" data-tone="dark">
       <Container>
-        <div className="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-4">
+        {/*
+          คอลัมน์ที่สี่กว้างขั้นต่ำ 24rem ไม่ใช่ 1 ใน 4 เท่ากันทุกคอลัมน์ — ที่อยู่ท้ายเว็บ
+          กำหนดจุดขึ้นบรรทัดมาเองในข้อมูล บรรทัดที่ยาวที่สุดกว้าง 381px ถ้าคอลัมน์แคบกว่านั้น
+          เบราว์เซอร์จะตัดซ้อนเข้าไปอีกชั้นจนบรรทัดที่ตั้งใจไว้แตกกลางคำ ส่วนสามคอลัมน์แรก
+          เป็นรายการลิงก์สั้น ๆ ที่กว้างราว 110px อยู่แล้ว การหั่นที่เหลือเท่ากันจึงยังเหลือเฟือ
+
+          คอลัมน์แรกมีขั้นต่ำ 15rem ด้วย เพราะตราบริษัทกับชื่อเต็มเรียงกันในแนวนอนและไม่ตัดคำ
+          ต้องการ 240px เสมอ ถ้าปล่อยให้ยืดหดตามส่วนที่เหลือ มันจะล้นไปทับคอลัมน์ถัดไปที่จอ 1024px
+        */}
+        <div className="grid gap-10 py-14 md:grid-cols-2 lg:grid-cols-[minmax(15rem,1fr)_1fr_1fr_minmax(24rem,1.5fr)]">
           <div className="lg:col-span-1">
             <Logo tone="dark" />
             <p className="mt-5 max-w-xs text-sm">{t(ui.footer.tagline)}</p>
@@ -65,7 +74,7 @@ export function Footer() {
             </h2>
             {company && (
               <address className="mt-4 text-sm not-italic">
-                <p className="mb-2">{t(company.address)}</p>
+                <p className="mb-2 whitespace-pre-line">{t(company.addressFooter)}</p>
                 {company.phone.map((number) => (
                   <p key={number}>
                     <a
