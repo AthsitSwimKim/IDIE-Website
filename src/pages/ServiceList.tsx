@@ -76,9 +76,15 @@ export default function ServiceList() {
                 <ul className="mt-4 space-y-2">
                   {service.scope.map((item) => (
                     <li key={item.en} className="text-ink-muted flex gap-2.5">
+                      {/*
+                        จุดกลม 6px วางกลางบรรทัดแรกด้วย mt เป็นหน่วย em ไม่ใช่ px
+                        — ระยะที่ถูกต้องคือ (ระยะบรรทัด − ขนาดจุด) ÷ 2 ซึ่งขึ้นกับ
+                        ขนาดตัวอักษร ค่าคงที่ 8px ที่เคยใช้ตอนตัวอักษร 15px
+                        ทำให้จุดลอยสูงจนดูเหมือนดอกจันเมื่อตัวอักษรขึ้นเป็น 18px
+                      */}
                       <span
                         aria-hidden="true"
-                        className="bg-primary-600 mt-2 size-1 shrink-0 rounded-full"
+                        className="bg-primary-600 mt-[0.7em] size-1.5 shrink-0 rounded-full"
                       />
                       {t(item)}
                     </li>

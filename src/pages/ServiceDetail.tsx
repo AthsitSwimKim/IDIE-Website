@@ -100,7 +100,7 @@ export default function ServiceDetail() {
                 <li key={item.en} className="flex gap-3 py-3">
                   <span
                     aria-hidden="true"
-                    className="bg-primary-600 mt-2.5 size-1.5 shrink-0 rounded-full"
+                    className="bg-primary-600 mt-[0.7em] size-1.5 shrink-0 rounded-full"
                   />
                   <span>{t(item)}</span>
                 </li>
@@ -115,7 +115,7 @@ export default function ServiceDetail() {
                 <li key={item.en} className="flex gap-3 py-3">
                   <span
                     aria-hidden="true"
-                    className="bg-accent-cyan mt-2.5 size-1.5 shrink-0 rounded-full"
+                    className="bg-accent-cyan mt-[0.7em] size-1.5 shrink-0 rounded-full"
                   />
                   <span>{t(item)}</span>
                 </li>

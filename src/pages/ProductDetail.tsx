@@ -181,7 +181,7 @@ export default function ProductDetail() {
                     <li key={feature} className="text-ink-muted flex gap-3 leading-relaxed">
                       <span
                         aria-hidden="true"
-                        className="bg-primary-600 mt-2 size-1.5 shrink-0 rounded-full"
+                        className="bg-primary-600 mt-[0.7em] size-1.5 shrink-0 rounded-full"
                       />
                       <span>{feature}</span>
                     </li>
