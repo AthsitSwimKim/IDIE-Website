@@ -204,8 +204,8 @@ export const valueProps: ValueProp[] = [
     icon: 'target',
     title: { th: 'เชี่ยวชาญเฉพาะทาง', en: 'Focused Specialist' },
     description: {
-      th: 'ทำเฉพาะระบบสื่อสารและสัญญาณเตือนภัยอุตสาหกรรมมาตั้งแต่ปี 2549 ไม่ใช่งานรับเหมาทั่วไปที่รับงานนี้เป็นงานเสริม',
-      en: 'Dedicated to industrial communication and signalling since 2006 — not a general contractor taking this on as a side line.',
+      th: 'มุ่งเน้นระบบสื่อสารและเตือนภัยในโรงงานอุตสาหกรรมโดยเฉพาะ ต่อเนื่องตั้งแต่ปี 2549 มั่นใจได้ในมาตรฐานระดับมืออาชีพ',
+      en: 'Focused on communication and warning systems for industrial plants, continuously since 2006, to a professional standard.',
     },
   },
   {
@@ -213,8 +213,8 @@ export const valueProps: ValueProp[] = [
     icon: 'shield',
     title: { th: 'งานพื้นที่อันตราย', en: 'Hazardous Area Expertise' },
     description: {
-      th: 'อุปกรณ์กันระเบิดสำหรับพื้นที่เสี่ยง พร้อมมาตรฐานสากลอย่าง ATEX และ IECEx',
-      en: 'Explosion-proof equipment for classified areas, backed by international certifications such as ATEX and IECEx.',
+      th: 'อุปกรณ์กันระเบิดสำหรับพื้นที่เสี่ยง พร้อมมาตรฐานระดับสากลอย่าง ATEX และ IECEx',
+      en: 'Explosion-proof equipment for classified areas, backed by international standards such as ATEX and IECEx.',
     },
   },
   {
@@ -222,8 +222,8 @@ export const valueProps: ValueProp[] = [
     icon: 'award',
     title: { th: 'สินค้าจากยุโรปและสหรัฐฯ', en: 'European & US Products' },
     description: {
-      th: 'จัดจำหน่ายเฉพาะสินค้าคุณภาพจากผู้ผลิตในยุโรปหรือสหรัฐอเมริกา เป็นนโยบายของบริษัท',
-      en: 'We supply only quality products from European or US manufacturers — a standing company policy.',
+      th: 'จัดจำหน่ายเฉพาะสินค้าคุณภาพสูง นำเข้าตรงจากผู้ผลิตในยุโรปและสหรัฐอเมริกาตามมาตรฐานบริษัท',
+      en: 'We supply only high-quality products, imported directly from manufacturers in Europe and the United States, in line with company standards.',
     },
   },
   {
@@ -231,8 +231,8 @@ export const valueProps: ValueProp[] = [
     icon: 'map-pin',
     title: { th: 'ฐานที่ระยอง', en: 'Based in Rayong' },
     description: {
-      th: 'ตั้งอยู่ในระยอง ใกล้พื้นที่อุตสาหกรรมของลูกค้า ทำให้ตอบงานบริการและงานด่วนได้เร็ว',
-      en: 'Located in Rayong, close to our customers’ plants — enabling fast service response.',
+      th: 'สำนักงานตั้งอยู่ในระยอง ใกล้พื้นที่นิคมอุตสาหกรรมหลักของลูกค้า พร้อมเข้าหน้างานและดูแลงานด่วนได้ทันที',
+      en: 'Our office is in Rayong, close to our customers’ main industrial estates — ready to attend site and handle urgent work immediately.',
     },
   },
 ]

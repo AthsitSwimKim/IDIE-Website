@@ -57,7 +57,14 @@ export default function NewsDetail() {
       </Section>
 
       <Section spacing="none">
-        <div className="max-w-3xl">
+        {/*
+          จัดกึ่งกลางเฉพาะภาพปก ตามที่เจ้าของงานกำหนด — ข้อความรอบ ๆ ยังชิดซ้ายเหมือนเดิม
+
+          ผลที่ตามมาโดยตั้งใจ: ขอบซ้ายของภาพเยื้องจากขอบซ้ายของหัวข้อและเนื้อข่าว 208px
+          ที่จอ 1440 (ภาพเริ่มที่ 328 ส่วนข้อความเริ่มที่ 120) ถ้าวันหลังมีคนเห็นแล้ว
+          คิดว่าเป็นบั๊ก — ไม่ใช่ ตรงนี้ตั้งใจไว้แบบนี้
+        */}
+        <div className="mx-auto max-w-3xl">
           <img
             src={article.cover.src}
             srcSet={article.cover.srcSet}

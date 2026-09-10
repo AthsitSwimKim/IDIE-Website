@@ -40,9 +40,22 @@ export function ProjectCard({ project }: { project: Project }) {
           {project.year && <span className="text-ink-muted text-xs">{project.year}</span>}
         </span>
 
-        <span className="group-hover:text-primary-600 mt-3 text-lg font-semibold">{t(project.name)}</span>
+        {/*
+          18px ไม่ใช่ 20px — ค่าที่เจ้าของงานกำหนดเฉพาะการ์ดข่าวกับการ์ดผลงาน
+          เขียนเป็น text-base ตรง ๆ ไม่ผูกกับ token --text-h3 เพราะนี่ไม่ใช่หัวข้อจริง
+          เป็น <span> ในลิงก์ ถ้าผูกกับ token หัวข้อ วันที่แก้สเกลหัวข้อทั้งเว็บ
+          ขนาดในตารางข่าว/ผลงานจะขยับตามไปด้วยโดยไม่ตั้งใจ
+
+          ไม่บังคับ leading-snug แบบการ์ดสินค้า — หัวข้อที่นี่เป็นภาษาไทยซึ่งมีสระบน
+          กับวรรณยุกต์ซ้อนได้สองชั้น กฎ :lang(th) ใน theme.css ที่ให้ระยะบรรทัด 1.75
+          จึงเป็นค่าที่ถูกต้องแล้วสำหรับที่นี่
+        */}
+        <span className="group-hover:text-primary-600 mt-3 text-base font-semibold">
+          {t(project.name)}
+        </span>
+        {/* ชื่อลูกค้าเป็น 16px อยู่แล้วก่อนแก้ ส่วนบรรทัดสถานที่ไม่ได้ระบุขนาดจึงตกไปใช้ 18px */}
         <span className="text-ink-muted mt-1 text-sm">{t(project.client)}</span>
-        <span className="text-ink-muted mt-2 line-clamp-2 flex-1">
+        <span className="text-ink-muted mt-2 line-clamp-2 flex-1 text-sm">
           {t(project.location)}
         </span>
       </span>

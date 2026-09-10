@@ -128,7 +128,19 @@ export default function BrandDatasheets() {
             <details
               key={`${group.category}-${needle ? 'search' : 'browse'}`}
               open={Boolean(needle)}
-              className="border-line group relative border"
+              /*
+                ตั้งชื่อกลุ่มเป็น `group/category` ไม่ใช่ `group` เปล่า
+
+                `group-hover:` ของ Tailwind คอมไพล์เป็น `.group:hover .group-hover\:x`
+                ซึ่งจับ**บรรพบุรุษตัวไหนก็ได้**ที่มีคลาส `group` ไม่ใช่ตัวที่ใกล้ที่สุด
+                <details> ตัวนี้ครอบตะแกรงการ์ดเอกสารทั้งหมวดอยู่ พอมันมี `group` เปล่า
+                การเอาเมาส์ไปแตะการ์ดใบเดียวจึงทำให้การ์ด**ทุกใบในหมวด**ขึ้นเงาและ
+                ขีดเส้นใต้พร้อมกัน แถมหัวข้อหมวดด้านบนก็เปลี่ยนสีตามไปด้วย
+
+                พอตั้งชื่อกลุ่ม ทั้งสองชั้นแยกขาดจากกัน — แถวหมวดตอบเฉพาะ /category
+                การ์ดตอบเฉพาะ /card
+              */
+              className="border-line group/category relative border"
             >
               {/*
                 **ลูกศรกวาดจากเฉียงเป็นแนวนอนตอนเอาเมาส์ไปแตะ** — ลอกพฤติกรรมจาก
@@ -146,9 +158,9 @@ export default function BrandDatasheets() {
               <summary className="focus-visible:outline-primary-600 flex cursor-pointer list-none items-center gap-3.5 px-4 py-4 focus-visible:outline-2 focus-visible:-outline-offset-2 [&::-webkit-details-marker]:hidden">
                 <ArrowRight
                   aria-hidden="true"
-                  className="text-primary-800 group-hover:text-primary-600 group-open:text-primary-600 size-4 shrink-0 rotate-45 transition-[rotate,color] duration-350 ease-(--ease-out-expo) group-hover:rotate-0 group-open:rotate-0 motion-reduce:transition-none"
+                  className="text-primary-800 group-hover/category:text-primary-600 group-open/category:text-primary-600 size-4 shrink-0 rotate-45 transition-[rotate,color] duration-350 ease-(--ease-out-expo) group-hover/category:rotate-0 group-open/category:rotate-0 motion-reduce:transition-none"
                 />
-                <span className="text-primary-800 group-open:text-primary-600 group-hover:text-primary-600 text-lg font-semibold transition-colors duration-350 ease-(--ease-out-expo)">
+                <span className="text-primary-800 group-open/category:text-primary-600 group-hover/category:text-primary-600 text-lg font-semibold transition-colors duration-350 ease-(--ease-out-expo)">
                   {t(group.name)}
                 </span>
                 <span className="stat-figure text-ink-muted ml-auto text-sm">
@@ -212,13 +224,13 @@ function DatasheetCard({ sheet }: { sheet: Datasheet }) {
       href={sheet.pdfUrl}
       target="_blank"
       rel="noopener"
-      className="group focus-visible:outline-primary-600 block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
+      className="group/card focus-visible:outline-primary-600 block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
     >
       {/*
         กรอบสีเทาอ่อนรอบหน้ากระดาษ ทำให้เอกสารพื้นขาวมีขอบเขตชัดบนพื้นเว็บที่ก็ขาว
         และให้ผลเหมือนดูเอกสารวางบนโต๊ะ ซึ่งเป็นภาษาภาพเดียวกับหน้าดาวน์โหลดของผู้ผลิตเอง
       */}
-      <span className="bg-surface-alt border-line block overflow-hidden rounded-md border p-4 transition-shadow duration-(--duration-ui) group-hover:shadow-lift sm:p-5">
+      <span className="bg-surface-alt border-line group-hover/card:shadow-lift block overflow-hidden rounded-md border p-4 transition-shadow duration-(--duration-ui) sm:p-5">
         <img
           src={sheet.thumb.src}
           alt=""
@@ -230,7 +242,13 @@ function DatasheetCard({ sheet }: { sheet: Datasheet }) {
         />
       </span>
 
-      <span className="text-primary-600 mt-3 block text-sm leading-snug font-semibold group-hover:underline">
+      {/*
+        เข้มขึ้นตอนชี้เมาส์ แทนการขีดเส้นใต้ — ชื่อเอกสารเป็นสีน้ำเงินอยู่แล้วตั้งแต่แรก
+        จึงบอกอยู่แล้วว่ากดได้ เส้นใต้ที่โผล่มาเพิ่มจึงเป็นสัญญาณซ้ำ ไม่ได้บอกอะไรใหม่
+        และในตะแกรงที่มีเอกสารหลายสิบใบ เส้นใต้ทำให้ตัวหนังสือดูเปลี่ยนรูปร่าง
+        มากกว่าจะดูเป็นการตอบสนอง (ใช้แนวเดียวกับการ์ดสินค้า)
+      */}
+      <span className="text-primary-600 group-hover/card:text-primary-800 mt-3 block text-sm leading-snug font-semibold transition-colors duration-(--duration-ui)">
         {sheet.title}
       </span>
 

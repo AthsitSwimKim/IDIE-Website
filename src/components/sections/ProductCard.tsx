@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Product } from '@/types/content'
 import { useLocale } from '@/hooks/useLocale'
 import { ui } from '@/data'
+import { cn } from '@/utils/cn'
 
 export interface ProductCardProps {
   product: Product
@@ -29,7 +30,15 @@ export function ProductCard({ product }: ProductCardProps) {
       to={`/products/${product.slug}`}
       className="group focus-visible:outline-primary-600 block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4"
     >
-      <span className="border-line rounded-card bg-surface-alt block overflow-hidden border transition-shadow duration-(--duration-ui) group-hover:shadow-lift">
+      {/*
+        เงานุ่มตั้งแต่ยังไม่ชี้เมาส์ — กรอบเส้น #e2e8f2 บนพื้นขาวของหน้าแทบไม่มีน้ำหนัก
+        พอเรียงกัน 24 ใบจึงกลายเป็นตารางภาพลอย ๆ ที่มองไม่ออกว่าแต่ละใบจบตรงไหน
+        ชี้เมาส์แล้วเงาลึกขึ้นเป็น shadow-lift และเส้นขอบเปลี่ยนเป็นน้ำเงินอ่อน
+
+        border-color ต้องอยู่ในรายการ transition ด้วย ไม่งั้นสีขอบกระโดดทันที
+        ขณะที่เงาค่อย ๆ ไล่ กลายเป็นสองจังหวะที่ไม่ตรงกัน
+      */}
+      <span className="border-line rounded-card bg-surface-alt shadow-card group-hover:border-primary-300 group-hover:shadow-lift block overflow-hidden border transition-[box-shadow,border-color] duration-(--duration-ui)">
         {product.card ? (
           <img
             src={product.card.src}
@@ -47,12 +56,77 @@ export function ProductCard({ product }: ProductCardProps) {
         )}
       </span>
 
-      <span className="mt-3 block text-base leading-snug font-semibold group-hover:underline sm:text-lg">
+      {/*
+        รหัสรุ่นอยู่**เหนือ**ชื่อสินค้า ไม่ใช่ใต้ — วางแบบนี้ที่เดียวที่แก้ได้ครบทั้งสามข้อ
+
+        ข้อกำหนดสามข้อขัดกันเองถ้ารหัสอยู่ใต้ชื่อ เพราะชื่อสินค้ายาวไม่เท่ากัน
+        (บางใบบรรทัดเดียว บางใบสอง) แล้วส่วนต่างต้องไปโผล่ที่ใดที่หนึ่งเสมอ:
+          1. ชื่อต้องอยู่ใต้ภาพเท่ากันทุกใบ
+          2. รหัสต้องอยู่ใต้ชื่อเท่ากันทุกใบ
+          3. บรรทัดรหัสของทุกใบในแถวต้องอยู่ระนาบเดียวกัน
+        ล็อกความสูงชื่อไว้สองบรรทัด → ได้ 1 กับ 3 เสีย 2 (ช่องว่าง 40px ใต้ชื่อสั้น)
+        ดันชื่อกับรหัสลงล่างทั้งก้อน → ได้ 2 กับ 3 เสีย 1 (ชื่อสั้นห้อยต่ำกว่าเพื่อน 28px)
+        ไม่ทำอะไรเลย → ได้ 1 กับ 2 เสีย 3 (บรรทัดรหัสไม่ตรงแนว)
+
+        พอสลับให้รหัสขึ้นก่อน ส่วนต่างของความยาวชื่อไปตกที่**ท้ายการ์ด** ซึ่งไม่มี
+        อะไรตามหลังแล้ว จึงไม่มีใครเห็น — ภาพทุกใบจบที่ y เดียวกัน (aspect-square
+        บนคอลัมน์กว้างเท่ากัน) รหัสจึงอยู่ระนาบเดียวกันเอง และบรรทัดแรกของชื่อ
+        ก็อยู่ระนาบเดียวกันเอง โดยไม่ต้องล็อกความสูงหรือดันอะไรทั้งสิ้น
+
+        ลำดับการอ่านเปลี่ยนเป็นรหัสก่อนชื่อ ซึ่งเข้ากับแคตตาล็อกงานเทคนิคที่ผู้อ่าน
+        ค้นด้วยรหัสรุ่นเป็นหลัก และน้ำหนักสายตายังอยู่ที่ชื่อ เพราะชื่อตัวหนา 20px
+        ส่วนรหัสเป็นตัวเทาเล็ก 13px ในกรอบจาง
+      */}
+      <span className="mt-3 block">
+        {/*
+          ใส่กรอบเม็ดยาแทนบรรทัดข้อความเปล่า — รหัสรุ่นเป็นข้อมูลคนละชนิดกับชื่อสินค้า
+          ทรงเดียวกับ `Badge` โทน neutral ที่ใช้ในหน้ารายละเอียดสินค้า แต่เขียนสดตรงนี้
+          เพราะต้องการ `stat-figure` (ตัวเลขความกว้างเท่ากัน) กับสีเข้มเต็มที่
+          ซึ่ง Badge ไม่ได้เปิดให้เปลี่ยน — `cn` ในโปรเจกต์นี้เป็น clsx เปล่า
+          การส่ง `text-ink` ทับ `text-ink-muted` ของ Badge จึงไม่การันตีว่าตัวไหนชนะ
+
+          พื้นสลับเป็นขาวเมื่ออยู่บน section โทนเทา (เช่นหมวด "สินค้าในหมวดเดียวกัน"
+          ท้ายหน้ารายละเอียด) ไม่งั้นพื้นเม็ดยากับพื้น section เป็นสีเดียวกันเป๊ะ
+          แล้วเม็ดยาหายไปเหลือแต่เส้นขอบ
+
+          สินค้า 26 จาก 191 รายการไม่มีรหัสรุ่นในเอกสารผู้ผลิต ถ้าไม่เรนเดอร์อะไรเลย
+          ชื่อของใบนั้นจะขยับขึ้นไปชิดภาพคนเดียวแล้วหลุดแนวจากเพื่อนในแถว —
+          จองที่ไว้ด้วยเม็ดยาที่ `invisible` (ยังกินพื้นที่ ไม่ถูกวาด และโปรแกรม
+          อ่านหน้าจอข้ามให้เอง) ใช้คลาสชุดเดียวกันเป๊ะ ความสูงที่จองจึงตรงเสมอ
+          โดยไม่ต้องฮาร์ดโค้ดตัวเลข
+        */}
+        <span
+          aria-hidden={product.model ? undefined : 'true'}
+          className={cn(
+            'stat-figure border-line bg-surface-alt text-ink rounded-pill [[data-tone=alt]_&]:bg-surface inline-block border px-2 py-0.5 text-xs',
+            !product.model && 'invisible',
+          )}
+        >
+          {product.model ?? '\u2014'}
+        </span>
+      </span>
+
+      {/*
+        leading-snug! ต้องมี ! — theme.css มีกฎ `:lang(th) .text-base { line-height: 1.75 }`
+        ที่ใช้ selector สองชั้นจึงชนะ `.leading-snug` ชั้นเดียว ทั้งที่คอมเมนต์ในไฟล์นั้น
+        ระบุว่าตั้งใจไม่ทับ `leading-*` ที่ผู้เขียนใส่เอง ชื่อสินค้าทุกตัวมาจากเอกสาร
+        ผู้ผลิตเป็นอักษรละติน ไม่มีสระบน-ล่างแบบไทยที่ต้องเผื่อที่ให้
+        วัดก่อนแก้: ระยะบรรทัด 35px ที่ตัวอักษร 20px (1.75) — หลังแก้ 1.375 ตามที่ระบุไว้
+
+        ขนาด 16px เท่ากันทุกจอ เป็นค่าที่เจ้าของงานกำหนดเฉพาะการ์ดสินค้า ไม่ลดลงที่มือถือ
+        เพราะป้ายรหัสรุ่นข้างบนเป็น 13px อยู่แล้ว ถ้าชื่อลงมา 14px จะห่างกันแค่ 1px
+        แล้วแยกไม่ออกว่าอันไหนชื่อ อันไหนรหัส — เขียนเป็น text-sm ตรง ๆ ไม่ผูกกับ
+        token --text-h3 (20px คงที่)
+        เพราะนี่ไม่ใช่หัวข้อจริง เป็น <span> ในลิงก์ — ถ้าผูกกับ token หัวข้อ วันที่แก้
+        สเกลหัวข้อทั้งเว็บ ขนาดในตารางสินค้าจะขยับตามไปด้วยโดยไม่ตั้งใจ
+
+        เปลี่ยนสีตอนชี้เมาส์แทนการขีดเส้นใต้ — เส้นใต้ทำให้ตัวอักษรไทยที่มีสระล่าง
+        อย่าง ุ ู ชนกับเส้น และในตารางที่มีการ์ดหลายสิบใบ เส้นใต้ที่โผล่มาอ่านเหมือน
+        ข้อความเปลี่ยนรูปร่าง มากกว่าจะอ่านเหมือนสัญญาณว่ากดได้
+      */}
+      <span className="group-hover:text-primary-600 mt-2 block text-sm leading-snug! font-semibold transition-colors duration-(--duration-ui)">
         {product.name}
       </span>
-      {product.model && (
-        <span className="stat-figure text-ink-muted mt-1 block text-xs">{product.model}</span>
-      )}
     </Link>
   )
 }

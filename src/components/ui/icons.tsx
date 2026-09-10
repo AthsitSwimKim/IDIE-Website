@@ -158,3 +158,52 @@ export function DocumentIcon(props: SVGProps<SVGSVGElement>) {
     </svg>
   )
 }
+
+/**
+ * ไอคอนประจำข้อ "ทำไมโรงงานถึงเลือก IDIE"
+ *
+ * สี่ใบนี้เคยใช้จุดกลมเหมือนกันหมด ทั้งที่ข้อมูลใน `valueProps` ระบุชื่อไอคอน
+ * ประจำข้อไว้ตั้งแต่แรก — ไอคอนซ้ำกันแปลว่ากวาดสายตาแล้วแยกไม่ออกว่าการ์ดไหน
+ * พูดเรื่องอะไร ต้องอ่านหัวข้อทีละใบ ซึ่งเสียประโยชน์ของการวางเป็นการ์ดไปทั้งหมด
+ */
+
+/** เป้า — ทำเฉพาะสายงานนี้ ไม่ใช่รับงานกว้าง ๆ */
+export function TargetIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="12" r="9" />
+      <circle cx="12" cy="12" r="5" />
+      <path d="M12 12h.01" />
+    </svg>
+  )
+}
+
+/** โล่พร้อมเครื่องหมายเตือน — อุปกรณ์กันระเบิดสำหรับพื้นที่เสี่ยง */
+export function ShieldAlertIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M12 22c4-1.5 7-5 7-9.5V5.5l-7-3-7 3v7c0 4.5 3 8 7 9.5Z" />
+      <path d="M12 8.5v3.5M12 15.5h.01" />
+    </svg>
+  )
+}
+
+/** เหรียญรับรอง — สินค้าจากผู้ผลิตยุโรป/สหรัฐฯ ที่มีเอกสารมาตรฐาน */
+export function AwardIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <circle cx="12" cy="9" r="6" />
+      <path d="m8.6 14.2-1.1 7.3 4.5-2.6 4.5 2.6-1.1-7.3" />
+    </svg>
+  )
+}
+
+/** หมุดแผนที่ — ฐานที่ระยอง ใกล้พื้นที่อุตสาหกรรมของลูกค้า */
+export function MapPinIcon(props: SVGProps<SVGSVGElement>) {
+  return (
+    <svg {...base} {...props}>
+      <path d="M20 10.5c0 5.2-5.6 10.2-7.4 11.6a1 1 0 0 1-1.2 0C9.6 20.7 4 15.7 4 10.5a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10.5" r="3" />
+    </svg>
+  )
+}
