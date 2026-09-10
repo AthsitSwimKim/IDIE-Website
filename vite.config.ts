@@ -19,7 +19,7 @@ import tailwindcss from '@tailwindcss/vite'
  * ฟอนต์ที่ตั้ง `font-display: swap` ไม่บล็อกการวาดหน้าจอ การ preload จึงไม่ทำให้ FCP ช้าลง
  * แค่แย่ง bandwidth กับ JS ซึ่งแลกกับการไม่มี layout shift แล้วคุ้มกว่า
  */
-const CRITICAL_FONT_PATTERN = /ibm-plex-sans-thai-(thai|latin)-(400|500|600|700)-normal/
+const CRITICAL_FONT_PATTERN = /(?:inter-latin|kanit-thai)-(400|500|600|700)-normal/
 
 /**
  * ใส่ `<link rel="preload">` ของฟอนต์หลักลงใน index.html ตอน build

@@ -218,35 +218,37 @@ docker compose --env-file server/.env up -d
 |---|---|---|---|
 | Initial JS (gzip) | ≤ 200 KB | **101 KB** | index 66.7 + router 34.0 + runtime 0.4 |
 | Initial CSS (gzip) | ≤ 30 KB | **12.1 KB** | |
-| CLS | ≤ 0.1 | ⚠️ ต้องวัดใหม่ | ดูหัวข้อถัดไป |
+| CLS | ≤ 0.1 | **0.025** | Home · สูงสุดจาก TH/EN × 5 viewport · cold cache + simulated 3G |
 | LCP | ≤ 2.5s | 176 ms | วัด ส.ค. 2026 บน localhost ยังไม่ได้ throttle |
 | INP (หน้า Products) | ≤ 200 ms | 5–29 ms | วัด ส.ค. 2026 |
 | Contrast AA | ผ่านทุกคู่ | ผ่าน 1,058 จุด | วัด ส.ค. 2026 · ต่ำสุด 4.59:1 |
 | Touch target | ≥ 44×44 | ผ่าน | |
 
-ตัวเลข JS/CSS วัดใหม่จาก production build ปัจจุบัน ส่วน CLS/LCP/INP/contrast เป็นค่าจาก
-Phase 6 (ส.ค. 2026) ซึ่งผ่านมาหลายรอบการแก้แล้ว **ควรวัดซ้ำก่อนขึ้น production**
+ตัวเลข JS/CSS และ CLS วัดใหม่จาก production build ปัจจุบัน โดย CLS วัดด้วย Chrome
+PerformanceObserver ที่ 375 / 768 / 1024 / 1280 / 1536 ทั้งภาษาไทยและอังกฤษ ปิด cache
+และจำลองเครือข่าย 3G ส่วน LCP/INP/contrast เป็นค่าจาก Phase 6 (ส.ค. 2026)
+ซึ่งผ่านมาหลายรอบการแก้แล้ว **ควรวัดซ้ำก่อนขึ้น production**
 
-### ⚠️ font preload ใช้งานไม่ได้อยู่ตอนนี้
+### ✅ font preload ใช้งานแล้ว
 
 plugin `idie:preload-critical-fonts` ใน `vite.config.ts` มีไว้ใส่ `<link rel="preload">`
 ให้ฟอนต์หลักตอน build เพราะ `@fontsource` ตั้ง `font-display: swap` ให้ทุกไฟล์ —
 ถ้าไม่ preload เบราว์เซอร์วาดด้วยฟอนต์ระบบก่อนแล้วค่อยสลับ วัดจริงแล้วบล็อก hero
 สูงต่างกันถึง 76px ทั้งหน้าจึงกระโดดหนึ่งครั้ง (เคยวัดได้ CLS 0.113 เกินงบ)
 
-**แต่ `CRITICAL_FONT_PATTERN` ยังชี้ไปที่ `ibm-plex-sans-thai-…` ซึ่งเป็นฟอนต์ชุดเก่า**
-ตอนที่เปลี่ยนมาใช้ Inter + Kanit ไม่ได้แก้ pattern ตาม ผลคือ plugin หาไฟล์ไม่เจอสักไฟล์
-และ build ปัจจุบันได้ preload **0 รายการ**:
+`CRITICAL_FONT_PATTERN` จับเฉพาะ **Inter latin** และ **Kanit thai** อย่างละ 4 น้ำหนัก
+รวม 8 ไฟล์ โดยไม่ preload subset ภาษาอื่นที่หน้าเว็บไม่ได้ใช้ ตรวจผลหลัง build ได้ด้วย:
 
 ```bash
 npm run build && grep -c 'rel="preload"' dist/index.html
 ```
 
-ถ้าจะแก้ ต้องเปลี่ยน pattern ให้ตรงกับไฟล์จริงที่ build ออกมา — build ปล่อยไฟล์ฟอนต์
-44 ไฟล์ (Inter และ Kanit อย่างละหลาย subset) ตัวที่จำเป็นจริงคือ **Inter latin**
-กับ **Kanit thai** อย่างละ 4 น้ำหนัก รวม 8 ไฟล์ ตามเจตนาเดิมของ plugin
-แล้ววัด CLS ซ้ำบนพอร์ตที่ยังไม่เคยเปิด (แคชฟอนต์ผูกกับ origin — ถ้าเคยเข้าพอร์ตนั้นแล้ว
-จะวัด CLS ไม่เจอ) launch config `idie-preview-cold` ใช้พอร์ต 4176 ไว้สำหรับกรณีนี้
+ผลจาก production build วันที่ 10 ก.ย. 2026 ได้ preload **8 รายการ** ตามที่ตั้งใจ
+หากเปลี่ยนตระกูลฟอนต์ น้ำหนัก หรือ subset ในอนาคต ต้องแก้ pattern นี้ตามด้วย
+
+วัด CLS ซ้ำวันที่ 10 ก.ย. 2026 บน `idie-preview-cold` พอร์ต 4176 โดยปิด cache และจำลอง
+เครือข่าย 3G ครบ 10 กรณี (TH/EN × 5 viewport) — ค่าสูงสุด **0.025** ที่หน้าอังกฤษ
+ขนาด 1024×768 และทดสอบกรณีนี้ซ้ำอีก 3 รอบได้ 0.025 / 0 / 0.025 ผ่านงบ ≤ 0.1
 
 ### เมนูเดสก์ท็อปเริ่มที่ `xl` (1280) ไม่ใช่ `lg` (1024)
 
@@ -269,7 +271,7 @@ npm run build && grep -c 'rel="preload"' dist/index.html
 | 4b | หน้า News/Projects วาดเนื้อหาจริง | ✅ (ส.ค. 2026) |
 | — | ระบบหลังบ้าน (Node + MySQL + Docker) | ✅ (ส.ค. 2026 — นอกขอบเขตเดิม) |
 | 5 | 3D & Motion | ❌ ทำเสร็จแล้วถูกสั่งรื้อออก |
-| 6 | Responsive, Performance, A11y, QA | ✅ (ควรวัดซ้ำ — ดูหัวข้อ font preload) |
+| 6 | Responsive, Performance, A11y, QA | ✅ (CLS วัดซ้ำ ก.ย. 2026) |
 
 ### หมวดที่ถูกถอดออกตามคำสั่งเจ้าของเว็บ (ก.ย. 2026)
 
