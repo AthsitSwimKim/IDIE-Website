@@ -1,4 +1,4 @@
-import { Heading, Reveal, Section } from '@/components/ui'
+import { Heading, KeepPhrases, Reveal, Section } from '@/components/ui'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
 import { getIndustries, ui } from '@/data'
@@ -25,7 +25,15 @@ export function IndustriesServed() {
         <Heading level={2} eyebrow="INDUSTRIES WE SERVE">
           {t(ui.home.industriesTitle)}
         </Heading>
-        <p className="mt-4 text-white/70">{t(ui.home.industriesLead)}</p>
+        {/*
+          ครอบด้วย KeepPhrases เพื่อบังคับให้ "เสียงรบกวนสูง" ยกไปทั้งก้อนที่บรรทัดสอง
+          ตามที่เจ้าของงานกำหนด — ก่อนแก้บรรทัดแรกจบด้วย "เสียงรบกวน" แล้วทิ้ง "สูง"
+          ไว้คำเดียวต้นบรรทัดถัดไป (จอ 768 ขึ้นไป) ส่วนจอมือถือหนักกว่าคือขาดกลาง
+          เป็น "เสียง / รบกวนสูง"
+        */}
+        <p className="mt-4 text-white/70">
+          <KeepPhrases>{t(ui.home.industriesLead)}</KeepPhrases>
+        </p>
       </div>
 
       {/*

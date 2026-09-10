@@ -138,15 +138,23 @@ export default function About() {
               ได้มากกว่าตราสัญลักษณ์ซึ่งผู้อ่านเห็นบน header อยู่แล้วทุกหน้า
             */}
             <div className="border-line rounded-card bg-surface-alt blueprint-grid-light grid aspect-[4/3] w-full place-items-center border p-10 sm:p-14">
+              {/*
+                ตราใหญ่ขึ้นจาก 220px เป็น 320px ตามที่เจ้าของงานสั่ง — กินพื้นที่ 71%
+                ของกรอบด้านใน (448x308px) เหลือขอบหายใจข้างละ 64px และบน-ล่างข้างละ 46px
+
+                ต้องมีไฟล์ 640px ด้วย ไม่ใช่ใช้ 360px ตัวเดิมยืดขึ้น — จอความละเอียดสูง
+                ต้องการภาพกว้างสองเท่าของขนาดที่แสดง 360px จึงพอแค่ 1.1 เท่าซึ่งจะเห็น
+                ขอบเบลอ ไฟล์ใหม่สร้างจาก idie-icon-source.png (817x550) ที่มีอยู่แล้ว
+              */}
               <img
                 src="/images/brand/idie-logo-360.webp"
-                srcSet="/images/brand/idie-logo-180.webp 1x, /images/brand/idie-logo-360.webp 2x"
+                srcSet="/images/brand/idie-logo-360.webp 1x, /images/brand/idie-logo-640.webp 2x"
                 alt=""
                 width={360}
                 height={242}
                 loading="lazy"
                 decoding="async"
-                className="h-auto w-full max-w-[220px]"
+                className="h-auto w-full max-w-[320px]"
               />
             </div>
           </div>
@@ -157,11 +165,28 @@ export default function About() {
         <Heading level={2} eyebrow="SCOPE OF WORK">
           {t(ui.about.scopeHeading)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose">{t(ui.about.scopeLead)}</p>
+        {/*
+          ครอบด้วย KeepPhrases เพราะ "บริการหลังการขาย" ถูกตัดกลางเป็น "…จนถึงบริการ /
+          หลังการขาย" ที่จอ 1024 และ 1440 — บรรทัดแรกจบด้วยคำว่า "บริการ" ซึ่งอ่านจบ
+          เป็นคนละความหมายกับที่ตั้งใจ แล้วค่อยมาเฉลยที่ต้นบรรทัดถัดไป
+        */}
+        <p className="text-ink-muted mt-4 max-w-prose">
+          <KeepPhrases>{t(ui.about.scopeLead)}</KeepPhrases>
+        </p>
 
-        <ol className="border-line mt-8 grid divide-y border-t border-b md:grid-cols-2 md:divide-y-0">
+        {/*
+          md:gap-x-10 — สองคอลัมน์นี้เดิมไม่มีช่องไฟระหว่างกันเลย (grid gap เป็น normal)
+          มีแค่ระยะขอบ 8px ที่ตัวรายการ ทำให้ข้อความคอลัมน์ซ้ายจบห่างจากคอลัมน์ขวา
+          แค่ 13px คือชนกันจนอ่านต่อกันเป็นบรรทัดเดียว
+
+          40px ไม่ใช่ 48px — วัดแล้ว 48px บีบคอลัมน์จนคำอธิบายข้อ 01 ตกไปบรรทัดที่สอง
+          และตารางสูงขึ้น 32px ส่วน 40px ได้ช่องไฟ 41px โดยจำนวนบรรทัดของทุกข้อเท่าเดิม
+        */}
+        <ol className="border-line mt-8 grid divide-y border-t border-b md:grid-cols-2 md:gap-x-10 md:divide-y-0">
           {services?.map((service, index) => (
-            <li key={service.slug} className="flex gap-5 py-5 md:px-2">
+            /* ไม่มีระยะขอบซ้าย-ขวาแล้ว — ช่องไฟระหว่างคอลัมน์ย้ายไปอยู่ที่ gap ของกริดแทน
+               ผลพลอยได้คือเลขลำดับตรงแนวกับหัวข้อของหมวดพอดี จากเดิมเยื้องเข้ามา 8px */
+            <li key={service.slug} className="flex gap-5 py-5">
               <span className="stat-figure text-primary-600 shrink-0 text-sm font-bold">
                 {String(index + 1).padStart(2, '0')}
               </span>

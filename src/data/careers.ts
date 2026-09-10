@@ -58,7 +58,7 @@ export const jobOpenings: JobOpening[] = [
       },
       {
         th: 'ทดสอบระบบและให้บริการหลังการขาย',
-        en: 'Commission systems and provide after-sales service.',
+        en: 'Commission systems and provide after‑sales service.',
       },
     ],
     qualifications: [

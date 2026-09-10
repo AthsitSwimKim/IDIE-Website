@@ -26,7 +26,7 @@ export const services: Service[] = [
     name: { th: 'ระบบอินเตอร์คอมอุตสาหกรรม', en: 'Intercommunication System' },
     shortDescription: {
       th: 'ระบบสื่อสารภายในโรงงานที่ได้ยินชัดแม้ในพื้นที่เสียงดังและพื้นที่เสี่ยงระเบิด',
-      en: 'Plant-wide intercom that stays intelligible in high-noise and hazardous areas.',
+      en: 'Plant‑wide intercom that stays intelligible in high-noise and hazardous areas.',
     },
     overview: {
       th: 'ออกแบบ จัดหา และติดตั้งระบบอินเตอร์คอมอุตสาหกรรมสำหรับพื้นที่ผลิต ห้องควบคุม และพื้นที่เสี่ยง โดยเลือกอุปกรณ์ให้เหมาะกับระดับเสียงรบกวนและการจำแนกพื้นที่อันตรายของแต่ละจุด',
@@ -36,7 +36,7 @@ export const services: Service[] = [
       { th: 'สำรวจหน้างานและออกแบบระบบ', en: 'Site survey and system design' },
       { th: 'จัดหาอุปกรณ์จากผู้ผลิตยุโรปและสหรัฐฯ', en: 'Procurement from European and US manufacturers' },
       { th: 'ติดตั้งและทดสอบการใช้งาน', en: 'Installation and commissioning' },
-      { th: 'บริการหลังการขายและอะไหล่', en: 'After-sales service and spare parts' },
+      { th: 'บริการหลังการขายและอะไหล่', en: 'After‑sales service and spare parts' },
     ],
     applications: [
       { th: 'ห้องควบคุมกับพื้นที่ผลิต', en: 'Control room to process area' },
@@ -69,7 +69,7 @@ export const services: Service[] = [
     },
     shortDescription: {
       th: 'ระบบ PA/GA และไซเรน สำหรับประกาศทั่วโรงงานและแจ้งเตือนเหตุฉุกเฉิน',
-      en: 'PA/GA and siren systems for plant-wide announcement and emergency alarm.',
+      en: 'PA/GA and siren systems for plant‑wide announcement and emergency alarm.',
     },
     overview: {
       th: 'ระบบประกาศและสัญญาณเตือนภัยแบบครบวงจร ครอบคลุมทั้งลำโพง อุปกรณ์ส่งเสียง ไฟสัญญาณ ไซเรน และจุดแจ้งเหตุด้วยมือ ออกแบบให้ครอบคลุมพื้นที่ตามข้อกำหนดด้านความปลอดภัยของโรงงาน',
@@ -82,7 +82,7 @@ export const services: Service[] = [
       { th: 'บำรุงรักษาและตรวจสอบตามรอบ', en: 'Maintenance and periodic inspection' },
     ],
     applications: [
-      { th: 'ประกาศทั่วพื้นที่โรงงาน', en: 'Plant-wide announcement' },
+      { th: 'ประกาศทั่วพื้นที่โรงงาน', en: 'Plant‑wide announcement' },
       { th: 'สัญญาณอพยพฉุกเฉิน', en: 'Emergency evacuation alarm' },
       { th: 'ไซเรนแจ้งเหตุครอบคลุมพื้นที่กว้าง', en: 'Wide-area siren warning' },
       { th: 'แจ้งเตือนพื้นที่เสียงดังสูง', en: 'High-noise area notification' },
@@ -102,7 +102,7 @@ export const services: Service[] = [
   },
   {
     /*
-      เดิมรายการนี้ชื่อ `explosion-proof-telephone-signalling` และเล่าเรื่องเป็น
+      เดิมรายการนี้ชื่อ `explosion‑proof-telephone-signalling` และเล่าเรื่องเป็น
       "งานจัดจำหน่ายโทรศัพท์กันระเบิด" Company Profile ฉบับย่อ 2026 จัด Telephone System
       ไว้เป็นงาน system integration ข้อที่ 2 ไม่ใช่งานขายอุปกรณ์ — ขอบเขตจึงกว้างกว่าเดิม
       คือครอบตั้งแต่ตู้สาขา PABX ไปจนถึงเครื่องปลายทางและงานเดินสาย MDF/IDF
@@ -113,29 +113,29 @@ export const services: Service[] = [
     name: { th: 'ระบบโทรศัพท์', en: 'Telephone System' },
     shortDescription: {
       th: 'ระบบโทรศัพท์ของสำนักงานและโรงงาน ตั้งแต่ตู้สาขาจนถึงเครื่องกันระเบิดในพื้นที่ผลิต',
-      en: 'Office and plant telephony, from the PABX through to explosion-proof handsets in the field.',
+      en: 'Office and plant telephony, from the PABX through to explosion‑proof handsets in the field.',
     },
     overview: {
       th: 'ออกแบบ จัดหา และติดตั้งระบบโทรศัพท์สำหรับสำนักงานและโรงงาน ทั้งแบบอนาล็อกเดิม แบบ IP และแบบไฮบริดที่รองรับทั้งสองอย่างในระบบเดียว โดยมีตู้สาขา PABX เป็นหัวใจของระบบ ตามด้วยเครื่องปลายทางที่เลือกให้ตรงกับจุดติดตั้ง ตั้งแต่เครื่องในสำนักงานไปจนถึงเครื่องกันสภาพอากาศและเครื่องชนิดกันระเบิด รวมถึงงานตู้กระจายสาย MDF/IDF และการเดินสายทั้งระบบ',
-      en: 'Design, supply and installation of telephone systems for offices and plants — traditional analogue, IP, or hybrid systems supporting both at once. The PABX sits at the heart of the system, followed by handsets selected for where they are mounted: office sets, weatherproof units and explosion-proof versions — together with the MDF/IDF distribution frames and cabling that tie them together.',
+      en: 'Design, supply and installation of telephone systems for offices and plants — traditional analogue, IP, or hybrid systems supporting both at once. The PABX sits at the heart of the system, followed by handsets selected for where they are mounted: office sets, weatherproof units and explosion‑proof versions — together with the MDF/IDF distribution frames and cabling that tie them together.',
     },
     scope: [
       { th: 'ออกแบบระบบและเลือกตู้สาขา PABX', en: 'System design and PABX selection' },
       {
         th: 'เลือกเครื่องปลายทางตามจุดติดตั้ง (ในอาคาร กลางแจ้ง กันสภาพอากาศ กันระเบิด)',
-        en: 'Handset selection by location — indoor, outdoor, weatherproof, explosion-proof',
+        en: 'Handset selection by location — indoor, outdoor, weatherproof, explosion‑proof',
       },
       { th: 'งานตู้กระจายสาย MDF / IDF และการเดินสาย', en: 'MDF / IDF distribution frames and cabling' },
       {
         th: 'เชื่อมต่อกับชุมสายภายนอกและระบบเดิมของโรงงาน',
         en: 'Integration with external lines and existing plant systems',
       },
-      { th: 'ติดตั้ง ทดสอบ และบริการหลังการขาย', en: 'Installation, testing and after-sales service' },
+      { th: 'ติดตั้ง ทดสอบ และบริการหลังการขาย', en: 'Installation, testing and after‑sales service' },
     ],
     applications: [
       { th: 'ระบบโทรศัพท์สำนักงานและอาคารควบคุม', en: 'Office and control building telephony' },
       { th: 'จุดโทรฉุกเฉินในพื้นที่ผลิต', en: 'Emergency call points in process areas' },
-      { th: 'เครื่องกันระเบิดในพื้นที่จำแนกอันตราย', en: 'Explosion-proof sets in classified areas' },
+      { th: 'เครื่องกันระเบิดในพื้นที่จำแนกอันตราย', en: 'Explosion‑proof sets in classified areas' },
       { th: 'ทยอยเปลี่ยนจากอนาล็อกเป็น IP แบบไฮบริด', en: 'Phased analogue-to-IP migration on a hybrid system' },
     ],
     icon: 'phone',
@@ -208,7 +208,7 @@ export const services: Service[] = [
     },
     overview: {
       th: 'ออกแบบ จัดหา และติดตั้งระบบกล้องวงจรปิดที่ทนสภาพแวดล้อมโรงงาน รองรับได้ทั้งระบบ IP ดิจิทัล ระบบอนาล็อกเดิม และระบบไฮบริด ตั้งแต่ระบบขนาดเล็กไปจนถึงระบบหลายร้อยกล้อง เลือกชนิดกล้องตามหน้างานจริง ทั้งกล้องในอาคาร กล้องกันสภาพอากาศ กล้องชนิดกันระเบิด กล้องแบบยึดนิ่งและแบบหมุนก้มเงยซูมได้ พร้อมคำนวณพื้นที่จัดเก็บให้ตรงกับระยะเวลาเก็บภาพย้อนหลังที่โรงงานต้องการ',
-      en: 'Design, supply and installation of CCTV built for plant conditions — digital IP, conventional analogue or hybrid, from a handful of cameras to systems supporting several hundred. Camera type is selected against the actual location: indoor, weatherproof, explosion-proof, fixed or pan-tilt-zoom, with recording storage sized to the retention period the site requires.',
+      en: 'Design, supply and installation of CCTV built for plant conditions — digital IP, conventional analogue or hybrid, from a handful of cameras to systems supporting several hundred. Camera type is selected against the actual location: indoor, weatherproof, explosion‑proof, fixed or pan-tilt-zoom, with recording storage sized to the retention period the site requires.',
     },
     scope: [
       { th: 'สำรวจจุดที่ต้องการเห็นภาพและออกแบบมุมกล้อง', en: 'Survey of required views and camera coverage design' },
@@ -256,7 +256,7 @@ export const services: Service[] = [
         en: 'Interlock with fire protection so doors release on alarm',
       },
       { th: 'เชื่อมข้อมูลกับระบบบันทึกเวลาและระบบเงินเดือน', en: 'Integration with time attendance and payroll' },
-      { th: 'ติดตั้ง ทดสอบ และบริการหลังการขาย', en: 'Installation, testing and after-sales service' },
+      { th: 'ติดตั้ง ทดสอบ และบริการหลังการขาย', en: 'Installation, testing and after‑sales service' },
     ],
     applications: [
       { th: 'ทางเข้าออกอาคารสำนักงานและห้องควบคุม', en: 'Office and control room entrances' },

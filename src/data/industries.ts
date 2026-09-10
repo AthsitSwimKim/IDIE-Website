@@ -43,7 +43,7 @@ export const industries: Industry[] = [
     name: { th: 'เคมีภัณฑ์', en: 'Chemical' },
     description: {
       th: 'โรงงานเคมีที่ต้องการระบบประกาศและสัญญาณเตือนภัยครอบคลุมทั้งพื้นที่ผลิต',
-      en: 'Chemical plants needing plant-wide public address and warning alarm coverage.',
+      en: 'Chemical plants needing plant‑wide public address and warning alarm coverage.',
     },
     icon: 'beaker',
     order: 3,
@@ -73,7 +73,7 @@ export const industries: Industry[] = [
     name: { th: 'ปุ๋ยเคมี', en: 'Fertilizer' },
     description: {
       th: 'โรงงานปุ๋ยที่มีฝุ่นและสารเคมีกัดกร่อน ต้องใช้อุปกรณ์ระดับป้องกันสูง',
-      en: 'Fertilizer plants with dust and corrosive media, requiring high-protection enclosures.',
+      en: 'Fertilizer plants with dust and corrosive media, requiring high‑protection enclosures.',
     },
     icon: 'layers',
     order: 6,

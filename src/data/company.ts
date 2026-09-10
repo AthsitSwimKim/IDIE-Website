@@ -26,10 +26,15 @@ export const company: CompanyInfo = {
      เอกสารฉบับย่อไม่ได้ปฏิเสธ)
   */
   about: {
+    /*
+      ย่อหน้าแรกไม่ขึ้นต้นด้วยชื่อเต็มบริษัทอีกแล้ว — หัวข้อเหนือย่อหน้านี้เป็นชื่อเต็ม
+      อยู่แล้วทั้งบนหน้าเกี่ยวกับเราและหมวด Company Profile หน้าแรก การเขียนซ้ำทันที
+      ในบรรทัดถัดมาทำให้ผู้อ่านต้องอ่านชื่อเดียวกันสองรอบก่อนจะได้ข้อมูลจริงข้อแรก
+    */
     th:
-      'บริษัท ไอดี อินดัสเตรียล เอ็นจิเนียริ่ง จำกัด เป็นผู้เชี่ยวชาญด้านงานวิศวกรรม ออกแบบ จัดหา และติดตั้งระบบสื่อสารความปลอดภัยสำหรับโรงงานอุตสาหกรรม\n\nครอบคลุมระบบอินเตอร์คอม ระบบเตือนภัย โทรศัพท์ เครือข่าย WAN/LAN กล้องวงจรปิด และระบบควบคุมการเข้าออก รองรับกลุ่มอุตสาหกรรมหนัก ทั้งปิโตรเคมี น้ำมันและก๊าซ โรงเหล็ก โรงไฟฟ้า และเหมืองแร่',
+      'เราคือผู้เชี่ยวชาญด้านงานวิศวกรรม ออกแบบ จัดหา และติดตั้งระบบสื่อสารความปลอดภัยสำหรับโรงงานอุตสาหกรรมโดยเฉพาะ\n\nครอบคลุมระบบอินเตอร์คอม, ระบบเตือนภัย, ระบบโทรศัพท์, โครงข่าย WAN/LAN, กล้องวงจรปิด และระบบควบคุมการเข้าออก (Access Control) เพื่อรองรับกลุ่มอุตสาหกรรมหนัก ทั้งปิโตรเคมี, น้ำมันและก๊าซ, โรงเหล็ก, โรงไฟฟ้า ตลอดจนเหมืองแร่',
     en:
-      'ID Industrial Engineering Co.,Ltd. is an engineering, distribution and service company specialising in design and engineering, and in the procurement of communication systems — intercom, public address and warning alarm, telephone, WAN/LAN, CCTV and access control.\n\nOur field of service covers the chemical, petrochemical, oil and gas, steel plant, power plant and mining industries.',
+      'We specialise in engineering, design, procurement and installation of safety communication systems built for industrial plants.\n\nCovering intercom, warning alarm, telephone, WAN/LAN networks, CCTV and access control — for heavy industry: petrochemical, oil and gas, steel plants, power generation and mining.',
   },
   vision: {
     th: '',
@@ -214,7 +219,7 @@ export const valueProps: ValueProp[] = [
     title: { th: 'งานพื้นที่อันตราย', en: 'Hazardous Area Expertise' },
     description: {
       th: 'อุปกรณ์กันระเบิดสำหรับพื้นที่เสี่ยง พร้อมมาตรฐานระดับสากลอย่าง ATEX และ IECEx',
-      en: 'Explosion-proof equipment for classified areas, backed by international standards such as ATEX and IECEx.',
+      en: 'Explosion‑proof equipment for classified areas, backed by international standards such as ATEX and IECEx.',
     },
   },
   {
@@ -223,7 +228,7 @@ export const valueProps: ValueProp[] = [
     title: { th: 'สินค้าจากยุโรปและสหรัฐฯ', en: 'European & US Products' },
     description: {
       th: 'จัดจำหน่ายเฉพาะสินค้าคุณภาพสูง นำเข้าตรงจากผู้ผลิตในยุโรปและสหรัฐอเมริกาตามมาตรฐานบริษัท',
-      en: 'We supply only high-quality products, imported directly from manufacturers in Europe and the United States, in line with company standards.',
+      en: 'We supply only high‑quality products, imported directly from manufacturers in Europe and the United States, in line with company standards.',
     },
   },
   {

@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import type { Datasheet } from '@/types/content'
 import { ArrowRight, Badge, Button, Heading, Section } from '@/components/ui'
+import { ExternalLinkIcon } from '@/components/ui/icons'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -69,13 +70,35 @@ export default function BrandDatasheets() {
         </Heading>
         <p className="text-ink-muted mt-4 max-w-prose">{t(ui.datasheets.lead)}</p>
 
+        {/*
+          สองปุ่มนี้เคยเป็น ghost ทั้งคู่ คือตัวหนังสือสีน้ำเงินไม่มีขอบไม่มีพื้น
+          วางเรียงกันบนพื้นเทาอ่อน จึงอ่านเหมือนข้อความสองก้อนลอย ๆ มากกว่าปุ่ม
+          และแยกไม่ออกว่าอันไหนสำคัญกว่ากัน
+
+          แยกน้ำหนักให้ต่างกัน: ปุ่มย้อนกลับยังเป็น ghost เพราะเป็นทางหนีออกจากหน้า
+          ไม่ใช่สิ่งที่อยากให้กด ส่วนศูนย์ดาวน์โหลดของผู้ผลิตใส่ขอบ (outline)
+          เพราะเป็นปลายทางที่มีประโยชน์จริงเมื่อหาเอกสารในหน้านี้ไม่เจอ
+        */}
         <div className="mt-8 flex flex-wrap items-center gap-3">
+          {/*
+            ลูกศรอยู่หน้าข้อความและหมุน 180° ให้ชี้กลับ — ใช้ไอคอนตัวเดียวกับทั้งเว็บ
+            ไม่เพิ่มไอคอนใหม่ เพราะ ArrowRight เป็นเส้นตรงสมมาตร หมุนแล้วได้ลูกศรซ้าย
+            ที่มีน้ำหนักเส้นเท่าเดิมเป๊ะ
+          */}
           <Button to="/brands" variant="ghost">
+            <ArrowRight aria-hidden="true" className="size-4 shrink-0 rotate-180" />
             {t(ui.datasheets.backToBrands)}
           </Button>
           {downloadCentre && (
-            <Button href={downloadCentre} target="_blank" variant="ghost">
+            <Button href={downloadCentre} target="_blank" variant="outline">
               {t(ui.datasheets.downloadCentre)}
+              {/*
+                ลูกศรเฉียงบอกว่าลิงก์พาออกนอกเว็บและเปิดแท็บใหม่ — ผู้ใช้ควรรู้ก่อนกด
+                ไม่ใช่รู้ตอนที่แท็บใหม่เด้งขึ้นมาแล้ว ส่วนคนที่ใช้โปรแกรมอ่านหน้าจอ
+                มองไม่เห็นไอคอน จึงต่อท้ายด้วยข้อความ sr-only แทน
+              */}
+              <ExternalLinkIcon aria-hidden="true" className="size-4 shrink-0" />
+              <span className="sr-only">{t(ui.datasheets.opensExternal)}</span>
             </Button>
           )}
         </div>

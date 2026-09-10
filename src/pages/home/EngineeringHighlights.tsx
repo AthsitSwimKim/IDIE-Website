@@ -30,7 +30,7 @@ const STEP_NOTES: LocalizedText[] = [
   },
   {
     th: 'ติดตั้ง ทดสอบระบบ และดูแลหลังส่งมอบ พร้อมบริการอะไหล่และงานเปลี่ยนทดแทน',
-    en: 'Installation, system testing and post-handover care, with spare parts and replacement service.',
+    en: 'Installation, system testing and post‑handover care, with spare parts and replacement service.',
   },
 ]
 export function EngineeringHighlights() {

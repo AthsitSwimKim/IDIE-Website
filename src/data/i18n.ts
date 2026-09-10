@@ -164,8 +164,8 @@ export const ui = {
      */
     servicesTitle: { th: 'บริการหลัก {count} กลุ่ม', en: '{count} core services' },
     servicesLead: {
-      th: 'ทุกงานอยู่บนพื้นฐานเดียวกัน — ระบบต้องทำงานได้ในวันที่เกิดเหตุจริง',
-      en: 'Every service rests on the same premise — the system has to work on the day it matters.',
+      th: 'มุ่งมั่นบนมาตรฐานเดียวกัน เพื่อให้ระบบทำงานได้อย่างสมบูรณ์เมื่อเกิดเหตุฉุกเฉิน',
+      en: 'Committed to one standard throughout, so the system performs in full when an emergency happens.',
     },
 
     productsTitle: { th: 'อุปกรณ์ที่เราจัดจำหน่าย', en: 'Equipment we supply' },
@@ -182,8 +182,8 @@ export const ui = {
 
     industriesTitle: { th: 'อุตสาหกรรมที่เราให้บริการ', en: 'Industries we serve' },
     industriesLead: {
-      th: 'ทุกกลุ่มมีเงื่อนไขหน้างานต่างกัน — ฝุ่น ความร้อน สารกัดกร่อน เสียงรบกวน และการจำแนกพื้นที่เสี่ยง',
-      en: 'Each has different site conditions — dust, heat, corrosives, ambient noise and area classification.',
+      th: 'ออกแบบระบบให้ตอบโจทย์ทุกเงื่อนไขหน้างาน ทั้งพื้นที่ฝุ่น ความร้อน สารกัดกร่อน เสียงรบกวนสูง ตลอดจนพื้นที่เสี่ยงอันตราย',
+      en: 'Systems designed for every site condition — dust, heat, corrosives, high ambient noise and hazardous classified areas.',
     },
 
     whyLead: {
@@ -256,8 +256,8 @@ export const ui = {
   datasheets: {
     title: { th: 'เอกสารข้อมูลสินค้า', en: 'Product datasheets' },
     lead: {
-      th: 'เอกสารข้อมูลจำเพาะที่ผู้ผลิตออกให้ ครบทุกรุ่นที่ IDIE จัดจำหน่าย กดที่หน้าปกเพื่อเปิดไฟล์',
-      en: 'Specification sheets issued by the manufacturer, covering every model IDIE supplies. Open a cover to read the PDF.',
+      th: 'ดาวน์โหลดเอกสารข้อมูลจำเพาะ (Datasheet) และคู่มือทางเทคนิคมาตรฐานจากผู้ผลิต ครบทุกรุ่นที่ IDIE จัดจำหน่าย',
+      en: 'Download manufacturer specification sheets (datasheets) and standard technical documents, covering every model IDIE supplies.',
     },
     backToBrands: { th: 'กลับไปหน้าแบรนด์คู่ค้า', en: 'Back to brand partners' },
     downloadCentre: { th: 'ศูนย์ดาวน์โหลดของผู้ผลิต', en: 'Manufacturer download centre' },
@@ -268,6 +268,11 @@ export const ui = {
     resultCount: { th: 'พบ {shown} จาก {total} ฉบับ', en: '{shown} of {total} documents' },
     empty: { th: 'ไม่พบเอกสารที่ตรงกับคำค้น', en: 'No documents match that search' },
     openPdf: { th: '(ไฟล์ PDF เปิดในแท็บใหม่)', en: '(PDF, opens in a new tab)' },
+    /*
+      บอกด้วยเสียงว่าลิงก์นี้พาออกนอกเว็บ — ไอคอนลูกศรเฉียงบอกได้เฉพาะคนที่มองเห็น
+      ต่างจาก openPdf ตรงที่ปลายทางเป็นเว็บของผู้ผลิต ไม่ใช่ไฟล์ PDF
+    */
+    opensExternal: { th: '(เปิดเว็บผู้ผลิตในแท็บใหม่)', en: '(opens the manufacturer site in a new tab)' },
   },
 
   media: {
@@ -283,8 +288,8 @@ export const ui = {
     profileHeading: { th: 'ข้อมูลบริษัท', en: 'Company profile' },
     scopeHeading: { th: 'ขอบเขตงานของเรา', en: 'Our scope of work' },
     scopeLead: {
-      th: 'กลุ่มงานหลักที่บริษัทระบุไว้เอง ครอบคลุมตั้งแต่ออกแบบจนถึงบริการหลังการขาย',
-      en: 'The core areas the company defines for itself, from design through after-sales service.',
+      th: 'บริการวิศวกรรมระบบสื่อสารและความปลอดภัยแบบครบวงจร ครอบคลุมตั้งแต่ออกแบบจนถึงบริการหลังการขาย',
+      en: 'End-to-end engineering for communication and safety systems, from design through after‑sales service.',
     },
     industriesHeading: { th: 'อุตสาหกรรมที่ให้บริการ', en: 'Industries we serve' },
     contactPersonHeading: { th: 'ผู้ติดต่อหลัก', en: 'Primary contact' },
@@ -474,12 +479,12 @@ export const ui = {
       th: 'ส่งผังหน้างานหรือรายละเอียดโครงการมาให้เรา ทีมวิศวกรจะช่วยประเมินระบบและอุปกรณ์ที่เหมาะสมให้',
       en: 'Send us a site layout or project details and our engineers will assess which systems and equipment suit it.',
     },
-    referenceTitle: { th: 'องค์กรที่เคยร่วมงานกับเรา', en: 'Companies we have worked with' },
+    referenceTitle: { th: 'องค์กรชั้นนำที่ร่วมงานกับเรา', en: 'Leading organisations we work with' },
     referenceProjectsHeading: { th: 'อ้างอิงหน้างาน', en: 'Site Reference' },
     referenceLogosHeading: { th: 'ผลงานลูกค้าที่ไว้วางใจเรา', en: 'Client References' },
     referenceLead: {
-      th: 'ได้รับความไว้วางใจจากองค์กรและคู่ค้าอุตสาหกรรมชั้นนำ ตั้งแต่โรงกลั่น ปิโตรเคมี โรงไฟฟ้า ไปจนถึงผู้รับเหมา EPC ระดับสากล',
-      en: 'Trusted by leading companies and industrial partners — from refineries and petrochemical plants to power generation and international EPC contractors.',
+      th: 'ได้รับความไว้วางใจจากองค์กรชั้นนำในภาคอุตสาหกรรม ทั้งกลุ่มโรงกลั่น ปิโตรเคมี โรงไฟฟ้า ตลอดจนกลุ่มบริษัท EPC ระดับสากล',
+      en: 'Trusted by leading organisations across industry — refineries, petrochemicals and power generation, as well as international EPC companies.',
     },
     outlineHeading: { th: 'โครงหน้านี้', en: 'Page outline' },
   },

@@ -110,7 +110,7 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         title: { th: 'การจำแนกพื้นที่เป็นตัวกำหนดรุ่นที่ใช้ได้ ไม่ใช่ราคา', en: 'Area classification decides the model — not budget' },
         body: {
           th: 'จุดที่อยู่ในพื้นที่เสี่ยงระเบิดต้องใช้รุ่นที่ผ่าน ATEX และ IECEx สำหรับโซนนั้นโดยเฉพาะ ส่วนพื้นที่อุตสาหกรรมทั่วไปที่แค่ต้องทนฝุ่น น้ำ และแดด ใช้รุ่นกันสภาพอากาศระดับ IP66 ก็เพียงพอ การใช้รุ่นกันระเบิดทั้งโรงงานทำให้ต้นทุนสูงเกินจำเป็น ส่วนการใช้รุ่นธรรมดาในโซนอันตรายเป็นเรื่องที่ยอมไม่ได้',
-          en: 'Points inside a potentially explosive atmosphere require models certified to ATEX and IECEx for that specific zone. General industrial areas that only need to survive dust, water and sun are adequately served by weatherproof units rated to IP66. Specifying Ex equipment plant-wide inflates cost unnecessarily; specifying standard equipment inside a hazardous zone is simply not acceptable.',
+          en: 'Points inside a potentially explosive atmosphere require models certified to ATEX and IECEx for that specific zone. General industrial areas that only need to survive dust, water and sun are adequately served by weatherproof units rated to IP66. Specifying Ex equipment plant‑wide inflates cost unnecessarily; specifying standard equipment inside a hazardous zone is simply not acceptable.',
         },
       },
       {
@@ -199,7 +199,7 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         title: { th: 'ใบรับรองผ่านแล้ว แต่อุณหภูมิอาจไม่ผ่าน', en: 'Certified for the zone, yet wrong for the temperature' },
         body: {
           th: 'อุปกรณ์ที่ผ่าน ATEX และ IECEx ยังมีช่วงอุณหภูมิใช้งานกำกับมาด้วยเสมอ และช่วงนั้นต่างกันมากในแต่ละรุ่น เช่นฮูตเตอร์กันระเบิดบางรุ่นใช้ได้ตั้งแต่ -55 °C ถึง +70 °C ขณะที่รุ่นอื่นเริ่มที่ -20 °C การเลือกโดยดูแค่ว่า "ผ่าน Ex แล้ว" จึงยังไม่พอ ต้องเทียบกับอุณหภูมิสูงสุดและต่ำสุดที่จุดติดตั้งจริงเจอ',
-          en: 'Equipment certified to ATEX and IECEx always carries an operating temperature range, and those ranges differ widely between models — some explosion-proof hooters are rated from −55 °C to +70 °C while others start at −20 °C. Selecting on “it is Ex certified” alone is therefore incomplete; it has to be checked against the highest and lowest temperatures the installation point actually sees.',
+          en: 'Equipment certified to ATEX and IECEx always carries an operating temperature range, and those ranges differ widely between models — some explosion‑proof hooters are rated from −55 °C to +70 °C while others start at −20 °C. Selecting on “it is Ex certified” alone is therefore incomplete; it has to be checked against the highest and lowest temperatures the installation point actually sees.',
         },
       },
     ],
@@ -371,7 +371,7 @@ export const serviceDepth: Record<string, ServiceDepth> = {
 
   /* ---------------------------------------------------------------------- */
   /*
-    เดิมคีย์นี้ชื่อ 'explosion-proof-telephone-signalling' และเล่าเรื่องเป็นงานจัดจำหน่าย
+    เดิมคีย์นี้ชื่อ 'explosion‑proof-telephone-signalling' และเล่าเรื่องเป็นงานจัดจำหน่าย
     อุปกรณ์ Company Profile จัด Telephone System ไว้เป็นงานระบบเต็มรูปแบบ เนื้อหาจึงถูก
     ขยายให้เริ่มจากตัวระบบ (ตู้สาขา ชนิดของชุมสาย งานเดินสาย) แล้วค่อยลงไปที่การเลือก
     เครื่องปลายทาง — ย่อหน้าเรื่องพื้นที่อันตรายทั้งหมดยังอยู่ครบ เพราะเครื่องกันระเบิด
@@ -389,7 +389,7 @@ export const serviceDepth: Record<string, ServiceDepth> = {
       },
       {
         th: 'เครื่องปลายทางเลือกตามจุดติดตั้ง ไม่ใช่ตามงบประมาณเพียงอย่างเดียว มีทั้งแบบอนาล็อก ดิจิทัล และ IP และมีทั้งชนิดใช้ในอาคาร ชนิดกลางแจ้ง ชนิดกันสภาพอากาศ และชนิดกันระเบิดสำหรับจุดที่อยู่ในบรรยากาศที่อาจติดไฟ เครื่องที่เหมาะกับโต๊ะทำงานในสำนักงานกับเครื่องที่ต้องอยู่กลางลานถังจึงเป็นสินค้าคนละหมวดกันโดยสิ้นเชิง แม้จะต่อเข้าตู้สาขาตัวเดียวกัน',
-        en: 'Handsets are selected by where they are mounted, not by budget alone. They come as analogue, digital and IP, and as indoor, outdoor, weather-proof and explosion-proof versions for points inside a potentially flammable atmosphere. A set suited to an office desk and a set that has to live in a tank farm are entirely different product classes, even when both terminate on the same PABX.',
+        en: 'Handsets are selected by where they are mounted, not by budget alone. They come as analogue, digital and IP, and as indoor, outdoor, weather-proof and explosion‑proof versions for points inside a potentially flammable atmosphere. A set suited to an office desk and a set that has to live in a tank farm are entirely different product classes, even when both terminate on the same PABX.',
       },
       {
         th: 'สำหรับจุดที่อยู่ในพื้นที่จำแนกอันตราย การเลือกรุ่นเริ่มจากเอกสารจำแนกพื้นที่ของโรงงาน ซึ่งต้องอ่านครบสามค่าเสมอ คือโซน (ความถี่ที่บรรยากาศติดไฟจะปรากฏ) กลุ่มก๊าซ IIA IIB หรือ IIC (ชนิดของสารที่อาจมีอยู่ โดย IIC เข้มงวดที่สุดเพราะครอบคลุมไฮโดรเจนและอะเซทิลีน) และ temperature class T1 ถึง T6 (อุณหภูมิผิวสูงสุดที่อุปกรณ์มีได้โดยไม่จุดสารนั้น) ใบสั่งซื้อที่ระบุแค่โซนอย่างเดียวยังไม่พอให้ผู้ขายเสนอรุ่นที่ถูกต้อง',
