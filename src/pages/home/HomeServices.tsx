@@ -41,13 +41,20 @@ export function HomeServices() {
             <Reveal delay={index * 60}>
               <Link
                 to={`/services/${service.slug}`}
-                className="group hover:bg-surface-alt -mx-4 flex flex-col gap-3 px-4 py-7 transition-colors duration-(--duration-ui) md:flex-row md:items-center md:gap-8"
+                className="group hover:bg-surface-alt -mx-4 flex flex-col gap-3 px-4 py-7 transition-colors duration-(--duration-ui) md:flex-row md:items-center md:gap-6"
               >
                 <span className="stat-figure text-primary-600 w-10 shrink-0 text-sm font-bold">
                   {String(index + 1).padStart(2, '0')}
                 </span>
 
-                <span className="md:w-2/5">
+                {/*
+                  คอลัมน์ชื่อบริการกว้าง 320px คงที่ ไม่ใช่ 2/5 ของแถว — ชื่อที่ยาวที่สุด
+                  ("ระบบประกาศและสัญญาณเตือนภัย") กว้าง 286px จึงพอดีในคอลัมน์นี้
+                  ส่วนที่เหลือยกให้คำอธิบาย ซึ่งยาวที่สุด 695px ที่ตัวอักษร 18px
+                  ถ้าใช้ 2/5 คำอธิบายจะเหลือ 554px แล้วสี่ในหกแถวตกไปสองบรรทัด
+                  ทำให้ความสูงแถวไม่เท่ากันทั้งตาราง
+                */}
+                <span className="md:w-80">
                   <span className="text-h3 block font-semibold">
                     <KeepPhrases>{t(service.name)}</KeepPhrases>
                   </span>
