@@ -256,8 +256,8 @@ export const ui = {
   datasheets: {
     title: { th: 'เอกสารข้อมูลสินค้า', en: 'Product datasheets' },
     lead: {
-      th: 'ดาวน์โหลดเอกสารข้อมูลจำเพาะ (Datasheet) และคู่มือทางเทคนิคมาตรฐานจากผู้ผลิต ครบทุกรุ่นที่ IDIE จัดจำหน่าย',
-      en: 'Download manufacturer specification sheets (datasheets) and standard technical documents, covering every model IDIE supplies.',
+      th: 'ดาวน์โหลดเอกสารข้อมูลจำเพาะ (Datasheet) มาตรฐานจากผู้ผลิต ครบทุกรุ่นที่ IDIE จัดจำหน่าย',
+      en: 'Download manufacturer specification sheets (datasheets), covering every model IDIE supplies.',
     },
     backToBrands: { th: 'กลับไปหน้าแบรนด์คู่ค้า', en: 'Back to brand partners' },
     downloadCentre: { th: 'ศูนย์ดาวน์โหลดของผู้ผลิต', en: 'Manufacturer download centre' },
