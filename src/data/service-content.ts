@@ -15,7 +15,10 @@ import type { LocalizedText } from '@/types/content'
  * 103 รุ่นที่อยู่ในเว็บนี้แล้ว
  *
  * TODO: confirm with IDIE — ให้วิศวกรของบริษัทอ่านทวนก่อน production
- * โดยเฉพาะขั้นตอนการทำงาน ว่าตรงกับวิธีทำงานจริงของทีมหรือไม่
+ *
+ * หมวด "ขั้นตอนการทำงาน" กับ "ประเด็นทางเทคนิคที่ควรรู้ก่อนออกแบบ" ถูกถอดออก
+ * ตามที่เจ้าของเว็บสั่ง (ก.ย. 2026) พร้อมฟิลด์ process กับ technicalNotes ในไฟล์นี้
+ * ถ้าจะเอากลับมาให้ดูที่ประวัติ git — เนื้อหาเดิมมีครบทั้งหกบริการ
  */
 
 export interface ServiceDepth {
@@ -27,12 +30,8 @@ export interface ServiceDepth {
    * ประเมินว่าจะใช้บริการนี้หรือไม่ ต้องการจริง ๆ
    */
   overviewDetail: LocalizedText[]
-  /** ขั้นตอนการทำงานตั้งแต่รับโจทย์จนส่งมอบ */
-  process: LocalizedText[]
   /** ข้อมูลที่ลูกค้าต้องเตรียมเพื่อให้ประเมินราคาได้ — ส่วนที่ผู้อ่านเอาไปใช้ได้ทันที */
   quoteChecklist: LocalizedText[]
-  /** ประเด็นทางเทคนิคที่มักเข้าใจผิดหรือถูกมองข้ามตอนออกแบบ */
-  technicalNotes: { title: LocalizedText; body: LocalizedText }[]
 }
 
 export const serviceDepth: Record<string, ServiceDepth> = {
@@ -56,29 +55,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'Selection starts from the two conditions at each point that are not negotiable: the measured ambient noise level, and the hazardous area classification recorded in the plant own drawings. Everything else follows — whether existing cabling can be reused, whether the station should be analogue or VoIP, and how it ties into any public address system already in place.',
       },
     ],
-    process: [
-      {
-        th: 'สำรวจหน้างานและวัดระดับเสียงรบกวนของแต่ละพื้นที่',
-        en: 'Site survey and ambient noise measurement for each area',
-      },
-      {
-        th: 'ตรวจเอกสารจำแนกพื้นที่อันตราย เพื่อกำหนดว่าจุดไหนต้องใช้อุปกรณ์ที่ผ่านมาตรฐาน Ex',
-        en: 'Review the area classification drawings to identify which points require Ex-rated equipment',
-      },
-      {
-        th: 'ออกแบบผังสถานีและกลุ่มการเรียก (party line / conference) ให้ตรงกับวิธีทำงานจริง',
-        en: 'Design station layout and call groups (party line / conference) around how the plant actually works',
-      },
-      {
-        th: 'จัดหาอุปกรณ์และตรวจว่าใบรับรองตรงกับโซนของแต่ละจุดก่อนส่งของ',
-        en: 'Procure equipment and verify each unit’s certification against the zone it will be installed in',
-      },
-      { th: 'ติดตั้ง เดินสาย และตั้งค่าระบบ', en: 'Installation, cabling and configuration' },
-      {
-        th: 'ทดสอบความชัดของเสียงรายจุดขณะพื้นที่ทำงานจริง แล้วส่งมอบพร้อมอบรมผู้ใช้',
-        en: 'Point-by-point intelligibility testing under live plant conditions, then handover with operator training',
-      },
-    ],
     quoteChecklist: [
       { th: 'ผังโรงงานพร้อมตำแหน่งที่ต้องการติดตั้งสถานี', en: 'Plant layout with the intended station positions' },
       {
@@ -96,29 +72,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
       {
         th: 'สายสัญญาณเดิมที่มีอยู่ และระยะทางระหว่างจุดที่ไกลที่สุด',
         en: 'Existing cabling and the distance between the furthest points',
-      },
-    ],
-    technicalNotes: [
-      {
-        title: { th: 'อนาล็อกหรือ VoIP — เลือกจากสิ่งที่ต้องทำงานตอนไฟดับ', en: 'Analogue or VoIP — decide from what must work during an outage' },
-        body: {
-          th: 'สถานี VoIP ใช้สาย LAN ที่มีอยู่แล้วและรับไฟผ่าน PoE ได้ ทำให้ติดตั้งง่ายกว่าในโรงงานที่วางเครือข่ายไว้ครบ แต่ระบบจะขึ้นกับสวิตช์และแหล่งจ่ายไฟสำรองของเครือข่ายนั้นทั้งหมด ส่วนสายอนาล็อกแบบเดิมทำงานต่อได้แม้เครือข่ายล่ม จุดที่ต้องสื่อสารได้แน่นอนในภาวะฉุกเฉินจึงมักยังใช้อนาล็อก',
-          en: 'VoIP stations reuse existing LAN cabling and can draw power over PoE, which simplifies installation in plants that already have network coverage — but the system then depends entirely on that network’s switches and backup power. Traditional analogue lines keep working when the network is down, which is why points that must stay reachable during an emergency are often kept analogue.',
-        },
-      },
-      {
-        title: { th: 'การจำแนกพื้นที่เป็นตัวกำหนดรุ่นที่ใช้ได้ ไม่ใช่ราคา', en: 'Area classification decides the model — not budget' },
-        body: {
-          th: 'จุดที่อยู่ในพื้นที่เสี่ยงระเบิดต้องใช้รุ่นที่ผ่าน ATEX และ IECEx สำหรับโซนนั้นโดยเฉพาะ ส่วนพื้นที่อุตสาหกรรมทั่วไปที่แค่ต้องทนฝุ่น น้ำ และแดด ใช้รุ่นกันสภาพอากาศระดับ IP66 ก็เพียงพอ การใช้รุ่นกันระเบิดทั้งโรงงานทำให้ต้นทุนสูงเกินจำเป็น ส่วนการใช้รุ่นธรรมดาในโซนอันตรายเป็นเรื่องที่ยอมไม่ได้',
-          en: 'Points inside a potentially explosive atmosphere require models certified to ATEX and IECEx for that specific zone. General industrial areas that only need to survive dust, water and sun are adequately served by weatherproof units rated to IP66. Specifying Ex equipment plant‑wide inflates cost unnecessarily; specifying standard equipment inside a hazardous zone is simply not acceptable.',
-        },
-      },
-      {
-        title: { th: 'ความชัดสำคัญกว่าความดัง', en: 'Intelligibility matters more than loudness' },
-        body: {
-          th: 'ในพื้นที่ที่เสียงรบกวนแตะ 95 dB(A) การเพิ่มกำลังขับอย่างเดียวไม่ได้ทำให้ฟังรู้เรื่องขึ้น เพราะเสียงสะท้อนจากผนังโลหะและโครงสร้างท่อจะทับซ้อนกันจนคำเลอะ การวางตำแหน่งสถานีและการเลือกทิศทางของลำโพงมีผลต่อความเข้าใจมากกว่าจำนวนวัตต์',
-          en: 'Where ambient noise reaches 95 dB(A), simply adding power does not make speech clearer — reflections from steel walls and pipework smear the words together. Station placement and speaker directivity affect comprehension far more than raw wattage.',
-        },
       },
     ],
   },
@@ -143,29 +96,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'In most plants this system does not stand alone. It takes inputs from fire detection, gas detection or emergency shutdown, and converts them into sound and light that tell people immediately what to do next. Those interfaces have to be fixed during design — they are the hardest thing to change once the system is installed.',
       },
     ],
-    process: [
-      {
-        th: 'สำรวจพื้นที่และวัดระดับเสียงรบกวนแยกตามโซน',
-        en: 'Survey the site and measure ambient noise zone by zone',
-      },
-      {
-        th: 'คำนวณการครอบคลุมของเสียงและแสง แล้วกำหนดจำนวนและตำแหน่งอุปกรณ์',
-        en: 'Calculate acoustic and visual coverage, then set device count and positions',
-      },
-      {
-        th: 'ออกแบบโซนประกาศและลำดับความสำคัญของสัญญาณ (ประกาศทั่วไป · อพยพ · เหตุฉุกเฉิน)',
-        en: 'Design announcement zones and signal priority (general page · evacuation · emergency)',
-      },
-      {
-        th: 'เลือกอุปกรณ์ตามโซนพื้นที่อันตรายและช่วงอุณหภูมิของหน้างานจริง',
-        en: 'Select devices against the hazardous zone and the site’s actual temperature range',
-      },
-      { th: 'ติดตั้ง เดินสาย และเชื่อมกับระบบเดิมที่เกี่ยวข้อง', en: 'Install, cable and integrate with related existing systems' },
-      {
-        th: 'ทดสอบการครอบคลุมทุกจุดโดยวัดจริง ไม่ใช่ประเมินด้วยหู แล้วส่งมอบพร้อมผลการวัด',
-        en: 'Verify coverage at every point by measurement rather than by ear, and hand over the recorded results',
-      },
-    ],
     quoteChecklist: [
       { th: 'ผังพื้นที่พร้อมขนาดและความสูงเพดาน', en: 'Area layout with dimensions and ceiling heights' },
       { th: 'ระดับเสียงรบกวนของแต่ละพื้นที่', en: 'Ambient noise level for each area' },
@@ -178,29 +108,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
       {
         th: 'ต้องการประกาศด้วยเสียงพูดสด ข้อความที่อัดไว้ หรือทั้งสองอย่าง',
         en: 'Live speech, pre-recorded messages, or both',
-      },
-    ],
-    technicalNotes: [
-      {
-        title: { th: 'ครอบคลุมพื้นที่ ไม่เท่ากับได้ยิน', en: 'Covering an area is not the same as being heard' },
-        body: {
-          th: 'หลักปฏิบัติที่ใช้กันคือสัญญาณเตือนต้องดังกว่าเสียงรบกวนโดยรอบราว 10–15 dB จึงจะมั่นใจว่าคนได้ยินและแยกออกจากเสียงเครื่องจักร การนับว่าลำโพงส่องถึงพื้นที่แล้วโดยไม่ดูระดับเสียงรบกวนจริงของจุดนั้น เป็นสาเหตุที่พบบ่อยที่สุดของระบบที่ผ่านการตรวจรับแต่ใช้งานจริงไม่ได้',
-          en: 'Common practice is that an alarm signal should sit roughly 10–15 dB above the surrounding noise before you can rely on people hearing it and separating it from machinery. Counting an area as covered because a loudspeaker points at it — without checking that point’s actual noise level — is the most frequent reason a system passes acceptance yet fails in service.',
-        },
-      },
-      {
-        title: { th: 'พื้นที่ที่ต้องใส่อุปกรณ์ป้องกันการได้ยิน ต้องมีสัญญาณแสงด้วย', en: 'Where hearing protection is worn, add a visual signal' },
-        body: {
-          th: 'ในพื้นที่ที่ระดับเสียงบังคับให้พนักงานใส่ที่อุดหูหรือที่ครอบหู เสียงสัญญาณอย่างเดียวไม่พอ ต้องมีไฟสัญญาณหรือไฟแฟลชประกอบเพื่อให้เห็นด้วยตา อุปกรณ์รวมเสียงและแสงในตัวเดียวจึงมีอยู่ในหมวดสินค้าด้วยเหตุผลนี้ ไม่ใช่เพื่อความสะดวกในการติดตั้ง',
-          en: 'Where noise levels require ear plugs or ear defenders, an audible signal alone is not enough — a beacon or strobe must accompany it so the warning can be seen. Combined sounder-beacon units exist for exactly this reason, not merely to save installation effort.',
-        },
-      },
-      {
-        title: { th: 'ใบรับรองผ่านแล้ว แต่อุณหภูมิอาจไม่ผ่าน', en: 'Certified for the zone, yet wrong for the temperature' },
-        body: {
-          th: 'อุปกรณ์ที่ผ่าน ATEX และ IECEx ยังมีช่วงอุณหภูมิใช้งานกำกับมาด้วยเสมอ และช่วงนั้นต่างกันมากในแต่ละรุ่น เช่นฮูตเตอร์กันระเบิดบางรุ่นใช้ได้ตั้งแต่ -55 °C ถึง +70 °C ขณะที่รุ่นอื่นเริ่มที่ -20 °C การเลือกโดยดูแค่ว่า "ผ่าน Ex แล้ว" จึงยังไม่พอ ต้องเทียบกับอุณหภูมิสูงสุดและต่ำสุดที่จุดติดตั้งจริงเจอ',
-          en: 'Equipment certified to ATEX and IECEx always carries an operating temperature range, and those ranges differ widely between models — some explosion‑proof hooters are rated from −55 °C to +70 °C while others start at −20 °C. Selecting on “it is Ex certified” alone is therefore incomplete; it has to be checked against the highest and lowest temperatures the installation point actually sees.',
-        },
       },
     ],
   },
@@ -225,32 +132,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'The last decision belongs jointly with the plant IT team: segmentation. Communication and video should sit on a VLAN — or a physically separate network — away from process control, because video traffic is heavy and constant, and because each team’s responsibility should line up with a real network boundary rather than overlapping until nobody can say which side a fault is on.',
       },
     ],
-    process: [
-      {
-        th: 'สำรวจอาคาร เส้นทางเดินสายที่เป็นไปได้ และตำแหน่งตู้ที่มีไฟและพื้นที่เพียงพอ',
-        en: 'Survey the buildings, the practical cable routes, and cabinet positions with adequate power and space',
-      },
-      {
-        th: 'รวบรวมรายการอุปกรณ์ปลายทางทั้งหมดที่จะขึ้นเครือข่าย พร้อมกำลังไฟที่แต่ละตัวใช้',
-        en: 'List every end device that will join the network, together with the power each one draws',
-      },
-      {
-        th: 'ออกแบบผังเครือข่าย เลือกสื่อกลางของแต่ละช่วง และวางแผนการแบ่งวีแลนร่วมกับฝ่ายไอที',
-        en: 'Design the topology, choose the medium for each segment, and agree the VLAN plan with plant IT',
-      },
-      {
-        th: 'คำนวณแบนด์วิดท์และงบกำลังไฟของสวิตช์ที่จ่ายไฟผ่านสายแลนแต่ละตัว',
-        en: 'Calculate bandwidth and the power budget of each PoE switch',
-      },
-      {
-        th: 'เดินสาย ติดตั้งตู้ ตั้งค่าอุปกรณ์ และทดสอบสายทุกเส้นด้วยเครื่องวัด',
-        en: 'Run cable, install cabinets, configure the equipment and certify every link with a tester',
-      },
-      {
-        th: 'ส่งมอบพร้อมผังจริงและตารางพอร์ต เพื่อให้ทีมของโรงงานตามงานต่อเองได้',
-        en: 'Hand over with as-built drawings and a port schedule, so the site team can maintain it themselves',
-      },
-    ],
     quoteChecklist: [
       { th: 'ผังอาคารพร้อมระยะระหว่างจุดที่ต้องเชื่อมถึงกัน', en: 'Site layout with the distances between the points to be linked' },
       {
@@ -267,29 +148,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'The IT department’s policy on network separation and remote access',
       },
       { th: 'ช่วงเวลาที่เข้าทำงานได้ และมีช่วงหยุดเดินเครื่องหรือไม่', en: 'Available working windows, and whether there is a shutdown period' },
-    ],
-    technicalNotes: [
-      {
-        title: { th: 'สายทองแดงมีเพดานที่ 100 เมตร', en: 'Copper stops at 100 metres' },
-        body: {
-          th: 'ระยะ 100 เมตรของสายทองแดงตามมาตรฐานอีเทอร์เน็ตนับรวมสายภายในตู้และสายกระโดดที่ปลายทั้งสองข้างด้วย ไม่ใช่แค่ระยะที่วัดบนแบบ ในทางปฏิบัติจึงควรเผื่อไว้ที่ราว 90 เมตรสำหรับสายหลัก จุดที่เกินกว่านั้นต้องใช้ไฟเบอร์หรือวางตู้พักกลางทาง ซึ่งเป็นข้อจำกัดที่ควรรู้ตั้งแต่ตอนเลือกตำแหน่งอุปกรณ์ ไม่ใช่ตอนลากสายจริง',
-          en: 'The 100-metre Ethernet limit for copper includes patch leads inside the cabinet at both ends, not just the distance on the drawing — so the horizontal run should be planned at around 90 metres. Anything beyond that needs fibre or an intermediate cabinet, and that constraint belongs in the device layout decision, not in the cable-pulling stage.',
-        },
-      },
-      {
-        title: { th: 'งบกำลังไฟ PoE ไม่เท่ากับจำนวนพอร์ต', en: 'A PoE budget is not the port count' },
-        body: {
-          th: 'สวิตช์ 24 พอร์ตที่รองรับการจ่ายไฟผ่านสายแลนแทบไม่มีรุ่นใดจ่ายไฟเต็มพิกัดได้พร้อมกันทั้ง 24 พอร์ต ตัวเลขที่ต้องดูคือกำลังไฟรวมของทั้งตัว เทียบกับผลรวมที่อุปกรณ์ปลายทางกินจริงในกรณีหนักที่สุด เช่นคืนที่กล้องทุกตัวเปิดฮีตเตอร์พร้อมกัน ซึ่งเป็นคืนที่ระบบต้องทำงานได้พอดี',
-          en: 'Almost no 24-port PoE switch can deliver full power on all 24 ports at once. The number that matters is the switch’s total power budget measured against what the end devices actually draw in the worst case — the cold night when every camera heater switches on together, which is exactly the night the system has to work.',
-        },
-      },
-      {
-        title: { th: 'สวิตช์อุตสาหกรรมไม่ใช่แค่สวิตช์ที่ราคาสูงกว่า', en: 'An industrial switch is not just a costlier switch' },
-        body: {
-          th: 'ความต่างอยู่ที่ช่วงอุณหภูมิใช้งาน การไม่มีพัดลมซึ่งเป็นชิ้นส่วนที่พังก่อนเสมอในที่ที่มีฝุ่น การรับไฟซ้ำสองชุด และการทนแรงสั่นสะเทือน สวิตช์สำนักงานที่ติดตั้งในตู้สนามมักทำงานได้ในช่วงแรกและเริ่มมีอาการเมื่อเข้าหน้าร้อนปีแรก ซึ่งเป็นเวลาที่ผู้รับเหมาส่งมอบงานไปแล้ว',
-          en: 'The difference is the operating temperature range, the absence of a fan — always the first part to fail where there is dust — dual power inputs, and vibration tolerance. An office switch installed in a field cabinet usually works at first and starts misbehaving in the first hot season, by which time the contractor has already handed over.',
-        },
-      },
     ],
   },
 
@@ -313,23 +171,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'Finally there is light. A camera that performs well by day can be useless after sunset if the point has no lighting of its own. Built-in infrared has a limited reach and is readily reflected back by mist or dust, so it has to be assessed against the lighting that actually exists on site — and night-time imaging should always be verified before acceptance, not only during the daytime installation visit.',
       },
     ],
-    process: [
-      { th: 'สำรวจจุดที่ต้องการเห็นภาพและกำหนดว่าแต่ละจุดต้องเห็นละเอียดระดับใด', en: 'Survey the views required and define the level of detail each one needs' },
-      {
-        th: 'ออกแบบมุมกล้องและเลือกเลนส์ให้ได้ความละเอียดตามที่กำหนดที่ระยะจริง',
-        en: 'Design camera angles and select lenses to meet that detail at the real distance',
-      },
-      {
-        th: 'เลือกกล้องตามสภาพแสง สภาพแวดล้อม และการจำแนกพื้นที่ของจุดติดตั้ง',
-        en: 'Select cameras for the lighting, the environment and the area classification at each point',
-      },
-      {
-        th: 'คำนวณพื้นที่จัดเก็บและแบนด์วิดท์จากระยะเวลาเก็บภาพที่ต้องการ',
-        en: 'Size storage and bandwidth from the required retention period',
-      },
-      { th: 'ติดตั้งอุปกรณ์ เดินสาย และตั้งค่าระบบบันทึกพร้อมกำหนดสิทธิ์การเข้าถึง', en: 'Install hardware, run cabling, configure recording and set access permissions' },
-      { th: 'ทดสอบภาพทั้งกลางวันและกลางคืน แล้วส่งมอบพร้อมอบรมผู้ดูแลระบบ', en: 'Verify imaging by day and by night, then hand over with administrator training' },
-    ],
     quoteChecklist: [
       { th: 'ผังพื้นที่พร้อมจุดที่ต้องการเห็นภาพ', en: 'Site layout marked with the views required' },
       {
@@ -343,29 +184,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
       { th: 'สภาพแสงตอนกลางคืนของแต่ละจุด', en: 'Night-time lighting conditions at each point' },
       { th: 'ระบบเครือข่ายเดิมที่มีอยู่และสวิตช์ที่รองรับการจ่ายไฟผ่านสายแลน', en: 'Existing network infrastructure and PoE-capable switches' },
       { th: 'มีจุดใดอยู่ในพื้นที่จำแนกอันตรายหรือไม่', en: 'Whether any point falls inside a classified hazardous area' },
-    ],
-    technicalNotes: [
-      {
-        title: { th: 'ระยะเวลาเก็บภาพเป็นตัวกำหนดงบประมาณมากกว่าจำนวนกล้อง', en: 'Retention period drives the budget more than camera count' },
-        body: {
-          th: 'การเพิ่มกล้องหนึ่งตัวคือค่าอุปกรณ์หนึ่งชิ้น แต่การเพิ่มจำนวนวันที่เก็บภาพย้อนหลังคือการเพิ่มพื้นที่จัดเก็บของทุกกล้องพร้อมกัน โรงงานที่ระบุว่าเก็บ 90 วันโดยไม่ได้คำนวณล่วงหน้ามักพบว่าค่าสตอเรจสูงกว่าค่ากล้องทั้งระบบ ควรกำหนดตัวเลขนี้ตั้งแต่ตอนออกแบบ ไม่ใช่ตอนติดตั้งเสร็จ',
-          en: 'Adding one camera costs one device. Extending retention adds storage for every camera at once. Plants that specify 90 days without doing the arithmetic first often find storage costs more than the cameras. Fix this number during design, not after installation.',
-        },
-      },
-      {
-        title: { th: 'กล้องในพื้นที่อันตรายเป็นคนละหมวดสินค้า', en: 'Cameras in hazardous areas are a different product class' },
-        body: {
-          th: 'กล้องอุตสาหกรรมทั่วไปที่ระดับ IP66 ทนฝุ่นและน้ำได้ แต่ไม่ได้ออกแบบมาให้ใช้ในบรรยากาศที่อาจมีไอระเหยติดไฟ จุดที่อยู่ในโซนจำแนกต้องใช้กล้องที่มีตัวถังผ่านการรับรองเฉพาะ ซึ่งราคาและระยะเวลาสั่งของต่างจากกล้องทั่วไปมาก การรู้ตั้งแต่ตอนออกแบบว่าจุดไหนอยู่ในโซนใด จึงกันปัญหางบบานปลายกลางโครงการ',
-          en: 'A standard industrial camera rated IP66 survives dust and water but is not built for an atmosphere that may contain flammable vapour. Points inside a classified zone need a certified enclosure, which differs sharply in both price and lead time. Knowing which points sit in which zone during design prevents the budget moving mid-project.',
-        },
-      },
-      {
-        title: { th: 'เห็นว่ามีคน กับระบุตัวได้ ไม่ใช่ข้อกำหนดเดียวกัน', en: 'Detecting a person and identifying one are not the same requirement' },
-        body: {
-          th: 'การมองเห็นว่ามีคนเคลื่อนไหวในภาพใช้ความละเอียดต่อเมตรน้อยกว่าการระบุใบหน้าหรืออ่านป้ายทะเบียนหลายเท่า กล้องตัวเดียวกันจึงอาจผ่านข้อกำหนดหนึ่งและตกอีกข้อกำหนดหนึ่งที่ระยะเท่ากัน การเขียนสเปกว่า "ต้องเห็นชัด" โดยไม่ระบุว่าต้องเห็นชัดพอทำอะไร ทำให้ทั้งผู้ซื้อและผู้ขายเข้าใจไม่ตรงกันจนถึงวันตรวจรับ',
-          en: 'Noticing that a person is moving in frame needs a fraction of the pixel density required to recognise a face or read a number plate, so the same camera can pass one requirement and fail the other at the same distance. A specification that says only “must be clear”, without stating what it must be clear enough to do, leaves buyer and supplier disagreeing right up to the acceptance test.',
-        },
-      },
     ],
   },
 
@@ -404,36 +222,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'The part most often overlooked is documentation. Explosion-protected equipment arrives with certificates and installation conditions that keep those certificates valid — permitted cable glands, cover torque, earthing method. This document set is exactly what an inspector asks for later, and assembling it at handover is far easier than reconstructing it years afterwards.',
       },
     ],
-    process: [
-      {
-        th: 'สำรวจจำนวนจุดใช้งาน ระบบเดิมที่มีอยู่ และชนิดของชุมสายที่เชื่อมออกภายนอก',
-        en: 'Survey the number of extensions, the existing system, and how external lines are connected',
-      },
-      {
-        th: 'เลือกตู้สาขา PABX และรูปแบบระบบ (อนาล็อก IP หรือไฮบริด) ให้ตรงกับแผนการใช้งานระยะยาว',
-        en: 'Select the PABX and system type — analogue, IP or hybrid — against the long-term plan',
-      },
-      {
-        th: 'ตรวจเอกสารจำแนกพื้นที่ของจุดที่อยู่ในบริเวณอันตราย: โซน กลุ่มก๊าซ และ temperature class',
-        en: 'Review the area classification for points in hazardous locations: zone, gas group and temperature class',
-      },
-      {
-        th: 'คัดรุ่นเครื่องปลายทางตามจุดติดตั้ง และตรวจว่าใบรับรองครอบคลุมเงื่อนไขครบทุกข้อ ไม่ใช่แค่โซน',
-        en: 'Shortlist handsets by location and verify their certification covers every condition, not just the zone',
-      },
-      {
-        th: 'ออกแบบผังตู้กระจายสาย MDF/IDF และเส้นทางเดินสายถึงทุกจุด',
-        en: 'Design the MDF/IDF layout and the cable routes to every point',
-      },
-      {
-        th: 'ติดตั้งตามข้อกำหนดของผู้ผลิต ซึ่งเป็นเงื่อนไขที่ทำให้ใบรับรองยังมีผล',
-        en: 'Install to the manufacturer’s instructions — the condition under which the certification remains valid',
-      },
-      {
-        th: 'ทดสอบรายจุด ส่งมอบ และส่งชุดเอกสารสำหรับการตรวจสอบภายหลัง',
-        en: 'Test point by point, hand over, and provide the document set for later inspection',
-      },
-    ],
     quoteChecklist: [
       { th: 'จำนวนจุดใช้งานทั้งหมด และแยกว่าอยู่ในสำนักงานกี่จุด อยู่ในพื้นที่ผลิตกี่จุด', en: 'Total number of extensions, split between office and process areas' },
       { th: 'ระบบเดิมเป็นอนาล็อกหรือ IP และตู้สาขาเดิมยังใช้ต่อได้หรือไม่', en: 'Whether the existing system is analogue or IP, and whether the current PABX is to be reused' },
@@ -447,36 +235,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'Corrosive conditions — coastal, acid vapour, or chemical wash-down areas',
       },
       { th: 'ระยะสายจากตู้กระจายสายถึงจุดที่ไกลที่สุด', en: 'Cable distance from the distribution frame to the furthest point' },
-    ],
-    technicalNotes: [
-      {
-        title: { th: 'ไฮบริดไม่ใช่ทางออกชั่วคราวเสมอไป', en: 'Hybrid is not always a stopgap' },
-        body: {
-          th: 'โรงงานที่มีสายอนาล็อกเดินไว้แล้วหลายร้อยจุด การเปลี่ยนเป็น IP ทั้งระบบพร้อมกันแปลว่าต้องรื้อสายและหยุดใช้งานเป็นช่วง ระบบไฮบริดยอมให้ย้ายเฉพาะจุดที่ต้องการฟังก์ชันใหม่ก่อน แล้วคงจุดที่ยังทำงานได้ดีไว้ตามเดิม การเลือกไฮบริดจึงเป็นการตัดสินใจเรื่องแผนงานและงบประมาณ ไม่ใช่การยอมรับเทคโนโลยีที่ด้อยกว่า',
-          en: 'In a plant with hundreds of analogue lines already pulled, converting everything to IP at once means re-cabling and planned downtime. A hybrid platform lets the points that need new functionality move first while the rest stay as they are. Choosing hybrid is therefore a decision about scheduling and budget, not a concession to inferior technology.',
-        },
-      },
-      {
-        title: { th: 'รู้แค่โซนยังเลือกของไม่ได้', en: 'Knowing the zone alone is not enough to select equipment' },
-        body: {
-          th: 'การจำแนกพื้นที่บอกความถี่ที่บรรยากาศติดไฟจะปรากฏ แต่การเลือกอุปกรณ์ต้องใช้อีกสองค่าประกอบเสมอ คือกลุ่มก๊าซ (IIA / IIB / IIC ซึ่ง IIC เข้มงวดที่สุดเพราะครอบคลุมไฮโดรเจนและอะเซทิลีน) และ temperature class (T1–T6 ซึ่งกำหนดอุณหภูมิผิวสูงสุดที่อุปกรณ์มีได้) ใบสั่งซื้อที่ระบุแค่ "Zone 1" จึงยังไม่พอให้ผู้ขายเสนอรุ่นที่ถูกต้อง',
-          en: 'Area classification states how often a flammable atmosphere is present, but equipment selection always needs two further values: the gas group (IIA / IIB / IIC — IIC being the most demanding as it covers hydrogen and acetylene) and the temperature class (T1–T6, capping the equipment’s maximum surface temperature). A purchase order that says only “Zone 1” does not yet let a supplier propose the correct model.',
-        },
-      },
-      {
-        title: { th: 'IP กับ Ex เป็นคนละเรื่องกัน', en: 'IP and Ex answer different questions' },
-        body: {
-          th: 'ค่า IP ตาม IEC 60529 บอกความสามารถในการกันของแข็งและน้ำเข้าตัวถัง เช่น IP66 คือกันฝุ่นสนิทและทนน้ำฉีดแรง ส่วนการรับรอง Ex บอกว่าตัวอุปกรณ์จะไม่จุดระเบิดบรรยากาศรอบตัว อุปกรณ์ IP67 ที่ไม่มีใบรับรอง Ex จึงใช้ในโซนอันตรายไม่ได้ แม้จะกันน้ำได้ดีกว่าอุปกรณ์ Ex บางรุ่นก็ตาม',
-          en: 'An IP rating under IEC 60529 describes how well an enclosure keeps solids and water out — IP66 means dust-tight and resistant to powerful water jets. An Ex certification says the device will not ignite the atmosphere around it. An IP67 device without Ex certification therefore cannot be used in a hazardous zone, even though it may keep water out better than some Ex-rated equipment does.',
-        },
-      },
-      {
-        title: { th: 'ใบรับรองมีผลเฉพาะเมื่อติดตั้งตามที่ระบุ', en: 'Certification holds only for the installation described' },
-        body: {
-          th: 'เอกสารรับรองของอุปกรณ์กันระเบิดมาพร้อมเงื่อนไขการติดตั้งเสมอ เช่นชนิดของ cable gland ที่ใช้ได้ แรงขันของสกรูฝาครอบ และวิธีต่อสายดิน การเปลี่ยน gland เป็นรุ่นที่หาได้ง่ายกว่าหน้างาน หรือขันฝาไม่ได้แรงตามที่กำหนด ทำให้การป้องกันไม่เป็นไปตามที่รับรองไว้ แม้ตัวอุปกรณ์จะเป็นรุ่นที่ถูกต้องก็ตาม',
-          en: 'Certification for explosion-protected equipment always comes with installation conditions — which cable glands are permitted, the torque for the cover bolts, how earthing must be made. Substituting a gland for whatever was available on site, or under-torquing the cover, means the protection no longer matches what was certified, even though the device itself is the correct model.',
-        },
-      },
     ],
   },
 
@@ -500,32 +258,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
         en: 'In a plant the system also does something an ordinary office never asks of it: it restricts entry to areas that require a work permit first, and it knows who is inside which area when an evacuation begins. That information is worth most in the minutes when people have to be counted — which is why access control and the alarm system should be designed to talk to each other rather than living side by side as separate installations.',
       },
     ],
-    process: [
-      {
-        th: 'สำรวจประตูและจุดผ่านทั้งหมด แยกว่าจุดใดต้องคุมเข้า จุดใดต้องคุมทั้งเข้าและออก',
-        en: 'Survey every door and passage, separating entry-only points from those needing both directions',
-      },
-      {
-        th: 'กำหนดกลุ่มผู้ใช้และสิทธิ์ตามพื้นที่ รวมถึงผู้รับเหมาและผู้มาติดต่อ',
-        en: 'Define user groups and area rights, contractors and visitors included',
-      },
-      {
-        th: 'เลือกอุปกรณ์อ่านและชนิดล็อกให้เหมาะกับประตูและสภาพแวดล้อมของแต่ละจุด',
-        en: 'Select readers and lock types to suit each door and its environment',
-      },
-      {
-        th: 'ออกแบบการเชื่อมกับระบบป้องกันอัคคีภัยให้ประตูเส้นทางหนีไฟปลดล็อกเมื่อเกิดเหตุ',
-        en: 'Design the fire protection interface so escape-route doors release on alarm',
-      },
-      {
-        th: 'เชื่อมข้อมูลกับระบบบันทึกเวลาหรือระบบเงินเดือน ถ้าโรงงานต้องการใช้ร่วมกัน',
-        en: 'Link to time attendance or payroll where the site wants one system to serve both',
-      },
-      {
-        th: 'ติดตั้ง ทดสอบทั้งกรณีปกติและกรณีเกิดเหตุ แล้วส่งมอบพร้อมอบรมผู้ดูแลระบบ',
-        en: 'Install, test both the normal and the fire condition, then hand over with administrator training',
-      },
-    ],
     quoteChecklist: [
       { th: 'จำนวนประตูที่ต้องคุม และแต่ละจุดคุมทางเดียวหรือสองทาง', en: 'Number of controlled doors, and whether each is one-way or two-way' },
       { th: 'จำนวนผู้ใช้ทั้งหมด แยกพนักงานประจำ ผู้รับเหมา และผู้มาติดต่อ', en: 'Total users, split between staff, contractors and visitors' },
@@ -533,29 +265,6 @@ export const serviceDepth: Record<string, ServiceDepth> = {
       { th: 'ระบบแจ้งเหตุเพลิงไหม้ที่มีอยู่เดิม และจุดที่ต้องปลดล็อกเมื่อเกิดเหตุ', en: 'The existing fire alarm system and which doors must release on alarm' },
       { th: 'พื้นที่ที่ต้องมีใบอนุญาตทำงานก่อนเข้า', en: 'Areas requiring a work permit before entry' },
       { th: 'สภาพแวดล้อมของจุดติดตั้ง เช่น กลางแจ้ง ฝุ่นมาก หรืออยู่ในพื้นที่จำแนกอันตราย', en: 'Environment at each point — outdoor, dusty, or inside a classified area' },
-    ],
-    technicalNotes: [
-      {
-        title: { th: 'ประตูที่ล็อกแน่นที่สุด ต้องเปิดได้เร็วที่สุดตอนเกิดเหตุ', en: 'The most secure door has to be the fastest to open in an emergency' },
-        body: {
-          th: 'ความปลอดภัยของทรัพย์สินกับความปลอดภัยของชีวิตเป็นข้อกำหนดที่สวนทางกันที่ประตูบานเดียวกัน ระบบต้องออกแบบให้ประตูตามเส้นทางหนีไฟปลดล็อกเมื่อระบบแจ้งเหตุทำงาน ซึ่งหมายถึงต้องมีทั้งการเดินสายสัญญาณจากระบบดับเพลิงและการเลือกชนิดล็อกที่ปลดเมื่อไฟดับ ไม่ใช่ล็อกที่ค้างอยู่เมื่อไม่มีไฟ',
-          en: 'Protecting property and protecting life pull in opposite directions at the same door. The system has to release escape-route doors when the fire alarm operates, which means both a signal path from the fire system and a lock type that unlocks when power is lost — not one that stays engaged without it.',
-        },
-      },
-      {
-        title: { th: 'การถอนสิทธิ์สำคัญกว่าการให้สิทธิ์', en: 'Revoking access matters more than granting it' },
-        body: {
-          th: 'ทุกระบบทำงานได้ดีในวันแรกที่ทุกคนได้บัตร ปัญหาเกิดตอนคนย้ายแผนก ลาออก หรือผู้รับเหมาจบสัญญาแล้วบัตรยังใช้ได้อยู่ ระบบที่ไม่มีขั้นตอนถอนสิทธิ์ที่ชัดเจนจะค่อย ๆ สะสมบัตรที่ยังเปิดประตูได้โดยไม่มีเจ้าของ ซึ่งเป็นช่องโหว่ที่ตรวจไม่พบจนกว่าจะมีเหตุ การกำหนดวันหมดอายุของบัตรผู้รับเหมาตั้งแต่วันออกบัตรจึงได้ผลกว่าการไล่เก็บคืนภายหลัง',
-          en: 'Every system works on day one, when everyone receives a card. The trouble starts when people change departments, leave, or a contractor’s term ends while their card still opens doors. Without a clear revocation procedure a system slowly accumulates live credentials with no owner — a gap nobody notices until there is an incident. Setting an expiry date on contractor cards at the moment they are issued works far better than chasing them afterwards.',
-        },
-      },
-      {
-        title: { th: 'ข้อมูลเวลาเข้าออกเป็นข้อมูลส่วนบุคคล', en: 'Movement records are personal data' },
-        body: {
-          th: 'เมื่อระบบถูกใช้เป็นระบบบันทึกเวลาทำงานด้วย สิ่งที่ระบบเก็บไม่ใช่แค่บันทึกของประตูอีกต่อไป แต่เป็นบันทึกว่าพนักงานคนหนึ่งอยู่ที่ไหนในเวลาใดตลอดทั้งปี ต้องกำหนดตั้งแต่ตอนออกแบบว่าใครเข้าถึงข้อมูลนี้ได้ เก็บไว้นานเท่าใด และใช้เพื่อวัตถุประสงค์ใดได้บ้าง เพราะการมากำหนดทีหลังเมื่อข้อมูลสะสมไปแล้วสองปี ทำได้ยากกว่ามาก',
-          en: 'Once the system doubles as time and attendance, what it stores is no longer a log of a door but a record of where a given employee was, at what time, across a whole year. Who may read it, how long it is kept and what it may be used for belong in the design decisions — settling that after two years of accumulated records is far harder.',
-        },
-      },
     ],
   },
 }

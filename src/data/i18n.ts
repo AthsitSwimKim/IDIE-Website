@@ -299,20 +299,10 @@ export const ui = {
     overviewHeading: { th: 'ภาพรวมงาน', en: 'Overview' },
     scopeHeading: { th: 'ขอบเขตงาน', en: 'Scope of work' },
     applicationsHeading: { th: 'ตัวอย่างการใช้งาน', en: 'Typical applications' },
-    processHeading: { th: 'ขั้นตอนการทำงาน', en: 'How we work' },
-    processLead: {
-      th: 'ลำดับงานตั้งแต่รับโจทย์จนส่งมอบ — แต่ละโครงการอาจปรับตามเงื่อนไขหน้างาน',
-      en: 'From brief to handover. Individual projects adapt to site conditions.',
-    },
     checklistHeading: { th: 'ข้อมูลที่ใช้ในการเสนอราคา', en: 'What we need to quote' },
     checklistLead: {
       th: 'เตรียมข้อมูลเหล่านี้มาให้ครบ จะช่วยให้เสนอราคาได้ตรงและเร็วขึ้นมาก',
       en: 'Having these ready lets us quote accurately and far more quickly.',
-    },
-    notesHeading: { th: 'ประเด็นทางเทคนิคที่ควรรู้ก่อนออกแบบ', en: 'Technical points worth settling early' },
-    notesLead: {
-      th: 'เรื่องที่มักถูกมองข้ามตอนกำหนดสเปก แล้วกลายเป็นปัญหาตอนติดตั้งหรือตรวจรับ',
-      en: 'Points often missed at specification stage that turn into problems at installation or acceptance.',
     },
     backToServices: { th: 'กลับไปหน้าบริการ', en: 'Back to services' },
     ctaTitle: { th: 'มีงานที่อยากให้เราช่วยดูไหม', en: 'Have a project for us to look at?' },

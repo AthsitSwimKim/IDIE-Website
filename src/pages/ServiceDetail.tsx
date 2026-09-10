@@ -126,87 +126,51 @@ export default function ServiceDetail() {
       </Section>
 
       {depth && (
-        <>
-          <Section>
-            <div className="grid gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16">
-              <div>
-                <Heading level={2}>{t(ui.serviceDetail.processHeading)}</Heading>
-                <p className="text-ink-muted mt-4 max-w-prose">
-                  {t(ui.serviceDetail.processLead)}
-                </p>
+        <Section>
+          <div className="grid gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16">
+            <div>
+              <Heading level={2}>{t(ui.serviceDetail.checklistHeading)}</Heading>
+              <p className="text-ink-muted mt-4 max-w-prose">
+                {t(ui.serviceDetail.checklistLead)}
+              </p>
+              <div className="mt-6">
+                <Button to={`/contact?service=${service.slug}`} variant="outline" size="sm" withArrow>
+                  {t(ui.actions.contactInquiry)}
+                </Button>
               </div>
-
-              {/*
-                `<ol>` ไม่ใช่ `<ul>` — ลำดับมีความหมายจริงตรงนี้ (สำรวจก่อนออกแบบ
-                ออกแบบก่อนสั่งของ) โปรแกรมอ่านหน้าจอจะบอกผู้ฟังว่า "ข้อ 3 จาก 6"
-                ซึ่งเป็นข้อมูลที่หายไปถ้าใช้รายการแบบไม่เรียงลำดับ
-              */}
-              <ol className="border-line divide-line divide-y border-t border-b">
-                {depth.process.map((step, index) => (
-                  <li key={step.en} className="flex gap-4 py-4">
-                    <span
-                      aria-hidden="true"
-                      className="stat-figure text-primary-600 w-6 shrink-0 text-sm font-bold"
-                    >
-                      {String(index + 1).padStart(2, '0')}
-                    </span>
-                    <span>{t(step)}</span>
-                  </li>
-                ))}
-              </ol>
             </div>
-          </Section>
 
-          <Section tone="alt">
-            <div className="grid gap-10 lg:grid-cols-[2fr_3fr] lg:gap-16">
-              <div>
-                <Heading level={2}>{t(ui.serviceDetail.checklistHeading)}</Heading>
-                <p className="text-ink-muted mt-4 max-w-prose">
-                  {t(ui.serviceDetail.checklistLead)}
-                </p>
-                <div className="mt-6">
-                  <Button to={`/contact?service=${service.slug}`} variant="outline" size="sm" withArrow>
-                    {t(ui.actions.contactInquiry)}
-                  </Button>
-                </div>
-              </div>
+            {/*
+              การ์ดต้องมีเงาแล้ว เพราะหมวดนี้เปลี่ยนเป็นพื้นขาว — การ์ดพื้นขาวขอบ #e2e8f2
+              บนพื้นขาวแทบไม่มีขอบเขตให้เห็น (ตอนอยู่บนพื้นเทาไม่ต้องมีเงาก็แยกออก)
 
-              <ul className="grid gap-3 sm:grid-cols-2">
-                {depth.quoteChecklist.map((item) => (
-                  <li
-                    key={item.en}
-                    className="border-line bg-surface rounded-card flex gap-3 border p-4"
-                  >
-                    <CheckIcon
-                      aria-hidden="true"
-                      className="text-primary-600 mt-0.5 size-4 shrink-0"
-                    />
-                    <span>{t(item)}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </Section>
-
-          <Section>
-            <Heading level={2}>{t(ui.serviceDetail.notesHeading)}</Heading>
-            {/* จัดชิดขอบแบบ inter-character เหมือนหมวดภาพรวมงาน — เหตุผลเต็มอยู่ที่นั่น */}
-            <p className="text-ink-muted mt-4 max-w-prose text-justify [text-justify:inter-character]">
-              {t(ui.serviceDetail.notesLead)}
-            </p>
-
-            <div className="mt-8 grid gap-6 lg:grid-cols-3">
-              {depth.technicalNotes.map((note) => (
-                <article key={note.title.en} className="border-line rounded-card border p-6">
-                  <h3 className="text-h3 font-semibold">{t(note.title)}</h3>
-                  <p className="text-ink-muted mt-3 text-justify leading-relaxed [text-justify:inter-character]">
-                    {t(note.body)}
-                  </p>
-                </article>
+              ช่องไฟ 16px ไม่ใช่ 12px — พอการ์ดมีเงาแล้ว ระยะเดิมทำให้เงาของสองใบ
+              ที่ติดกันซ้อนทับกันจนดูเหมือนก้อนเดียว
+            */}
+            <ul className="grid gap-4 sm:grid-cols-2">
+              {depth.quoteChecklist.map((item) => (
+                <li
+                  key={item.en}
+                  className="border-line bg-surface rounded-card shadow-card flex gap-3 border p-4"
+                >
+                  {/*
+                    mt-2.5 (10px) ไม่ใช่ mt-0.5 — ไอคอนสูง 16px ส่วนบรรทัดแรกของข้อความ
+                    สูง 31.5px กึ่งกลางบรรทัดจึงอยู่ที่ 15.75px จากขอบบน ไอคอนที่ดันลงแค่ 2px
+                    มีกึ่งกลางอยู่ที่ 10px คือลอยสูงกว่าตัวอักษรเกือบ 6px
+                    เผื่อลงอีก 2px จากกึ่งกลางเชิงเรขาคณิต ด้วยเหตุผลเดียวกับกรอบไอคอน
+                    ในหมวด Engineering Highlights — วรรณยุกต์ไทยดันขอบหมึกด้านบนขึ้นไป
+                    ทำให้ของที่อยู่กึ่งกลางจริงดูเหมือนลอยสูง
+                  */}
+                  <CheckIcon
+                    aria-hidden="true"
+                    className="text-primary-600 mt-2.5 size-4 shrink-0"
+                  />
+                  <span>{t(item)}</span>
+                </li>
               ))}
-            </div>
-          </Section>
-        </>
+            </ul>
+          </div>
+        </Section>
       )}
 
       <Section tone="dark" spacing="lg" className="blueprint-grid">
