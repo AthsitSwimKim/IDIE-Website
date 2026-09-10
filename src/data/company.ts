@@ -1,4 +1,4 @@
-import type { Certificate, CompanyInfo, Milestone, Stat, ValueProp } from '@/types/content'
+import type { CompanyInfo, Milestone, Stat, ValueProp } from '@/types/content'
 import { config } from '@/config'
 
 /**
@@ -98,80 +98,6 @@ export const contactPerson = {
  * แทนการแสดง section เปล่าหรือข้อความที่แต่งขึ้น
  */
 export const milestones: Milestone[] = []
-
-/**
- * หนังสือรับรองการเป็นตัวแทนจากผู้ผลิต — **ข้อมูลจริงจากเอกสารที่ IDIE ส่งมา (ส.ค. 2026)**
- *
- * ทุกบรรทัดในนี้สรุปจากถ้อยคำบนเอกสารตัวจริงที่อ่านแล้ว ไม่ได้เรียบเรียงให้ดูดีขึ้น
- * ในธุรกิจพื้นที่อันตราย ผู้ซื้อและผู้ตรวจสอบย้อนกลับไปถามผู้ผลิตได้โดยตรง
- * การเขียนเกินกว่าที่เอกสารระบุแม้คำเดียวจึงเป็นความเสี่ยงทางธุรกิจ ไม่ใช่แค่การตลาด
- *
- * **แสดงภาพสแกนบนหน้าเว็บ** — ภาพแปลงจาก PDF ต้นฉบับเป็น WebP สองความละเอียด
- * กดที่ภาพเพื่อเปิดขนาดเต็มได้ · ฉบับปี 2022 หมุนภาพให้ตั้งตรงแล้ว
- * (หน้า PDF ตั้ง /Rotate 270 ไว้)
- *
- * **หนังสือ Authorisation Certificate ปี 2006 ถูกถอดออกตามที่ IDIE แจ้ง (ส.ค. 2026)** —
- * เอกสารระบุอายุถึง 30 มิ.ย. 2007 และผูกกับงานของ TPI โดยเฉพาะ จึงไม่เผยแพร่
- * ถ้าจะเพิ่มหนังสือฉบับอื่นในอนาคต ต้องเป็นฉบับที่ยังมีผลเท่านั้น
- *
- * MEDC ไม่มีหนังสือแต่งตั้ง และ IDIE แจ้งว่าไม่ต้องขอใบรับรองระบบ (ISO) แล้ว (ส.ค. 2026)
- * รายการนี้จึงถือว่าครบแล้ว ไม่ต้องมีบล็อกขอข้อมูลบนหน้าเว็บอีก
- */
-export const certificates: Certificate[] = [
-  {
-    id: 'industronic-exclusive-agent',
-    name: {
-      th: 'ตัวแทนจำหน่ายแต่เพียงผู้เดียวในประเทศไทย',
-      en: 'Exclusive agent in Thailand',
-    },
-    issuer: { th: 'INDUSTRONIC (เยอรมนี)', en: 'INDUSTRONIC (Germany)' },
-    year: 2022,
-    scope: {
-      th: 'หนังสือรับรองความเป็นพันธมิตรจาก INDUSTRONIC Industrie-Electronic GmbH & Co. KG ระบุว่า IDIE เป็นตัวแทนแต่เพียงผู้เดียวในประเทศไทย พร้อมตรารับรองความร่วมมือครบ 15 ปี ลงวันที่ 5 ตุลาคม 2565',
-      en: 'Certificate of Partnership from INDUSTRONIC Industrie-Electronic GmbH & Co. KG naming IDIE its exclusive agent in Thailand, marked with a 15-year partnership seal. Dated 5 October 2022.',
-    },
-    status: 'active',
-    image: {
-      src: '/images/certificates/industronic-partnership-2022.webp',
-      srcSet:
-        '/images/certificates/industronic-partnership-2022-720.webp 1x, /images/certificates/industronic-partnership-2022.webp 2x',
-      alt: {
-        th: 'หนังสือรับรองความเป็นพันธมิตรจาก INDUSTRONIC ระบุ ID Industrial Engineering เป็นตัวแทนแต่เพียงผู้เดียวในประเทศไทย พร้อมตราครบ 15 ปี ลงนามที่เมือง Wertheim วันที่ 5 ตุลาคม 2022',
-        en: 'INDUSTRONIC Certificate of Partnership naming ID Industrial Engineering its exclusive agent in Thailand, with a 15-year seal, signed in Wertheim on 5 October 2022.',
-      },
-      width: 1600,
-      height: 1131,
-    },
-  },
-  {
-    id: 'fhf-authorized-distributor',
-    name: {
-      th: 'ตัวแทนจำหน่ายที่ได้รับอนุญาตในประเทศไทย',
-      en: 'Authorized distributor in Thai territory',
-    },
-    issuer: {
-      th: 'FHF Funke + Huster Fernsig GmbH (เยอรมนี)',
-      en: 'FHF Funke + Huster Fernsig GmbH (Germany)',
-    },
-    year: 2008,
-    scope: {
-      th: 'หนังสืออนุญาตจาก FHF ยืนยันว่า ID Industrial Engineering Co., Ltd. เป็นตัวแทนจำหน่ายสินค้า FHF ที่ได้รับอนุญาตในประเทศไทย มีผลจนกว่าจะถูกเพิกถอนเป็นลายลักษณ์อักษร ลงวันที่ 21 กุมภาพันธ์ 2551',
-      en: 'Letter of Authorization from FHF confirming ID Industrial Engineering Co., Ltd. as an authorized distributor of FHF products within the Thai territory, valid until revoked in writing. Dated 21 February 2008.',
-    },
-    status: 'active',
-    image: {
-      src: '/images/certificates/fhf-authorization-2008.webp',
-      srcSet:
-        '/images/certificates/fhf-authorization-2008-720.webp 1x, /images/certificates/fhf-authorization-2008.webp 2x',
-      alt: {
-        th: 'หนังสืออนุญาตจาก FHF Funke + Huster Fernsig GmbH ยืนยันว่า ID Industrial Engineering Co., Ltd. เป็นตัวแทนจำหน่ายสินค้า FHF ที่ได้รับอนุญาตในประเทศไทย ลงวันที่ 21 กุมภาพันธ์ 2008',
-        en: 'FHF Funke + Huster Fernsig GmbH Letter of Authorization confirming ID Industrial Engineering Co., Ltd. as an authorized distributor of FHF products in the Thai territory, dated 21 February 2008.',
-      },
-      width: 1131,
-      height: 1600,
-    },
-  },
-]
 
 /**
  * ตัวเลขสถิติ: มีเพียงปีประสบการณ์ที่คำนวณจากปีก่อตั้งจริงได้

@@ -25,7 +25,6 @@ import type {
 } from '@/types/content'
 
 import {
-  certificates,
   company,
   companyFax,
   contactPerson,
@@ -68,22 +67,6 @@ export async function getCompany() {
 
 export async function getMilestones() {
   return milestones
-}
-
-/**
- * หนังสือรับรองจากผู้ผลิตที่ยังมีผล เรียงจากใหม่ไปเก่า
- *
- * กรอง `status: 'expired'` ออกที่ชั้นนี้ ไม่ใช่ที่ component — IDIE แจ้ง (ส.ค. 2026)
- * ว่าไม่ต้องเผยแพร่หนังสือที่หมดอายุแล้ว การบังคับกฎไว้ที่ accessor ทำให้หน้าไหน
- * ก็ตามที่เรียกใช้ได้พฤติกรรมเดียวกัน โดยคนเขียน component ไม่ต้องรู้กติกาข้อนี้เอง
- *
- * ตอนนี้ไม่มีฉบับที่ expired เหลืออยู่แล้ว ตัวกรองจึงยังไม่ได้ทำงานจริง
- * แต่ต้องคงไว้เพื่อกันการเผลอเพิ่มหนังสือหมดอายุกลับเข้ามาแล้วขึ้นหน้าเว็บเงียบ ๆ
- */
-export async function getCertificates() {
-  return certificates
-    .filter((cert) => cert.status === 'active')
-    .sort((a, b) => (b.year ?? 0) - (a.year ?? 0))
 }
 
 export async function getStats() {

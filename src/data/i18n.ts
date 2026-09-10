@@ -293,16 +293,6 @@ export const ui = {
     },
     industriesHeading: { th: 'อุตสาหกรรมที่ให้บริการ', en: 'Industries we serve' },
     contactPersonHeading: { th: 'ผู้ติดต่อหลัก', en: 'Primary contact' },
-    certificatesHeading: { th: 'การแต่งตั้งจากผู้ผลิต', en: 'Manufacturer authorisations' },
-    certificatesLead: {
-      th: 'หนังสือรับรองที่ผู้ผลิตออกให้โดยตรง ระบุขอบเขตและพื้นที่ที่ IDIE ได้รับแต่งตั้ง',
-      en: 'Authorisation documents issued directly by the manufacturers, stating the scope and territory granted to IDIE.',
-    },
-    /** ชื่อของปุ่มเปิดเอกสาร — {name} ถูกแทนด้วยชื่อหนังสือแต่ละฉบับตอน render */
-    certificatesOpen: {
-      th: 'ดูเอกสารขนาดเต็ม: {name}',
-      en: 'View full-size document: {name}',
-    },
   },
 
   serviceDetail: {

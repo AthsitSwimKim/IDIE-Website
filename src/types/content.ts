@@ -100,26 +100,6 @@ export interface Milestone extends Placeholderable {
   description: LocalizedText;
 }
 
-export interface Certificate extends Placeholderable {
-  id: string;
-  name: LocalizedText;
-  issuer: LocalizedText;
-  year: number | null;
-  /**
-   * ขอบเขตที่หนังสือฉบับนั้นรับรอง — **ต้องสรุปตามถ้อยคำในเอกสารจริงเท่านั้น**
-   * ห้ามขยายความให้ดูกว้างกว่าที่เขียนไว้ เพราะเป็นข้อความที่ลูกค้าใช้ตัดสินใจ
-   * และผู้ผลิตตรวจสอบได้
-   */
-  scope?: LocalizedText;
-  /**
-   * `active` = เอกสารยังมีผล · `expired` = หมดอายุตามที่ระบุในเอกสารเอง
-   * ใช้บอกสถานะเท่านั้น ไม่ได้ใช้ซ่อนเอกสาร — ฉบับที่หมดอายุก็แสดงได้
-   * ตราบใดที่คำบรรยายระบุวันหมดอายุตามที่พิมพ์บนเอกสารไว้ชัด
-   */
-  status: 'active' | 'expired';
-  image?: ImageAsset;
-}
-
 /** Engineering Statistics (dark section + count-up) */
 export interface Stat extends Placeholderable {
   id: string;

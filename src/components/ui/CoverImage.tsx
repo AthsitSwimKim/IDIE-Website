@@ -31,7 +31,7 @@ export interface CoverImageProps {
  *
  * เคยกดเปิดขนาดเต็มได้ ถอดออกตามที่เจ้าของเว็บสั่ง (ก.ย. 2026) — ผังเป็นภาพประกอบ
  * ที่ดูแล้วผ่านไป ไม่ใช่ของที่ต้องเปิดอ่านทีละป้าย ถ้าวันหนึ่งอยากได้กลับมา
- * ใช้ `ImageLightbox` ตัวเดียวกับหน้าสินค้าและหนังสือแต่งตั้งในหน้าเกี่ยวกับเรา
+ * ใช้ `ImageLightbox` ตัวเดียวกับหน้ารายละเอียดสินค้า
  */
 export function CoverImage({ image, label, fallbackSize = '1600 × 1200', className }: CoverImageProps) {
   const { t } = useLocale()

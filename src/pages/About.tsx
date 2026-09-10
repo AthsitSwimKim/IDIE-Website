@@ -1,26 +1,26 @@
-import { ExpandIcon } from '@/components/ui/icons'
 import {
   Badge,
   Button,
   Heading,
-  ImageLightbox,
   KeepPhrases,
   KeepWords,
   Section,
 } from '@/components/ui'
-import { useState } from 'react'
-import type { ImageAsset } from '@/types/content'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
-import { contactPerson, getCertificates, getCompany, getIndustries, getServices, ui } from '@/data'
+import { contactPerson, getCompany, getIndustries, getServices, ui } from '@/data'
 import { yearsOfExperience } from '@/config'
 
 /**
  * About Us — Phase 4
  *
  * ประกอบจากข้อมูลที่บริษัทให้มาจริงทั้งหน้า — ข้อมูลบริษัท ขอบเขตงาน อุตสาหกรรม
- * ผู้ติดต่อ และหนังสือแต่งตั้งจากผู้ผลิต
+ * และผู้ติดต่อ
+ *
+ * หมวดหนังสือแต่งตั้งจากผู้ผลิตถูกถอดออกตามที่เจ้าของเว็บสั่ง (ก.ย. 2026) —
+ * ข้อมูลกับไฟล์ภาพเอกสารยังอยู่ครบใน src/data/company.ts และ public/images/
+ * ถ้าจะเอากลับมาให้ดูที่ประวัติ git ของไฟล์นี้
  *
  * เคยมีสามช่องที่ประกาศว่า "รอข้อมูลจากบริษัท" (ประวัติ · วิสัยทัศน์และพันธกิจ · ทีมงาน)
  * ไว้ให้คนรีวิวเห็นว่าหน้านี้จะมีอะไรต่อ ถอดออกตามที่เจ้าของเว็บสั่ง (ก.ย. 2026) —
@@ -32,13 +32,7 @@ export default function About() {
   const { data: company } = useAsyncData(getCompany)
   const { data: services } = useAsyncData(getServices)
   const { data: industries } = useAsyncData(getIndustries)
-  const { data: certificates } = useAsyncData(getCertificates)
 
-  /**
-   * เก็บ "ภาพที่กำลังเปิดอยู่" ไม่ใช่ boolean — ป๊อปอัปมีตัวเดียวใช้ร่วมกันทุกใบ
-   * ถ้าทำ dialog ต่อใบจะได้ element ซ้ำใน DOM โดยไม่ได้อะไรเพิ่ม
-   */
-  const [openImage, setOpenImage] = useState<ImageAsset | null>(null)
   const years = yearsOfExperience()
 
   return (
@@ -214,122 +208,6 @@ export default function About() {
         </ul>
       </Section>
 
-      {/*
-        การแต่งตั้งจากผู้ผลิตได้ section ของตัวเอง เพราะเป็นหลักฐานที่มีน้ำหนักที่สุด
-        ในหน้านี้สำหรับผู้ซื้องานพื้นที่อันตราย — ข้อความในการ์ดสรุปตามถ้อยคำบนเอกสารตัวจริง
-
-        getCertificates() กรองฉบับที่ `status: 'expired'` ออกและเรียงจากใหม่ไปเก่าให้แล้ว
-        หน้านี้จึงไม่ต้องจัดลำดับหรือคัดกรองเอง — IDIE แจ้ง (ส.ค. 2026) ว่าไม่ให้เผยแพร่
-        หนังสือที่หมดอายุ ฉบับปี 2006 จึงถูกถอดออกจากข้อมูลไปแล้ว
-        ถ้าเพิ่มฉบับใหม่ที่หมดอายุเข้ามา มันจะไม่ขึ้นหน้าเว็บโดยตั้งใจ ไม่ใช่บั๊ก
-      */}
-      {certificates && certificates.length > 0 && (
-        <Section tone="alt">
-          <Heading level={2} eyebrow="AUTHORISATIONS">
-            {t(ui.about.certificatesHeading)}
-          </Heading>
-          <p className="text-ink-muted mt-4 max-w-prose">{t(ui.about.certificatesLead)}</p>
-
-          {/*
-            แสดงเป็นแถวของเอกสาร ไม่ใช่การ์ดใบใหญ่ — หน้าที่ของส่วนนี้คือให้ผู้อ่าน
-            เห็นว่ามีหนังสือแต่งตั้งจริง ไม่ใช่ให้อ่านสรุปเนื้อหาทีละฉบับบนหน้าเว็บ
-            คำบรรยายเต็มยังอยู่ใน src/data/company.ts และตัวเอกสารเปิดดูขนาดเต็มได้
-
-            จำกัดความสูงเท่ากันทุกใบด้วย object-contain เพราะเอกสารมีทั้งแนวนอน (Industronic)
-            และแนวตั้ง (FHF) ถ้าไม่คุมความสูงแถวจะเหลื่อมกันจนดูเหมือนวางผิด
-          */}
-          {/*
-            ตะแกรงสองคอลัมน์เต็มความกว้างคอนเทนเนอร์ — ขอบซ้ายของการ์ดใบแรกตรงกับ
-            แนวหัวข้อ ขอบขวาของใบที่สองชนแนวขวาสุดของหน้า ไม่เหลือช่องโหว่เหมือนตอน
-            ใช้สามคอลัมน์กับเอกสารสองฉบับ
-
-            เอกสารฉบับที่สามในอนาคตจะตกลงแถวล่างชิดซ้าย ซึ่งถูกต้องแล้วสำหรับตะแกรง —
-            ถ้าอยากให้แถวที่ไม่เต็มอยู่กึ่งกลางต้องกลับไปใช้ flex-wrap แทน
-          */}
-          <ul className="mt-8 grid gap-x-8 gap-y-10 sm:grid-cols-2">
-            {certificates.map((cert) => (
-              <li key={cert.id}>
-                {cert.image && (
-                  <button
-                    type="button"
-                    onClick={() => setOpenImage(cert.image ?? null)}
-                    /*
-                      ตั้งชื่อปุ่มเองด้วย aria-label แทนที่จะปล่อยให้ไปหยิบ alt ของภาพมาเป็นชื่อ —
-                      alt ของเอกสารเป็นคำบรรยายยาวหลายสิบคำ ถ้าใช้เป็นชื่อปุ่ม ผู้ใช้ screen reader
-                      จะต้องฟังทั้งย่อหน้าก่อนจะรู้ว่ากดแล้วเกิดอะไร ชื่อปุ่มต้องบอก "การกระทำ"
-                      ส่วนคำบรรยายเต็มไปอยู่ที่ชื่อของหน้าต่างที่เปิดขึ้นมาแทน
-
-                      เป็น <button> ไม่ใช่ <a> เพราะไม่ได้พาไปที่อื่น แค่เปิดของบนหน้าเดิม
-                      ลิงก์ที่ไม่พาไปไหนทำให้ผู้ใช้ screen reader เข้าใจผิดว่ากำลังจะออกจากหน้า
-
-                      การ์ดล็อกสัดส่วน 4:3 ทุกใบ ขนาดกรอบจึงเท่ากันเป๊ะไม่ว่าเอกสารข้างในจะเป็น
-                      แนวนอนหรือแนวตั้ง คำบรรยายใต้การ์ดจึงอยู่ระดับเดียวกันทั้งแถวโดยอัตโนมัติ
-                      ตัวเอกสารจัดกึ่งกลางการ์ด ฉบับแนวตั้งจะเหลือที่ว่างซ้าย-ขวาเล็กน้อย
-                      ซึ่งเป็นระเบียบกว่าการปล่อยให้กรอบสูงไม่เท่ากันตามสัดส่วนกระดาษ
-                    */
-                    aria-label={t(ui.about.certificatesOpen).replace('{name}', t(cert.name))}
-                    className="border-line bg-surface-alt rounded-card group relative flex aspect-4/3 w-full cursor-pointer items-center justify-center border p-5 transition-[translate,box-shadow] duration-(--duration-ui) ease-(--ease-out-expo) hover:-translate-y-1 hover:shadow-lift motion-reduce:translate-none sm:p-7"
-                  >
-                    {/*
-                      ตั้ง transition เป็น `translate` ไม่ใช่ `transform` — Tailwind v4 คอมไพล์
-                      `-translate-y-1` เป็นคุณสมบัติ `translate` เดี่ยว ๆ (วัดแล้วได้ `translate: 0 -4px`
-                      ส่วน `transform` ยังเป็น none) ถ้าเขียน `transition-[transform,…]` การ์ดจะ
-                      กระตุกขึ้นทันทีแทนที่จะไถลขึ้น และ `motion-reduce:transform-none` ก็จะไม่มีผล
-
-                      ไอคอนขยายโผล่ตอนชี้เมาส์ — ประโยค "กดที่เอกสารเพื่อดูขนาดเต็ม"
-                      อยู่บนสุดของหมวด คนที่เลื่อนผ่านมาแล้วอาจไม่ทันอ่าน ไอคอนที่จุดนั้น
-                      บอกซ้ำตรงตำแหน่งที่มือกำลังจะกดพอดี
-
-                      `aria-hidden` เพราะเป็นการบอกซ้ำด้วยภาพ ปุ่มมีชื่อจาก aria-label อยู่แล้ว
-                      ผู้ใช้ screen reader ไม่ควรได้ยินคำว่า "ขยาย" ซ้อนเข้ามาอีกชั้น
-
-                      ต้องมี `z-10` — ภาพเอกสารมี `drop-shadow` ซึ่งทำให้มันสร้าง stacking
-                      context ของตัวเองแล้วขึ้นไปอยู่ชั้นเดียวกับ element ที่ absolute
-                      พอมันอยู่หลังกว่าใน DOM จึงวาดทับไอคอนนี้ (เห็นเป็นวงกลมโดนมุมเอกสารบัง)
-                    */}
-                    <span
-                      aria-hidden="true"
-                      className="border-line bg-surface text-primary-600 absolute top-3 right-3 z-10 flex size-9 items-center justify-center rounded-full border opacity-0 transition-opacity duration-(--duration-ui) group-hover:opacity-100"
-                    >
-                      <ExpandIcon className="size-4" strokeWidth={1.75} />
-                    </span>
-                    <img
-                      src={cert.image.src}
-                      srcSet={cert.image.srcSet}
-                      alt=""
-
-                      width={cert.image.width}
-                      height={cert.image.height}
-                      loading="lazy"
-                      decoding="async"
-                      /*
-                        `size-full` + `object-contain` ไม่ใช่ `max-h-full w-auto` —
-                        ภาพเป็นลูกของ flex container การใส่ max ทั้งสองแกนทำให้เบราว์เซอร์
-                        บีบเฉพาะแกนเดียวจนสัดส่วนเพี้ยน (วัดได้: ใบแนวตั้ง 565×800 ถูกวาง
-                        ในกล่อง 518×374) แบบนี้กล่องเต็มพื้นที่การ์ดแล้วให้ object-contain
-                        จัดกึ่งกลางกับคุมสัดส่วนแทน ซึ่งเป็นงานที่มันทำได้ถูกต้องเสมอ
-
-                        ไม่มีเส้นขอบที่ตัวภาพแล้ว — ขอบจะไปล้อมกล่องที่ใหญ่กว่าตัวกระดาษ
-
-                        เงาใช้ `drop-shadow` ไม่ใช่ `shadow` (box-shadow) ด้วยเหตุผลเดียวกัน —
-                        box-shadow วาดรอบ**กล่อง**ซึ่งใหญ่กว่ากระดาษ ส่วน drop-shadow เดินตาม
-                        รูปทรงที่วาดจริง เงาจึงล้อมขอบกระดาษพอดีทั้งใบแนวนอนและแนวตั้ง
-                      */
-                      className="size-full object-contain drop-shadow-[0_4px_12px_rgba(0,0,0,0.06)]"
-                    />
-                  </button>
-                )}
-                <p className="text-ink-muted mt-4 text-center text-sm">
-                  <span className="text-ink font-semibold">{t(cert.issuer)}</span>
-                  <span className="mt-0.5 block">{t(cert.name)}</span>
-                </p>
-              </li>
-            ))}
-          </ul>
-
-          <ImageLightbox image={openImage} onClose={() => setOpenImage(null)} />
-        </Section>
-      )}
 
       <Section tone="dark" spacing="lg" className="blueprint-grid">
         <div className="max-w-2xl">
