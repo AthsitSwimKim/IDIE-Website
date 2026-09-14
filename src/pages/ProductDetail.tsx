@@ -4,6 +4,7 @@ import type { ProductImage } from '@/types/content'
 import { Badge, Button, Heading, ImageLightbox, Section } from '@/components/ui'
 import { DocumentIcon, ExpandIcon } from '@/components/ui/icons'
 import { ProductCard } from '@/components/sections/ProductCard'
+import { RouteFallback } from '@/components/layout/RouteFallback'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -45,7 +46,9 @@ export default function ProductDetail() {
     [product?.slug],
   )
 
-  if (loading) return null
+  // ระหว่างรอข้อมูลต้องกินพื้นที่เท่าจอ ไม่งั้น footer ขึ้นมาอยู่ใต้ header แล้วถูกดันลง
+  // ทั้งหน้าเมื่อข้อมูลมา — Lighthouse วัด CLS ได้ 1.7 บนหน้าสินค้าจากจุดนี้จุดเดียว
+  if (loading) return <RouteFallback />
   if (!product) return <NotFound />
 
   const category = datasheetCategories[product.category]
@@ -106,13 +109,22 @@ export default function ProductDetail() {
                   aria-label={t(ui.productDetail.viewFull).replace('{name}', product.name)}
                   className="border-line rounded-card group relative block w-full cursor-zoom-in overflow-hidden border bg-white p-6"
                 >
+                  {/*
+                    กำหนดกล่องจาก aspect-ratio + ความกว้าง ไม่ใช่ w-auto + max-h — แบบเดิม
+                    กล่องมีขนาด 0 จนกว่ารูปจะโหลด แล้วดันตารางสเปกด้านล่างลง (CLS 0.15 บนมือถือ)
+                    max-width คือความกว้างที่ทำให้สูงพอดี 420px ตามที่แสดงอยู่เดิม
+                  */}
                   <img
                     src={hero.src}
                     alt=""
                     width={hero.width}
                     height={hero.height}
                     decoding="async"
-                    className="mx-auto block max-h-[420px] w-auto max-w-full object-contain"
+                    className="mx-auto block h-auto w-full object-contain"
+                    style={{
+                      aspectRatio: `${hero.width} / ${hero.height}`,
+                      maxWidth: `calc(420px * ${hero.width} / ${hero.height})`,
+                    }}
                   />
 
                   {/*

@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useLayoutEffect, useRef, useState } from 'react'
+import { flushSync } from 'react-dom'
 
 interface AsyncState<T> {
   data: T | null
@@ -33,6 +34,13 @@ interface AsyncResult<T> extends AsyncState<T> {
  *
  * ยังไม่ใส่ cache หรือ dedupe เพราะข้อมูลอยู่ในเครื่องและยังไม่มีต้นทุนจริง
  * เมื่อต่อ API แล้วค่อยเปลี่ยนตรงนี้เป็น TanStack Query หรือ React 19 use() + cache
+ *
+ * **ข้อมูลในหน่วยความจำต้องอยู่ในเฟรมแรก** — เดิมโหลดใน useEffect ซึ่งทำงานหลังเบราว์เซอร์
+ * วาดหน้าไปแล้ว ทุก section ที่ `return null` ระหว่างรอจึงหายไปหนึ่งเฟรมแล้วค่อยโผล่
+ * ดันทุกอย่างด้านล่างลง (Lighthouse CLS 0.124 หน้าแรก / 0.151 หน้าสินค้า ทั้งที่ข้อมูลอยู่
+ * ในไฟล์ JS ที่โหลดมาแล้ว) จึงย้ายมา useLayoutEffect ซึ่งทำงานก่อนวาด และถ้า loader
+ * เสร็จก่อนเฟรมถัดไป (accessor ที่แค่ห่อข้อมูลในเครื่องด้วย async) ก็ flushSync ให้
+ * DOM มีข้อมูลตั้งแต่เฟรมแรก งานเครือข่ายหรือ chunk ที่โหลดจริงยังเดินทางเดิมทุกอย่าง
  */
 export function useAsyncData<T>(loader: () => Promise<T>, deps: unknown[] = []): AsyncResult<T> {
   const [state, setState] = useState<AsyncState<T>>({ data: null, loading: true, error: null })
@@ -52,14 +60,25 @@ export function useAsyncData<T>(loader: () => Promise<T>, deps: unknown[] = []):
   /** แปลง deps เป็น key เพื่อให้ dependency array เป็น literal ที่ตรวจสอบได้แบบ static */
   const depsKey = JSON.stringify(deps)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let cancelled = false
     // คงข้อมูลเดิมไว้ระหว่างโหลดรอบใหม่ เพื่อไม่ให้หน้ากะพริบตอนเปลี่ยน filter
-    setState((prev) => ({ ...prev, loading: true, error: null }))
+    // (คืน prev เมื่อสถานะไม่เปลี่ยน — ไม่งั้นจะ render ซ้ำเปล่า ๆ ทุกครั้งที่ mount)
+    setState((prev) => (prev.loading && prev.error === null ? prev : { ...prev, loading: true, error: null }))
+
+    // rAF ทำงานตอนเบราว์เซอร์กำลังจะวาดเฟรมถัดไป — ถ้า loader เสร็จก่อนนั้น ยังทัน
+    // ใส่ข้อมูลลง DOM ก่อนผู้ใช้เห็นอะไรเลย
+    let beforePaint = true
+    const frame = requestAnimationFrame(() => {
+      beforePaint = false
+    })
 
     loaderRef.current().then(
       (data) => {
-        if (!cancelled) setState({ data, loading: false, error: null })
+        if (cancelled) return
+        const commit = () => setState({ data, loading: false, error: null })
+        if (beforePaint) flushSync(commit)
+        else commit()
       },
       (cause: unknown) => {
         if (cancelled) return
@@ -75,6 +94,7 @@ export function useAsyncData<T>(loader: () => Promise<T>, deps: unknown[] = []):
 
     return () => {
       cancelled = true
+      cancelAnimationFrame(frame)
     }
   }, [depsKey, attempt])
 

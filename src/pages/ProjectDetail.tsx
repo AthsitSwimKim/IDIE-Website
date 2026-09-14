@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { Badge, Button, Heading, Section } from '@/components/ui'
 import { ProjectCard } from '@/components/sections/ProjectCard'
+import { RouteFallback } from '@/components/layout/RouteFallback'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
@@ -23,7 +24,9 @@ export default function ProjectDetail() {
   const { data: industries } = useAsyncData(getIndustries)
   const { data: all } = useAsyncData(getProjects)
 
-  if (loading) return null
+  // ระหว่างรอข้อมูลต้องกินพื้นที่เท่าจอ ไม่งั้น footer ขึ้นมาอยู่ใต้ header แล้วถูกดันลง
+  // ทั้งหน้าเมื่อข้อมูลมา (layout shift) — เหตุผลเดียวกับ ProductDetail
+  if (loading) return <RouteFallback />
   if (!project) return <NotFound />
 
   const industry = industries?.find((item) => item.slug === project.industry)

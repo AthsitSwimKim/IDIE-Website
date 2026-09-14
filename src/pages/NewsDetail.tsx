@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { Badge, Button, Heading, Section } from '@/components/ui'
 import { NewsCard } from '@/components/sections/NewsCard'
+import { RouteFallback } from '@/components/layout/RouteFallback'
 import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
@@ -22,7 +23,9 @@ export default function NewsDetail() {
   const { data: article, loading } = useAsyncData(() => getNewsBySlug(slug ?? ''), [slug])
   const { data: latest } = useAsyncData(() => getLatestNews(4), [])
 
-  if (loading) return null
+  // ระหว่างรอข้อมูลต้องกินพื้นที่เท่าจอ ไม่งั้น footer ขึ้นมาอยู่ใต้ header แล้วถูกดันลง
+  // ทั้งหน้าเมื่อข้อมูลมา (layout shift) — เหตุผลเดียวกับ ProductDetail
+  if (loading) return <RouteFallback />
   if (!article) return <NotFound />
 
   // ไม่เอาข่าวที่กำลังอ่านอยู่มาแสดงซ้ำในหัวข้อ "ข่าวอื่นที่น่าสนใจ"

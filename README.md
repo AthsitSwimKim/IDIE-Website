@@ -190,6 +190,10 @@ grep -rn "_placeholder: true" src/data
 
 วิธีติดตั้ง ตั้งค่า และขึ้น production อยู่ใน [`server/README.md`](server/README.md)
 
+เซิร์ฟเวอร์ใส่ security headers ผ่าน `helmet` (nosniff, HSTS, Referrer-Policy, X-Frame-Options)
+ซึ่งตอน production ครอบหน้าเว็บด้วยเพราะตัวเดียวกันเสิร์ฟ `dist/` — **ปิด CSP ไว้ก่อน**
+เพราะค่าเริ่มต้นจะบล็อก Google Maps iframe ถ้าจะเปิดต้องเขียนรายการ source เองและทดสอบทุกหน้า
+
 > ถ้า API ล่ม หน้าเว็บสาธารณะ**ไม่พัง** — `getNews`/`getProjects` กลืน error
 > เป็นค่าว่าง หน้า News/Projects จึงแสดง empty state ที่ออกแบบไว้ตามเดิม
 > และเขียนสาเหตุจริงลง console ให้คนที่มาไล่ปัญหาเห็น
@@ -216,10 +220,10 @@ docker compose --env-file server/.env up -d
 
 | ตัวชี้วัด | งบ | วัดล่าสุด | |
 |---|---|---|---|
-| Initial JS (gzip) | ≤ 200 KB | **101 KB** | index 66.7 + router 34.0 + runtime 0.4 |
-| Initial CSS (gzip) | ≤ 30 KB | **12.1 KB** | |
-| CLS | ≤ 0.1 | **0.025** | Home · สูงสุดจาก TH/EN × 5 viewport · cold cache + simulated 3G |
-| LCP | ≤ 2.5s | 176 ms | วัด ส.ค. 2026 บน localhost ยังไม่ได้ throttle |
+| Initial JS (gzip) | ≤ 200 KB | **101 KB** | index 67.2 + router 33.6 + runtime 0.4 (ไม่นับ chunk `ui` 26 KB ที่ modulepreload) |
+| Initial CSS (gzip) | ≤ 30 KB | **12.9 KB** | |
+| CLS | ≤ 0.1 | **0.000–0.061** | Lighthouse 13.4 desktop+mobile · 5 หน้า (ดูตารางด้านล่าง) |
+| LCP | ≤ 2.5s | 0.7–0.9 s desktop · 3.4–4.5 s mobile | Lighthouse simulated throttling 14 ก.ย. 2026 — มือถือเกินงบเพราะจำลอง 4G ช้า |
 | INP (หน้า Products) | ≤ 200 ms | 5–29 ms | วัด ส.ค. 2026 |
 | Contrast AA | ผ่านทุกคู่ | ผ่าน 1,058 จุด | วัด ส.ค. 2026 · ต่ำสุด 4.59:1 |
 | Touch target | ≥ 44×44 | ผ่าน | |
@@ -249,6 +253,50 @@ npm run build && grep -c 'rel="preload"' dist/index.html
 วัด CLS ซ้ำวันที่ 10 ก.ย. 2026 บน `idie-preview-cold` พอร์ต 4176 โดยปิด cache และจำลอง
 เครือข่าย 3G ครบ 10 กรณี (TH/EN × 5 viewport) — ค่าสูงสุด **0.025** ที่หน้าอังกฤษ
 ขนาด 1024×768 และทดสอบกรณีนี้ซ้ำอีก 3 รอบได้ 0.025 / 0 / 0.025 ผ่านงบ ≤ 0.1
+
+### CLS — สี่สาเหตุที่เจอจาก QA รอบ 2 (14 ก.ย. 2026) และวิธีที่แก้
+
+QA รอบ 2 รัน Lighthouse แล้วพบ CLS **1.742** บนหน้าสินค้า (มือถือ) และ 0.12–0.15 บนหน้าแรก
+กับหน้ารวมสินค้า (เดสก์ท็อป) ทั้งที่การวัดด้วย PerformanceObserver ข้างบนผ่าน — เพราะ
+Lighthouse จำลองเครือข่ายช้าจนเห็นเฟรมแรกที่ยังไม่มีข้อมูล/รูป/ฟอนต์ ไล่ trace แล้วเจอ 4 สาเหตุ:
+
+| สาเหตุ | อาการ | แก้ที่ |
+|---|---|---|
+| หน้ารายละเอียด `return null` ระหว่างรอข้อมูล | footer ขึ้นมาอยู่ใต้ header แล้วถูกดันลงทั้งหน้า (1.742) | 5 หน้า detail ใช้ `<RouteFallback />` แทน |
+| `useAsyncData` โหลดใน `useEffect` (หลังวาด) | section ที่รอข้อมูลในเครื่องหายไปหนึ่งเฟรมแล้วโผล่ (0.124) | `useLayoutEffect` + `flushSync` เมื่อ loader เสร็จก่อนเฟรมถัดไป |
+| `<img>` ที่ใช้ `width/height: auto` + `max-height` | กล่องรูปเป็น 0 จนกว่ารูปจะโหลด | hero หน้าแรกและรูปสินค้าใช้ `aspect-ratio` + `max-width` แทน |
+| ฟอนต์ระบบกว้างไม่เท่า Kanit/Inter | H1 ตัด 3 บรรทัดก่อนฟอนต์มา เหลือ 2 (เลื่อน 62px) | `@font-face` Kanit/Inter Fallback พร้อม `size-adjust` ใน theme.css |
+
+ผล Lighthouse 13.4 หลังแก้ (production build, `--preset=desktop` และ mobile ค่าเริ่มต้น):
+
+| หน้า | Desktop Perf / CLS | Mobile Perf / CLS |
+|---|---|---|
+| `/` | 99 / 0.000 | 82 / 0.000 |
+| `/products` | 99 / 0.000 | 87 / 0.000 |
+| `/products/dgw21-dgw21-alarm-bell` | 99–100 / 0.000 | 84–85 / 0.000 |
+| `/brands/industronic/datasheets` | 99 / 0.061 | 87 / 0.000 |
+| `/services/telephone-system` | 100 / 0.000 | 90 / 0.000 |
+
+ค่า `size-adjust` ของฟอนต์สำรองวัดจากการเรนเดอร์จริงบน Windows (Leelawadee UI / Arial)
+ด้วย canvas `measureText` — ประกาศด้วย `local()` อย่างเดียว บนเครื่องที่ไม่มีฟอนต์ชื่อนี้
+เบราว์เซอร์จะข้ามไปใช้ฟอนต์ระบบตามปกติ ไม่มีผลข้างเคียง
+
+### SEO — สิ่งที่หน้าเว็บประกาศให้ search engine และ social
+
+* **`<Seo>` แก้แท็กใน `index.html` แทนการสร้างใหม่** — เดิม React 19 ยก `<meta>` ขึ้น
+  `<head>` แล้วได้ description ซ้ำสองแท็ก (QA รอบ 2) Google อ่านแท็กแรก ทุกหน้าจึงโชว์
+  คำบรรยายหน้าแรก ตอนนี้แต่ละหน้ามี title/description/og:*/canonical/robots อย่างละหนึ่ง
+  และ `index.html` เก็บค่าเริ่มต้นไว้ให้ crawler ที่ไม่รัน JavaScript (Facebook, LINE)
+* **โดเมนจริง** อยู่ที่เดียวคือ `siteUrl` ใน `src/data/company.ts`
+  (`https://www.idindustrialengineering.com`) — canonical, og:url และ sitemap ใช้ค่านี้
+* **`public/robots.txt`** กัน `/admin` และ `/api/` ชี้ไป sitemap
+* **`public/sitemap.xml`** สร้างอัตโนมัติก่อน build (`prebuild` → `scripts/build-sitemap.mjs`)
+  จากข้อมูลจริง: หน้าคงที่ 10 + บริการ 6 + แบรนด์ 3 + สินค้า 191 = 210 URL
+  ข่าวและผลงานที่อยู่ในฐานข้อมูล**ยังไม่อยู่ในนี้** — ถ้าต้องการ ให้ server สร้าง
+  `/sitemap-news.xml` แยก
+* **`public/images/brand/og-default.png`** ภาพแชร์ 1200×630 สร้างด้วย
+  `python scripts/build-og-image.py` ใช้กับทุกหน้าจนกว่าจะส่ง prop `image` ให้ `<Seo>`
+* หน้า 404 ประกาศ `noindex` เพราะเว็บเป็น SPA เซิร์ฟเวอร์ตอบ 200 ให้ทุก URL
 
 ### เมนูเดสก์ท็อปเริ่มที่ `xl` (1280) ไม่ใช่ `lg` (1024)
 

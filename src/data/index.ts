@@ -27,6 +27,7 @@ import type {
 import {
   company,
   companyFax,
+  siteUrl,
   contactPerson,
   milestones,
   stats,
@@ -49,7 +50,7 @@ import { referenceCompanies } from '@/data/references'
 import { careersEmail, jobOpenings } from '@/data/careers'
 
 export { ui } from '@/data/i18n'
-export { capabilities, companyFax, contactPerson, careersEmail }
+export { capabilities, companyFax, contactPerson, careersEmail, siteUrl }
 export { serviceDepth }
 export type { ServiceDepth } from '@/data/service-content'
 export { brandBlurbs, brandSupplies, brandDocuments, brandDownloadCentre, sourcingStatement }

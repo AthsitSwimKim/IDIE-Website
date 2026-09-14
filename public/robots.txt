@@ -1,0 +1,8 @@
+# https://www.idindustrialengineering.com
+User-agent: *
+Allow: /
+# หลังบ้านและ API ไม่ควรโผล่ในผลค้นหา
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://www.idindustrialengineering.com/sitemap.xml

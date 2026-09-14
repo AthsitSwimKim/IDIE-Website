@@ -49,7 +49,7 @@ export function VisitorCounter() {
 
   return (
     <div className="mt-8">
-      <p className="text-eyebrow text-white/45 uppercase">{t(ui.footer.visitorsHeading)}</p>
+      <p className="text-eyebrow text-white/60 uppercase">{t(ui.footer.visitorsHeading)}</p>
 
       {/*
         ช่องตัวเลขเป็น aria-hidden แล้วบอกค่าจริงด้วยข้อความสำหรับโปรแกรมอ่านหน้าจอ

@@ -8,7 +8,7 @@ export default function NotFound() {
 
   return (
     <>
-      <Seo title={ui.states.notFoundTitle} />
+      <Seo title={ui.states.notFoundTitle} noindex />
       <Section tone="alt" spacing="lg">
         <p className="stat-figure text-primary-600 text-6xl font-bold">404</p>
         <Heading level={1} className="mt-4">

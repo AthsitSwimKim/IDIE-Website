@@ -41,12 +41,20 @@
     min-width: 0;
   }
 
+  /*
+   * กำหนดขนาดจากความกว้าง + aspect-ratio ไม่ใช่ width/height: auto + max-height
+   *
+   * แบบเดิมตอนรูปยังไม่โหลดกล่องมีขนาด 0 (เบราว์เซอร์ยังไม่รู้ขนาดจริง) พอรูปมาถึงกล่อง
+   * ขยายเป็น 355×416 ทุก section ด้านล่างเลื่อนลงทั้งหน้า — Lighthouse CLS 0.124
+   * ตัวเลข 1200/1409 ต้องตรงกับ width/height ของ <img> ใน HomeHero.tsx
+   * max-width = ความกว้างที่ทำให้สูงพอดี 26rem (เท่าขนาดที่แสดงอยู่เดิม)
+   */
   .home-hero-image {
     display: block;
-    width: auto;
+    width: 100%;
+    max-width: calc(26rem * 1200 / 1409);
     height: auto;
-    max-width: 100%;
-    max-height: 26rem;
+    aspect-ratio: 1200 / 1409;
     object-fit: contain;
     box-shadow: 0 20px 48px rgb(0 10 35 / 0.3);
   }
@@ -84,7 +92,8 @@
 
   @media (max-width: 39.99rem) {
     .home-hero-image {
-      max-height: 20rem;
+      /* สูงไม่เกิน 20rem บนจอแคบ — คิดเป็นความกว้างด้วยสัดส่วนเดียวกัน */
+      max-width: calc(20rem * 1200 / 1409);
     }
 
     .home-hero-title {
@@ -162,7 +171,8 @@
    *
    * ทั้งสองตัวเป็น SIL Open Font License ใช้ในงานเชิงพาณิชย์และ self-host ได้
    */
-  --font-sans: 'Inter', 'Kanit', ui-sans-serif, system-ui, sans-serif;
+  --font-sans:
+    'Inter', 'Kanit', 'Inter Fallback', 'Kanit Fallback', ui-sans-serif, system-ui, sans-serif;
   /* ไม่ได้ self-host ฟอนต์ mono ไว้ — ใช้ของระบบ ยังไม่มีที่ไหนในเว็บเรียกใช้จริง */
   --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 
@@ -251,6 +261,65 @@
   --container-narrow: 48rem;
   --container-default: 80rem;
   --container-wide: 96rem;
+}
+
+/* ============================================================================
+ * ฟอนต์สำรองที่ปรับขนาดให้เท่าฟอนต์เว็บ (กัน layout shift ตอนฟอนต์สลับ)
+ * ========================================================================== */
+/**
+ * Inter/Kanit มาถึงหลังจากวาดหน้าครั้งแรก (font-display: swap) ระหว่างนั้นเบราว์เซอร์ใช้
+ * ฟอนต์ระบบซึ่งกว้างไม่เท่ากัน — วัดจริงบนหน้าแรก: Leelawadee UI Bold กว้างกว่า Kanit Bold
+ * จน H1 ตัดเป็น 3 บรรทัด พอ Kanit มาเหลือ 2 บรรทัด ทุกอย่างด้านล่างกระโดดขึ้น 62px
+ * (Lighthouse CLS 0.124 บนเดสก์ท็อป, 0.151 บนหน้าสินค้า)
+ *
+ * แก้ด้วยการประกาศฟอนต์ระบบซ้ำในชื่อใหม่ พร้อม size-adjust ให้ความกว้างเฉลี่ยเท่าฟอนต์เว็บ
+ * และ ascent/descent-override ให้ baseline อยู่ที่เดิม → ข้อความตัดบรรทัดเหมือนกันทั้งก่อน
+ * และหลังฟอนต์มา
+ *
+ * ค่าทั้งหมด**วัดจากการเรนเดอร์จริง**ด้วย canvas measureText บนข้อความไทย/อังกฤษของหน้าแรก
+ * (Windows 11: Leelawadee UI คือฟอนต์ไทยที่ระบบเลือกให้เมื่อไม่มี Kanit, Arial แทน Inter)
+ * ใช้ local() อย่างเดียว — บน macOS/Android ที่ไม่มีฟอนต์ชื่อนี้ เบราว์เซอร์จะข้ามไปใช้
+ * ฟอนต์ระบบตามปกติเหมือนก่อนหน้า ไม่มีอะไรแย่ลง
+ *
+ * ลำดับใน --font-sans ต้องเป็น Inter, Kanit, Inter Fallback, Kanit Fallback — ฟอนต์สำรอง
+ * ต้องอยู่หลังฟอนต์จริงทั้งคู่ และ Inter Fallback (Arial ไม่มีอักขระไทย) อยู่ก่อน Kanit
+ * Fallback ด้วยเหตุผลเดียวกับที่ Inter อยู่ก่อน Kanit
+ */
+@font-face {
+  font-family: 'Kanit Fallback';
+  font-weight: 100 500;
+  src: local('Leelawadee UI');
+  size-adjust: 107.5%;
+  ascent-override: 102.3%;
+  descent-override: 37.2%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Kanit Fallback';
+  font-weight: 600 900;
+  src: local('Leelawadee UI Bold');
+  size-adjust: 97.1%;
+  ascent-override: 113.3%;
+  descent-override: 41.2%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Inter Fallback';
+  font-weight: 100 500;
+  src: local('Arial');
+  size-adjust: 102.6%;
+  ascent-override: 94.6%;
+  descent-override: 23.4%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'Inter Fallback';
+  font-weight: 600 900;
+  src: local('Arial Bold');
+  size-adjust: 100.7%;
+  ascent-override: 96.3%;
+  descent-override: 23.8%;
+  line-gap-override: 0%;
 }
 
 /* ============================================================================
