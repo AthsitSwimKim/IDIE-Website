@@ -240,7 +240,11 @@ export default function ProductList() {
               <Button className="mt-4" onClick={reload}>{t(ui.actions.retry)}</Button>
             </div>
           ) : loading && !products ? (
-            <p className="text-ink-muted mt-8">{t(ui.states.loading)}</p>
+            // สูงเท่าจอระหว่างรอ chunk ข้อมูลสินค้า (โหลดแยกเพราะใหญ่) — ไม่งั้นบล็อก
+            // "ขั้นตอนถัดไป" กับ footer ขึ้นมาอยู่ในจอก่อน แล้วถูกตารางสินค้าดันลงเมื่อข้อมูลมา
+            <div className="min-h-dvh">
+              <p className="text-ink-muted mt-8">{t(ui.states.loading)}</p>
+            </div>
           ) : total === 0 ? (
             <p className="text-ink-muted mt-10">{t(ui.states.empty)}</p>
           ) : (

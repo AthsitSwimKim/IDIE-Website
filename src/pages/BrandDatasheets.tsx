@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom'
 import type { Datasheet } from '@/types/content'
 import { ArrowRight, Badge, Button, Heading, Section } from '@/components/ui'
 import { ExternalLinkIcon } from '@/components/ui/icons'
+import { RouteFallback } from '@/components/layout/RouteFallback'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -44,7 +45,9 @@ export default function BrandDatasheets() {
       .filter((group) => group.items.length > 0)
   }, [groups, needle])
 
-  if (loading) return null
+  // ระหว่างรอข้อมูลต้องกินพื้นที่เท่าจอ ไม่งั้น footer ขึ้นมาอยู่ใต้ header แล้วถูกดันลง
+  // ทั้งหน้าเมื่อข้อมูลมา (layout shift) — เหตุผลเดียวกับ ProductDetail
+  if (loading) return <RouteFallback />
   if (!brand) return <NotFound />
 
   const total = groups?.reduce((sum, group) => sum + group.items.length, 0) ?? 0

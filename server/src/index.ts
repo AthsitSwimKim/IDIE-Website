@@ -4,6 +4,7 @@ import { join } from 'node:path'
 import express from 'express'
 import session from 'express-session'
 import MySQLStoreFactory from 'express-mysql-session'
+import helmet from 'helmet'
 import { requireAuth } from './auth.ts'
 import { assertDatabaseReachable, closePool, pool } from './db.ts'
 import { env } from './env.ts'
@@ -30,6 +31,18 @@ const app = express()
  */
 app.set('trust proxy', 1)
 app.disable('x-powered-by')
+
+/**
+ * security headers พื้นฐาน (nosniff, HSTS, Referrer-Policy, ฯลฯ) — ผล QA รอบ 2 ข้อ D3
+ *
+ * ตอน production เซิร์ฟเวอร์ตัวนี้เสิร์ฟ dist/ ด้วย (ดูด้านล่าง) header ชุดนี้จึงครอบ
+ * หน้าเว็บทั้งหมด ไม่ใช่แค่ API
+ *
+ * ปิด CSP ไว้ก่อน — ค่าเริ่มต้นของ helmet จะบล็อก Google Maps iframe บนหน้าติดต่อเรา
+ * ถ้าจะเปิดต้องเขียนรายการ source เอง (frame-src maps.google.com, img-src data:
+ * สำหรับรูปที่ฝังในตัว ฯลฯ) และทดสอบทุกหน้าก่อน
+ */
+app.use(helmet({ contentSecurityPolicy: false }))
 
 app.use(express.json({ limit: '1mb' }))
 

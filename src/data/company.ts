@@ -85,6 +85,13 @@ export const company: CompanyInfo = {
 /** เบอร์แฟกซ์แยกไว้เพราะ CompanyInfo.phone เป็นเบอร์ที่โทรออกได้เท่านั้น */
 export const companyFax = '+66 38 623001'
 
+/**
+ * โดเมนจริงของเว็บ (ยืนยันโดยเจ้าของ 14 ก.ย. 2569) — ไม่มี / ปิดท้าย
+ *
+ * เป็นต้นทางเดียวของ canonical, og:url และ sitemap ถ้าย้ายโดเมนแก้ที่นี่ที่เดียว
+ */
+export const siteUrl = 'https://www.idindustrialengineering.com'
+
 /** ผู้ติดต่อหลักตามที่ระบุบนเว็บเดิม */
 export const contactPerson = {
   name: 'Mr. Pitthaya Prasertsincharoen',

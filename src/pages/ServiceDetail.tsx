@@ -1,6 +1,7 @@
 import { useParams } from 'react-router-dom'
 import { Badge, Button, CoverImage, Heading, KeepPhrases, Section } from '@/components/ui'
 import { CheckIcon } from '@/components/ui/icons'
+import { RouteFallback } from '@/components/layout/RouteFallback'
 import { Seo } from '@/components/layout/Seo'
 import NotFound from '@/pages/NotFound'
 import { useAsyncData } from '@/hooks/useAsyncData'
@@ -18,7 +19,9 @@ export default function ServiceDetail() {
   const { t } = useLocale()
   const { data: service, loading } = useAsyncData(() => getServiceBySlug(slug ?? ''), [slug])
 
-  if (loading) return null
+  // ระหว่างรอข้อมูลต้องกินพื้นที่เท่าจอ ไม่งั้น footer ขึ้นมาอยู่ใต้ header แล้วถูกดันลง
+  // ทั้งหน้าเมื่อข้อมูลมา (layout shift) — เหตุผลเดียวกับ ProductDetail
+  if (loading) return <RouteFallback />
   if (!service) return <NotFound />
 
   // เนื้อหาเชิงลึกเป็น optional — บริการที่ยังไม่ได้เขียนส่วนนี้จะข้ามสาม section ไปเลย

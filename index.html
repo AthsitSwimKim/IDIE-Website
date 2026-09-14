@@ -27,10 +27,29 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#0435b9" />
     <title>ID Industrial Engineering Co.,Ltd.</title>
+    <!--
+      ค่าเริ่มต้นสำหรับ crawler ที่ไม่รัน JavaScript (Facebook, LINE, Bing บางส่วน)
+      ทุกหน้าเขียนทับแท็กชุดนี้ตอนโหลดผ่าน src/components/layout/Seo.tsx — เพิ่ม/ลบแท็ก
+      ตรงนี้ต้องแก้ที่นั่นให้ตรงกัน ไม่งั้นจะได้แท็กซ้ำสองอัน
+    -->
     <meta
       name="description"
       content="ID Industrial Engineering Co.,Ltd. — ระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด สำหรับโรงงานอุตสาหกรรมและพื้นที่อันตราย"
     />
+    <link rel="canonical" href="https://www.idindustrialengineering.com/" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="ID Industrial Engineering Co.,Ltd." />
+    <meta property="og:title" content="ID Industrial Engineering Co.,Ltd." />
+    <meta
+      property="og:description"
+      content="ID Industrial Engineering Co.,Ltd. — ระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย ระบบเครือข่ายและกล้องวงจรปิด สำหรับโรงงานอุตสาหกรรมและพื้นที่อันตราย"
+    />
+    <meta property="og:url" content="https://www.idindustrialengineering.com/" />
+    <meta property="og:image" content="https://www.idindustrialengineering.com/images/brand/og-default.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="th_TH" />
+    <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body>
     <div id="root"></div>
