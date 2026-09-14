@@ -142,20 +142,20 @@ export default function Contact() {
     <>
       <Seo title={ui.contact.title} description={ui.contact.lead} />
 
-      <Section tone="alt" spacing="lg">
+      <Section tone="alt" spacing="sm" className="page-intro">
         <Heading level={1} eyebrow="CONTACT US">
           {t(ui.contact.title)}
         </Heading>
         <p className="text-ink-muted mt-4 max-w-prose text-lg">{t(ui.contact.lead)}</p>
       </Section>
 
-      <Section>
+      <Section spacing="sm">
         <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
             <Heading level={2}>{t(ui.contact.infoHeading)}</Heading>
 
             {company && (
-              <dl className="border-line mt-6 divide-y border-t border-b">
+              <dl className="border-line divide-line mt-6 divide-y border-t border-b">
                 <div className="py-5">
                   <dt className="text-eyebrow text-ink-muted uppercase">
                     {t(ui.contact.address)}
@@ -267,7 +267,7 @@ export default function Contact() {
             )}
           </div>
 
-          <div>
+          <div className="contact-form-panel">
             <Heading level={2}>{t(ui.contact.formHeading)}</Heading>
 
 
@@ -413,8 +413,8 @@ function TextField({
     onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       onChange(e.target.value),
     className: cn(
-      'mt-2 w-full rounded border px-3 py-2.5 text-sm outline-none',
-      'focus:border-primary-400 transition-colors duration-(--duration-ui)',
+      'bg-surface mt-2 w-full rounded border px-3 py-2.5 text-sm outline-none',
+      'focus:border-primary-600 focus:ring-primary-100 focus:ring-3 transition-colors duration-(--duration-ui)',
       error ? 'border-danger' : 'border-line',
     ),
   }

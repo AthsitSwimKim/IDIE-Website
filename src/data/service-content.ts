@@ -1,5 +1,11 @@
 import type { LocalizedText } from '@/types/content'
 
+// Overview copy revised in Thai and English against IDIE COMPANY PROFILE SHORT 26.pdf,
+// pages 10–14. Intercom and PA/GA also reference INDUSTRONIC manufacturer information:
+// https://www.industronic.com/products/functions
+// https://www.industronic.com/solutions/
+// Functions are conditional on the selected system, not universal service guarantees.
+
 /**
  * เนื้อหาเชิงลึกของหน้าบริการ — แยกไฟล์จาก `services.ts`
  *
@@ -39,20 +45,12 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   'intercommunication-system': {
     overviewDetail: [
       {
-        th: 'ระบบอินเตอร์คอมอุตสาหกรรมทำหน้าที่ที่โทรศัพท์ธรรมดาทำไม่ได้ในโรงงาน — เรียกได้โดยไม่ต้องยกหู พูดพร้อมกันหลายจุดในกลุ่มเดียว และได้ยินชัดในที่ที่เครื่องจักรดังกลบเสียงพูดปกติ ผู้ปฏิบัติงานที่มือไม่ว่างหรือใส่ถุงมือหนาจึงสื่อสารกับห้องควบคุมได้ทันทีโดยไม่ต้องหยุดงานที่ทำอยู่',
-        en: 'An industrial intercom does what an ordinary telephone cannot inside a plant: it works hands-free, it lets several points talk within one group at the same time, and it stays intelligible where machinery drowns out normal speech. An operator whose hands are full — or wearing heavy gloves — can reach the control room without stopping what they are doing.',
+        th: 'ระบบมีโครงสร้างแบบโมดูลาร์ เพื่อจัดชุดอุปกรณ์และขยายระบบให้เหมาะกับแต่ละพื้นที่ รูปแบบการใช้งานอาจประกอบด้วยการเรียกเฉพาะจุด การสนทนาแบบไม่ต้องยกหู การประชุมสาย และการสนทนากลุ่มแบบ Party Line ตามฟังก์ชันของระบบที่เลือก',
+        en: 'A modular architecture allows the equipment configuration and system capacity to match each site. Depending on the selected system, communication options include point-to-point calls, hands-free operation, conference calls and party-line conversations.',
       },
       {
-        th: 'ความยากของงานนี้ไม่ได้อยู่ที่ตัวอุปกรณ์ แต่อยู่ที่สภาพแวดล้อม พื้นที่ผลิตมีทั้งเสียงรบกวนระดับสูง เสียงสะท้อนจากผนังโลหะและแนวท่อ ฝุ่น ไอเคมี และในหลายจุดยังเป็นบรรยากาศที่อาจติดไฟได้ อุปกรณ์ที่ทำงานได้ดีในห้องควบคุมจึงอาจใช้ในลานถังไม่ได้เลย แม้จะเป็นระบบเดียวกัน',
-        en: 'The difficulty is rarely the hardware — it is the environment. Process areas combine high noise, reverberation off steel walls and pipe runs, dust, chemical vapour, and at many points an atmosphere that may ignite. Equipment that performs well in a control room may be unusable in a tank farm, even as part of the same system.',
-      },
-      {
-        th: 'ระบบหนึ่งชุดประกอบด้วยสถานีแม่ในห้องควบคุม สถานีย่อยตามพื้นที่ปฏิบัติงาน และการจัดกลุ่มการเรียกที่ต้องออกแบบให้ตรงกับวิธีทำงานจริง เช่นกลุ่มสายร่วม (party line) สำหรับทีมที่ต้องได้ยินพร้อมกันทั้งกะ หรือการเรียกเฉพาะจุดเมื่อต้องคุยรายละเอียดโดยไม่รบกวนคนอื่น ผังการเรียกที่ออกแบบมาผิดทำให้ระบบที่อุปกรณ์ครบถ้วนกลายเป็นระบบที่ไม่มีใครอยากใช้',
-        en: 'A complete system combines master stations in the control room, field stations across the operating areas, and a call-group structure designed around how the plant actually runs — party-line groups where a whole shift must hear at once, point-to-point calls where detail has to be discussed without interrupting everyone else. A call structure designed wrongly turns a fully equipped system into one nobody wants to use.',
-      },
-      {
-        th: 'เราเลือกอุปกรณ์ให้ตรงกับสองเงื่อนไขที่ต่อรองไม่ได้ของแต่ละจุด คือระดับเสียงรบกวนจริงที่วัดได้ และการจำแนกพื้นที่อันตรายตามเอกสารของโรงงาน จากนั้นจึงพิจารณาเรื่องที่เหลือ เช่นจะใช้สายเดิมหรือเดินใหม่ จะเป็นอนาล็อกหรือ VoIP และจะเชื่อมกับระบบประกาศที่มีอยู่แล้วอย่างไร',
-        en: 'Selection starts from the two conditions at each point that are not negotiable: the measured ambient noise level, and the hazardous area classification recorded in the plant own drawings. Everything else follows — whether existing cabling can be reused, whether the station should be analogue or VoIP, and how it ties into any public address system already in place.',
+        th: 'การเลือกสถานีสื่อสารควรพิจารณาระดับเสียงรบกวน สภาพแวดล้อม และข้อกำหนดของจุดติดตั้ง โดยเฉพาะพื้นที่กลางแจ้งหรือพื้นที่อันตราย ระบบที่รองรับสามารถเชื่อมต่อกับระบบประกาศและระบบสื่อสารอื่น เพื่อให้การประสานงานระหว่างพื้นที่เป็นไปอย่างต่อเนื่อง',
+        en: 'Station selection takes account of ambient noise, environmental conditions and installation requirements, particularly outdoors and in hazardous areas. Where supported, integration with public address and other communication systems helps coordinate operations across the site.',
       },
     ],
     quoteChecklist: [
@@ -80,20 +78,12 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   'public-address-warning-alarm': {
     overviewDetail: [
       {
-        th: 'ระบบ PA/GA ทำงานสองหน้าที่ในชุดเดียวกัน หน้าที่แรกคือการประกาศประจำวัน เรียกคน แจ้งเปลี่ยนกะ หรือสั่งงานข้ามพื้นที่ อีกหน้าที่คือการแจ้งเหตุฉุกเฉินและสั่งอพยพ ซึ่งเป็นงานที่ระบบต้องทำได้แน่นอนในวันที่ทุกอย่างอื่นกำลังผิดปกติ การออกแบบจึงต้องแยกลำดับความสำคัญของสัญญาณให้ชัด สัญญาณอพยพต้องตัดการประกาศทั่วไปได้ทันทีโดยไม่ต้องรอใครกดยกเลิก',
-        en: 'A PA/GA system carries two duties at once. The first is routine paging — calling people, announcing shift changes, coordinating across areas. The second is emergency notification and evacuation, which has to work on the day everything else is going wrong. The design therefore has to separate signal priority explicitly: an evacuation signal must override routine paging immediately, without waiting for anyone to cancel it.',
+        th: 'ระบบสามารถรองรับการประกาศสด ข้อความหรือเสียงเตือนที่บันทึกไว้ และการประกาศเฉพาะกลุ่มหรือทั่วพื้นที่ ตามความสามารถของระบบที่เลือก การจัดลำดับความสำคัญของประกาศและสัญญาณเตือนช่วยให้ข้อความฉุกเฉินได้รับการส่งต่ออย่างเหมาะสม',
+        en: 'Depending on the selected system, functions include live announcements, recorded messages or alarm tones, and group or all-area broadcasts. Configured announcement and alarm priorities help ensure emergency messages take precedence when required.',
       },
       {
-        th: 'การออกแบบการครอบคลุมเป็นงานคำนวณ ไม่ใช่การประมาณด้วยสายตา แต่ละพื้นที่มีระดับเสียงรบกวนต่างกัน มีเพดานสูงต่างกัน และมีวัสดุที่สะท้อนเสียงต่างกัน ตำแหน่งและจำนวนลำโพงจึงต้องคิดจากค่าที่วัดได้จริงของพื้นที่นั้น การวางลำโพงให้ทั่วโดยไม่ดูค่าเสียงรบกวน มักได้ระบบที่ผ่านการตรวจนับจำนวนอุปกรณ์แต่ฟังไม่รู้เรื่องตอนใช้จริง',
-        en: 'Coverage design is a calculation, not an eyeball estimate. Every area has its own noise level, ceiling height and reflective surfaces, so loudspeaker positions and counts have to follow the measured values for that specific area. Spreading speakers evenly without reference to noise data usually produces a system that passes a device count but cannot be understood in service.',
-      },
-      {
-        th: 'อุปกรณ์ในระบบมีหลายชนิดตามงานที่ต้องทำ ลำโพงฮอร์นสำหรับพื้นที่กลางแจ้งและระยะไกล อุปกรณ์ส่งเสียงอิเล็กทรอนิกส์และไซเรนสำหรับสัญญาณเตือน ไฟสัญญาณและไฟแฟลชสำหรับพื้นที่ที่เสียงอย่างเดียวไม่พอ อุปกรณ์รวมเสียงและแสงในตัวเดียวสำหรับจุดที่พื้นที่ติดตั้งจำกัด และจุดแจ้งเหตุด้วยมือสำหรับให้คนหน้างานเป็นผู้เริ่มสัญญาณเอง',
-        en: 'The equipment set follows the job each device does: horn loudspeakers for outdoor areas and long throw, electronic sounders and motor sirens for alarm tones, beacons and strobes where sound alone is not enough, combined sounder-beacon units where mounting space is limited, and manual call points so that people on the ground can raise the alarm themselves.',
-      },
-      {
-        th: 'ในโรงงานส่วนใหญ่ระบบนี้ไม่ได้อยู่ลำพัง แต่ต้องรับสัญญาณจากระบบตรวจจับเพลิงไหม้ ระบบตรวจจับแก๊สรั่ว หรือระบบหยุดฉุกเฉิน แล้วแปลงเป็นเสียงและแสงที่คนเข้าใจได้ทันทีว่าต้องทำอะไรต่อ จุดเชื่อมต่อเหล่านี้ต้องถูกกำหนดตั้งแต่ตอนออกแบบ เพราะเป็นสิ่งที่แก้ทีหลังได้ยากที่สุดเมื่อระบบติดตั้งไปแล้ว',
-        en: 'In most plants this system does not stand alone. It takes inputs from fire detection, gas detection or emergency shutdown, and converts them into sound and light that tell people immediately what to do next. Those interfaces have to be fixed during design — they are the hardest thing to change once the system is installed.',
+        th: 'องค์ประกอบของระบบประกอบด้วยชุดควบคุม เครื่องขยายเสียง ลำโพง และอุปกรณ์แจ้งเตือน เช่น ไซเรนหรือไฟสัญญาณ ตามข้อกำหนดของพื้นที่ ระบบที่รองรับยังสามารถรับสัญญาณจากระบบตรวจจับเพลิงไหม้และก๊าซ หรือระบบหยุดฉุกเฉิน เพื่อเริ่มลำดับการแจ้งเตือนที่กำหนดไว้',
+        en: 'System components include controllers, amplifiers, loudspeakers and warning devices such as sirens or beacons, as required by the site. Compatible systems can also accept inputs from fire and gas detection or emergency shutdown systems to initiate configured warning sequences.',
       },
     ],
     quoteChecklist: [
@@ -116,20 +106,12 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   'network-system': {
     overviewDetail: [
       {
-        th: 'เครือข่ายในโรงงานไม่ได้ทำหน้าที่แค่ส่งข้อมูล ระบบอินเตอร์คอม ระบบประกาศ และกล้องวงจรปิดที่เป็นแบบ IP ทั้งหมดวิ่งอยู่บนโครงข่ายเดียวกันนี้ เมื่อสวิตช์ตัวหนึ่งดับ สิ่งที่หายไปจึงไม่ใช่แค่ภาพจากกล้อง แต่รวมถึงช่องทางที่ใช้เรียกคนออกจากพื้นที่ด้วย โครงข่ายส่วนนี้จึงต้องออกแบบด้วยเกณฑ์เดียวกับอุปกรณ์ความปลอดภัย ไม่ใช่เกณฑ์ของเครือข่ายสำนักงาน',
-        en: 'A plant network does more than move data. Intercom, public address and CCTV — once they are IP based — all ride on the same infrastructure, so when a switch goes down what is lost is not only the camera view but the channel used to call people out of an area. This network has to be designed to the standard applied to safety equipment, not to the standard of an office LAN.',
+        th: 'รูปแบบการเชื่อมต่อเครือข่ายสามารถจัดเป็น Star, Ring หรือ Mesh โดยเลือกตามวัตถุประสงค์และลักษณะการใช้งาน เพื่อให้โครงข่ายสอดคล้องกับระบบที่ต้องเชื่อมต่อ',
+        en: 'Network topology can follow a star, ring or mesh arrangement. The choice depends on the purpose of the network and its applications, so that the infrastructure suits the systems it connects.',
       },
       {
-        th: 'อุปกรณ์เครือข่ายที่ใช้ในพื้นที่ผลิตต่างจากที่ใช้ในห้องเซิร์ฟเวอร์ สวิตช์ระดับอุตสาหกรรมทำงานได้ในช่วงอุณหภูมิที่กว้างกว่า ระบายความร้อนโดยไม่ใช้พัดลม รับไฟ DC ซ้ำสองชุด และยึดบนราง DIN ในตู้สนามได้ ส่วนสายที่เดินผ่านบริเวณที่มีมอเตอร์หรืออินเวอร์เตอร์ต้องเลือกชนิดที่มีชีลด์และวางแยกระยะจากสายกำลัง มิฉะนั้นจะเจออาการแพ็กเก็ตหายเป็นช่วงที่หาสาเหตุยากหลังระบบเดินแล้ว',
-        en: 'Network hardware for a process area is not the hardware used in a server room. Industrial switches work across a much wider temperature range, cool without fans, accept dual DC feeds and mount on DIN rail inside field cabinets. Cable passing near motors or variable-speed drives has to be shielded and physically separated from power runs — otherwise the result is intermittent packet loss that is very hard to trace once the plant is running.',
-      },
-      {
-        th: 'ระยะทางเป็นตัวกำหนดสื่อกลาง สายทองแดงตามมาตรฐานอีเทอร์เน็ตใช้ได้ราว 100 เมตรต่อช่วง ซึ่งสั้นกว่าระยะระหว่างอาคารของโรงงานส่วนใหญ่ ไฟเบอร์จึงเป็นตัวเลือกของแกนหลัก และยังตัดปัญหาความต่างศักย์ระหว่างอาคารที่ทำให้พอร์ตทองแดงเสียหายได้ในงานที่แต่ละอาคารใช้ระบบกราวด์คนละชุด',
-        en: 'Distance decides the medium. A copper Ethernet run is limited to roughly 100 metres per segment, which is shorter than the gap between buildings on most sites, so fibre becomes the backbone choice. Fibre also removes the ground potential difference between buildings that can destroy copper ports where each building sits on its own earthing system.',
-      },
-      {
-        th: 'เรื่องสุดท้ายที่ต้องตกลงร่วมกับฝ่ายไอทีของโรงงานคือการแบ่งเครือข่าย ระบบสื่อสารและกล้องควรอยู่บนวีแลนหรือเครือข่ายกายภาพที่แยกจากระบบควบคุมกระบวนการผลิต เพราะภาระข้อมูลจากวิดีโอมีปริมาณมากและสม่ำเสมอ และเพราะขอบเขตความรับผิดชอบของแต่ละทีมควรตรงกับขอบเขตของเครือข่ายจริง ไม่ใช่คร่อมกันจนไม่มีใครรู้ว่าปัญหาอยู่ฝั่งไหน',
-        en: 'The last decision belongs jointly with the plant IT team: segmentation. Communication and video should sit on a VLAN — or a physically separate network — away from process control, because video traffic is heavy and constant, and because each team’s responsibility should line up with a real network boundary rather than overlapping until nobody can say which side a fault is on.',
+        th: 'การกำหนดขนาดระบบและชุดอุปกรณ์พิจารณาตามความต้องการของโครงการ ตั้งแต่เครือข่ายสำหรับธุรกิจขนาดเล็กและขนาดกลาง ไปจนถึงโครงข่ายของโครงการขนาดใหญ่',
+        en: 'System scale and equipment configuration are selected for the project requirements, ranging from networks for small and medium-sized businesses to infrastructure for large projects.',
       },
     ],
     quoteChecklist: [
@@ -155,20 +137,12 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   'cctv-system': {
     overviewDetail: [
       {
-        th: 'งานกล้องวงจรปิดเริ่มจากคำถามว่าต้องการเห็นอะไร ไม่ใช่จะติดกี่ตัว ระหว่าง "รู้ว่ามีคนอยู่ตรงนั้น" กับ "ระบุได้ว่าเป็นใคร" คือความละเอียดที่ต่างกันหลายเท่า และแปลเป็นจำนวนพิกเซลต่อเมตรที่ต้องได้ ณ ระยะที่สนใจ การกำหนดข้อนี้ให้ชัดตั้งแต่ต้นเป็นสิ่งที่ทำให้เลือกเลนส์และตำแหน่งกล้องได้ถูก แทนที่จะได้ภาพที่ดูสวยแต่ขยายแล้วไม่เห็นอะไร',
-        en: 'A CCTV design starts from what has to be seen, not from how many cameras to fit. The gap between “someone is there” and “that is who it is” is several times the resolution, and it translates into a required pixel density per metre at the distance that matters. Settling this first is what makes lens and position choices correct, instead of producing footage that looks fine until it is zoomed in on.',
+        th: 'ระบบสามารถใช้เทคโนโลยีดิจิทัล IP อนาล็อก หรือไฮบริด โดยกำหนดขนาดให้เหมาะกับงาน ตั้งแต่ระบบขนาดเล็กไปจนถึงระบบขนาดใหญ่ที่รองรับกล้องหลายร้อยตัว',
+        en: 'Systems can use digital IP, analogue or hybrid technology, with configurations ranging from small installations to large systems supporting several hundred cameras.',
       },
       {
-        th: 'สภาพแวดล้อมในโรงงานต่างจากอาคารสำนักงานอย่างสิ้นเชิง กล้องต้องทนฝุ่น การล้างพื้นด้วยน้ำแรงดันสูง แรงสั่นสะเทือนจากเครื่องจักร ไอเกลือในพื้นที่ชายฝั่ง และช่วงอุณหภูมิที่กว้างกว่ามาก ส่วนจุดที่อยู่ในพื้นที่จำแนกอันตรายต้องใช้ตัวถังที่ผ่านการรับรองเฉพาะ ซึ่งเป็นสินค้าคนละหมวดที่มีทั้งราคาและระยะเวลาสั่งของต่างจากกล้องอุตสาหกรรมทั่วไปมาก',
-        en: 'Plant conditions are nothing like an office building. Cameras have to survive dust, high-pressure wash-down, vibration from machinery, salt air on coastal sites, and a far wider temperature range. Points inside a classified area need a certified enclosure — a different product class altogether, with price and lead time to match.',
-      },
-      {
-        th: 'สามค่าที่ต้องตัดสินใจตั้งแต่ต้นคือความละเอียดของภาพ ระยะเวลาที่ต้องเก็บย้อนหลัง และจำนวนกล้อง สามค่านี้คูณกันกลายเป็นขนาดพื้นที่จัดเก็บและแบนด์วิดท์ที่ระบบต้องรองรับ การระบุว่าเก็บ 90 วันที่ความละเอียดสูงสุดโดยไม่คำนวณล่วงหน้า มักทำให้ค่าอุปกรณ์จัดเก็บสูงกว่าค่ากล้องทั้งระบบรวมกัน',
-        en: 'Three values must be settled at the start: image resolution, retention period, and camera count. Multiplied together they define the storage and bandwidth the system has to carry. Specifying 90 days at maximum resolution without doing that arithmetic frequently makes the recording hardware cost more than every camera combined.',
-      },
-      {
-        th: 'สุดท้ายคือสภาพแสง กล้องที่ให้ภาพดีตอนกลางวันอาจใช้ไม่ได้เลยหลังพระอาทิตย์ตกถ้าจุดนั้นไม่มีไฟส่องสว่าง ไฟอินฟราเรดในตัวกล้องมีระยะจำกัดและถูกไอน้ำหรือฝุ่นสะท้อนกลับได้ง่าย จึงต้องดูควบคู่กับไฟฟ้าแสงสว่างที่มีอยู่จริงในพื้นที่ และควรทดสอบภาพตอนกลางคืนก่อนตรวจรับเสมอ ไม่ใช่ทดสอบเฉพาะช่วงกลางวันที่เข้าไปติดตั้ง',
-        en: 'Finally there is light. A camera that performs well by day can be useless after sunset if the point has no lighting of its own. Built-in infrared has a limited reach and is readily reflected back by mist or dust, so it has to be assessed against the lighting that actually exists on site — and night-time imaging should always be verified before acceptance, not only during the daytime installation visit.',
+        th: 'การเลือกกล้องพิจารณาทั้งความต้องการใช้งานและสภาพแวดล้อมของแต่ละจุด มีทั้งกล้องภายในอาคาร กล้องทนสภาพอากาศ กล้องป้องกันการระเบิด กล้องแบบยึดนิ่ง และกล้องแบบหมุน ก้มเงย และซูมได้ (PTZ) เพื่อให้เหมาะกับพื้นที่ที่ต้องการเฝ้าระวัง',
+        en: 'Camera selection follows the operational requirements and environmental conditions at each location. Options include indoor, weatherproof and explosion-proof models, as well as fixed and pan-tilt-zoom (PTZ) cameras to suit the area being monitored.',
       },
     ],
     quoteChecklist: [
@@ -198,28 +172,12 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   'telephone-system': {
     overviewDetail: [
       {
-        th: 'ระบบโทรศัพท์เป็นระบบที่ใช้มากที่สุดทั้งในสำนักงานและในโรงงาน เพราะเป็นช่องทางสื่อสารแบบมีสายหลักทั้งภายในพื้นที่และกับโลกภายนอก หัวใจของระบบคือตู้สาขา PABX ที่ทำหน้าที่เชื่อมสายทั้งหมดเข้าด้วยกัน ตามด้วยเครื่องปลายทางที่มีให้เลือกหลายชนิด และงานที่คนมักไม่นับว่าเป็นส่วนของระบบแต่กำหนดคุณภาพทั้งหมด คือตู้กระจายสาย MDF และ IDF กับสายสัญญาณที่เดินถึงทุกจุด',
-        en: 'The telephone system is the most widely used system in both offices and plants: it is the primary wired channel inside the premises and out to the world beyond. At its heart is the PABX, which ties every line together, followed by the handsets — available in several types — and by the part people rarely count as part of the system even though it sets the quality of the whole: the MDF and IDF distribution frames and the cabling that reaches every point.',
+        th: 'ตู้สาขาโทรศัพท์ PABX เป็นศูนย์กลางของระบบ ทำงานร่วมกับเครื่องโทรศัพท์ปลายทาง ตู้กระจายสาย MDF และ IDF รวมถึงสายสัญญาณและส่วนประกอบที่เกี่ยวข้อง การจัดระบบจึงต้องพิจารณาองค์ประกอบเหล่านี้ร่วมกัน',
+        en: 'The PABX is the core of the system, working with telephone handsets, main and intermediate distribution frames (MDF and IDF), cabling and associated components. These elements form the complete telephone infrastructure.',
       },
       {
-        th: 'ระบบดั้งเดิมเป็นแบบอนาล็อก ซึ่งกำลังถูกแทนที่ด้วยแบบ IP ทีละน้อย และยังมีระบบไฮบริดที่รองรับทั้งอนาล็อกและ IP อยู่ในตู้เดียวกัน ทางเลือกนี้สำคัญกับโรงงานที่มีสายเดิมเดินอยู่แล้วหลายร้อยจุด เพราะการเปลี่ยนทั้งระบบพร้อมกันแปลว่าต้องหยุดใช้งานเป็นช่วง ในขณะที่ระบบไฮบริดยอมให้ทยอยเปลี่ยนเฉพาะจุดที่ต้องการฟังก์ชันใหม่ก่อน แล้วปล่อยจุดที่ยังใช้ได้ดีไว้ตามเดิม',
-        en: 'Traditional systems are analogue, and are slowly being replaced by the IP version. There are also hybrid systems that support both analogue and IP within one platform. That choice matters for a plant with hundreds of existing lines already pulled, because replacing everything at once means planned downtime, whereas a hybrid system allows the points that need new functionality to be converted first while the ones still working stay as they are.',
-      },
-      {
-        th: 'เครื่องปลายทางเลือกตามจุดติดตั้ง ไม่ใช่ตามงบประมาณเพียงอย่างเดียว มีทั้งแบบอนาล็อก ดิจิทัล และ IP และมีทั้งชนิดใช้ในอาคาร ชนิดกลางแจ้ง ชนิดกันสภาพอากาศ และชนิดกันระเบิดสำหรับจุดที่อยู่ในบรรยากาศที่อาจติดไฟ เครื่องที่เหมาะกับโต๊ะทำงานในสำนักงานกับเครื่องที่ต้องอยู่กลางลานถังจึงเป็นสินค้าคนละหมวดกันโดยสิ้นเชิง แม้จะต่อเข้าตู้สาขาตัวเดียวกัน',
-        en: 'Handsets are selected by where they are mounted, not by budget alone. They come as analogue, digital and IP, and as indoor, outdoor, weather-proof and explosion‑proof versions for points inside a potentially flammable atmosphere. A set suited to an office desk and a set that has to live in a tank farm are entirely different product classes, even when both terminate on the same PABX.',
-      },
-      {
-        th: 'สำหรับจุดที่อยู่ในพื้นที่จำแนกอันตราย การเลือกรุ่นเริ่มจากเอกสารจำแนกพื้นที่ของโรงงาน ซึ่งต้องอ่านครบสามค่าเสมอ คือโซน (ความถี่ที่บรรยากาศติดไฟจะปรากฏ) กลุ่มก๊าซ IIA IIB หรือ IIC (ชนิดของสารที่อาจมีอยู่ โดย IIC เข้มงวดที่สุดเพราะครอบคลุมไฮโดรเจนและอะเซทิลีน) และ temperature class T1 ถึง T6 (อุณหภูมิผิวสูงสุดที่อุปกรณ์มีได้โดยไม่จุดสารนั้น) ใบสั่งซื้อที่ระบุแค่โซนอย่างเดียวยังไม่พอให้ผู้ขายเสนอรุ่นที่ถูกต้อง',
-        en: 'For points inside a classified area, selection begins from the plant area classification, and all three values must be read together: the zone (how often a flammable atmosphere is present), the gas group — IIA, IIB or IIC, with IIC the most demanding as it covers hydrogen and acetylene — and the temperature class T1 to T6, capping the surface temperature the equipment may reach without igniting that substance. A purchase order stating only the zone is not yet enough for a supplier to propose the correct model.',
-      },
-      {
-        th: 'เงื่อนไขที่สองคือสภาพแวดล้อมทางกายภาพ ซึ่งกำหนดวัสดุตัวถังและระดับ IP ที่ต้องใช้ พื้นที่ชายฝั่งและงานนอกชายฝั่งต้องการวัสดุที่ทนไอเกลือ เช่นตัวถัง GRP หรือชิ้นส่วนสเตนเลสเกรดสูง พื้นที่ที่ล้างด้วยสารเคมีต้องการความทนการกัดกร่อนอีกแบบ และทุกจุดต้องเทียบช่วงอุณหภูมิของรุ่นที่เลือกกับอุณหภูมิสูงสุดและต่ำสุดที่หน้างานเจอจริง เพราะอุปกรณ์ที่ผ่าน Ex แล้วยังมีข้อจำกัดเรื่องอุณหภูมิกำกับมาเสมอ',
-        en: 'The second condition is the physical environment, which drives enclosure material and IP rating. Coastal and offshore locations need resistance to salt air — GRP housings or high-grade stainless fittings. Chemical wash-down areas call for a different kind of corrosion resistance. And at every point the selected model temperature range has to be checked against the highest and lowest the site actually reaches, because Ex certification always comes with a temperature limit attached.',
-      },
-      {
-        th: 'ส่วนที่มักถูกมองข้ามคือเอกสาร อุปกรณ์กันระเบิดมาพร้อมใบรับรองและข้อกำหนดการติดตั้งที่เป็นเงื่อนไขให้ใบรับรองนั้นยังมีผล เช่นชนิดของ cable gland ที่ใช้ได้ แรงขันฝาครอบ และวิธีต่อสายดิน ชุดเอกสารนี้คือสิ่งที่ผู้ตรวจสอบขอดูในภายหลัง การเก็บให้ครบตั้งแต่วันส่งมอบจึงง่ายกว่าการไล่ตามหาย้อนหลังหลายปีให้หลังมาก',
-        en: 'The part most often overlooked is documentation. Explosion-protected equipment arrives with certificates and installation conditions that keep those certificates valid — permitted cable glands, cover torque, earthing method. This document set is exactly what an inspector asks for later, and assembling it at handover is far easier than reconstructing it years afterwards.',
+        th: 'เครื่องปลายทางมีทั้งแบบอนาล็อก ดิจิทัล และ IP โดยเลือกให้ตรงกับระบบและตำแหน่งใช้งาน เช่น ภายในอาคาร กลางแจ้ง ชนิดทนสภาพอากาศ หรือชนิดป้องกันการระเบิด ส่วนระบบไฮบริดรองรับการใช้อุปกรณ์อนาล็อกและ IP ภายในระบบเดียวกัน',
+        en: 'Handsets are available in analogue, digital and IP versions, with indoor, outdoor, weatherproof and explosion-proof models selected to suit the system and location. Hybrid configurations allow analogue and IP devices to operate within a single system.',
       },
     ],
     quoteChecklist: [
@@ -242,20 +200,12 @@ export const serviceDepth: Record<string, ServiceDepth> = {
   'access-control-system': {
     overviewDetail: [
       {
-        th: 'ระบบควบคุมการเข้าออกเป็นส่วนหนึ่งของระบบรักษาความปลอดภัยที่ทำสามหน้าที่พร้อมกัน คือเฝ้าระวังว่าใครเข้าออกที่ไหนเมื่อไร ป้องกันไม่ให้ผู้ที่ไม่มีสิทธิ์เข้าถึงพื้นที่ที่กำหนด และบริหารสิทธิ์เหล่านั้นให้เปลี่ยนแปลงได้เมื่อคนย้ายหน้าที่หรือหมดสัญญา สองหน้าที่แรกเป็นสิ่งที่ทุกคนนึกถึง แต่หน้าที่ที่สามคือสิ่งที่ทำให้ระบบยังใช้ได้จริงหลังผ่านไปสองปี',
-        en: 'Access control is the part of a security system that does three things at once: it monitors who went where and when, it protects defined areas from people without the right to be there, and it manages those rights as staff change roles or contracts end. The first two are what everyone pictures. The third is what keeps the system usable two years after handover.',
+        th: 'นอกจากควบคุมการเข้าออก ระบบยังสามารถใช้บันทึกเวลาทำงานและเชื่อมโยงข้อมูลกับระบบเงินเดือนได้ ตามฟังก์ชันและการเชื่อมต่อของระบบที่เลือก',
+        en: 'In addition to controlling entry, the system can support time and attendance recording and link to payroll systems, depending on the functions and interfaces selected.',
       },
       {
-        th: 'ระบบเดียวกันนี้มักถูกใช้เป็นระบบบันทึกเวลาทำงานไปด้วย เพราะข้อมูลเวลาเข้าออกที่ระบบเก็บอยู่แล้วสามารถส่งต่อให้ระบบเงินเดือนได้โดยตรง ข้อดีคือไม่ต้องมีเครื่องรูดบัตรสองชุด ข้อควรระวังคือต้องตกลงกันตั้งแต่ต้นว่าใครเป็นเจ้าของข้อมูลชุดนี้และเก็บไว้นานเท่าใด เพราะข้อมูลเวลาเข้าออกของพนักงานเป็นข้อมูลส่วนบุคคล ไม่ใช่แค่บันทึกของประตู',
-        en: 'The same system is often used as a time and attendance system, since the entry and exit times it already records can feed payroll directly. The benefit is obvious — no second set of card readers. The point to settle early is who owns that data and how long it is retained, because an employee’s movement record is personal data, not merely a log of a door.',
-      },
-      {
-        th: 'จุดที่ต้องออกแบบร่วมกับงานความปลอดภัยคือการเชื่อมกับระบบป้องกันอัคคีภัย ระบบควบคุมการเข้าออกที่ทำงานถูกต้องต้องปลดล็อกประตูตามเส้นทางหนีไฟเมื่อเกิดเหตุ เพื่อให้คนออกจากอาคารได้เร็วและปลอดภัย ประตูที่ล็อกแน่นหนาที่สุดในวันปกติ จึงต้องเป็นประตูที่เปิดได้ทันทีในวันที่เกิดเหตุ เงื่อนไขนี้เป็นเรื่องที่ต้องกำหนดตั้งแต่ตอนออกแบบ ไม่ใช่ตอนติดตั้งเสร็จแล้วค่อยหาวิธีต่อสายเพิ่ม',
-        en: 'The point that has to be designed together with the safety systems is the interface to fire protection. A correctly engineered access control system releases the doors along the escape routes under a fire condition, so that people can leave the building quickly and safely. The door that is most firmly locked on an ordinary day has to be the one that opens immediately on the day it matters. That condition belongs in the design, not in a search for spare wiring after installation.',
-      },
-      {
-        th: 'สำหรับโรงงาน ระบบนี้ยังทำหน้าที่ที่สำนักงานทั่วไปไม่ต้องการ คือคุมการเข้าพื้นที่หวงห้ามที่ต้องมีใบอนุญาตทำงานก่อน และรู้ว่าขณะนี้มีใครอยู่ในพื้นที่ใดบ้างเมื่อต้องอพยพ ข้อมูลนี้มีค่ามากที่สุดในนาทีที่ต้องนับหัวคน ซึ่งเป็นเหตุผลว่าทำไมระบบควบคุมการเข้าออกกับระบบแจ้งเหตุจึงควรออกแบบให้คุยกันได้ ไม่ใช่แยกกันอยู่คนละระบบ',
-        en: 'In a plant the system also does something an ordinary office never asks of it: it restricts entry to areas that require a work permit first, and it knows who is inside which area when an evacuation begins. That information is worth most in the minutes when people have to be counted — which is why access control and the alarm system should be designed to talk to each other rather than living side by side as separate installations.',
+        th: 'ระบบสามารถเชื่อมต่อกับระบบป้องกันอัคคีภัย เพื่อให้ประตูที่กำหนดปลดล็อกเมื่อเกิดเพลิงไหม้และเอื้อต่อการออกจากอาคาร การทำงานร่วมกันนี้ต้องกำหนดให้สอดคล้องกับรูปแบบการควบคุมประตูและการอพยพของสถานที่',
+        en: 'Integration with fire protection systems can release designated doors during a fire to facilitate evacuation. This operation is configured to suit the door-control arrangement and evacuation requirements of the facility.',
       },
     ],
     quoteChecklist: [

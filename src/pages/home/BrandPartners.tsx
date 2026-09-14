@@ -41,12 +41,8 @@ export function BrandPartners() {
         </Button>
       </div>
 
-      {/*
-        จำกัดความกว้างไว้เพื่อให้ขนาดกล่องใกล้เคียงกับ logo wall ในหน้า Reference
-        (ที่นั่นเป็น 5 คอลัมน์เต็มความกว้าง) ถ้าปล่อยให้ 3 กล่องกินเต็มจอ
-        กล่องจะใหญ่กว่าฝั่ง Reference มากจนดูเป็นคนละระบบ
-      */}
-      <ul className="mt-10 grid max-w-3xl grid-cols-2 gap-4 sm:grid-cols-3">
+      {/* Equal columns fill the section; fixed logo height keeps the marks restrained. */}
+      <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6">
         {brands.map((brand, index) => (
           <li key={brand.id}>
             <Reveal delay={index * 70}>
@@ -62,10 +58,10 @@ export function BrandPartners() {
 
                 Link ไม่ใช่ <a> — ไม่งั้นกดแล้วโหลดหน้าใหม่ทั้งหน้า
               */}
-              <Link to={`/products?brand=${brand.id}#product-filters`} className="group block">
+              <Link to={`/products?brand=${brand.id}#product-filters`} className="group grid grid-cols-[7rem_minmax(0,1fr)] items-center gap-x-5 sm:block">
                 <span
                   className={cn(
-                    'border-line bg-surface rounded-card flex aspect-3/2 items-center justify-center border p-5',
+                    'border-line bg-surface rounded-card row-span-2 flex h-24 items-center justify-center border p-3 sm:h-36 sm:p-5',
                     'transition-colors duration-(--duration-ui) group-hover:border-primary-200',
                   )}
                 >
@@ -78,15 +74,15 @@ export function BrandPartners() {
                     loading="lazy"
                     decoding="async"
                     className={cn(
-                      'h-full w-full object-contain',
+                      'h-full w-full max-w-48 object-contain',
                       'transition-transform duration-(--duration-ui) ease-(--ease-out-expo)',
                       'group-hover:scale-105 motion-reduce:transform-none',
                     )}
                   />
                 </span>
-                <span className="mt-3 block text-sm font-semibold">{brand.name}</span>
+                <span className="self-end text-sm font-semibold sm:mt-3 sm:block">{brand.name}</span>
                 {brand.country && (
-                  <span className="text-ink-muted mt-0.5 block text-xs">{brand.country}</span>
+                  <span className="text-ink-muted mt-0.5 block self-start text-xs">{brand.country}</span>
                 )}
               </Link>
             </Reveal>

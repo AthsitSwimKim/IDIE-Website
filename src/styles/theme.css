@@ -9,6 +9,101 @@
 
 @import 'tailwindcss';
 
+/* Refinements retain the existing palette, typefaces and section order. */
+@layer components {
+  .home-hero {
+    padding-block: clamp(2.75rem, 5vw, 4.5rem);
+  }
+
+  .home-hero-layout {
+    display: grid;
+    align-items: center;
+    gap: 2.75rem;
+  }
+
+  .home-hero-title {
+    max-width: 100%;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    line-height: 1.3;
+    letter-spacing: -0.025em;
+  }
+
+  .home-hero-lead {
+    font-size: 1.125rem;
+    line-height: 1.8;
+  }
+
+  .home-hero-visual {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+  }
+
+  .home-hero-image {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 26rem;
+    object-fit: contain;
+    box-shadow: 0 20px 48px rgb(0 10 35 / 0.3);
+  }
+
+  .contact-form-panel {
+    align-self: start;
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-card);
+    background: var(--color-surface-alt);
+  }
+
+  .service-scope-card {
+    --bracket-arm: 0.9rem;
+    transition:
+      border-color var(--duration-ui) var(--ease-out-expo),
+      transform var(--duration-ui) var(--ease-out-expo),
+      box-shadow var(--duration-ui) var(--ease-out-expo);
+  }
+
+  @media (hover: hover) {
+    .service-scope-card:hover {
+      border-color: var(--color-primary-200);
+      box-shadow: var(--shadow-card);
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (min-width: 64rem) {
+    .home-hero-layout {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+      gap: 4rem;
+    }
+  }
+
+  @media (max-width: 39.99rem) {
+    .home-hero-image {
+      max-height: 20rem;
+    }
+
+    .home-hero-title {
+      max-width: none;
+      font-size: clamp(1.75rem, 8vw, 2rem);
+    }
+  }
+}
+
+@layer utilities {
+  .home-page > section:not(.home-hero) {
+    padding-block: clamp(2.75rem, 5vw, 4rem);
+  }
+
+  .page-intro {
+    padding-block: clamp(2rem, 4vw, 3rem);
+  }
+}
+
 /**
  * อุปกรณ์ที่ไม่มี hover (มือถือ/แท็บเล็ต)
  *
@@ -454,5 +549,22 @@
   :lang(en) h2,
   :lang(en) h3 {
     text-wrap: balance;
+  }
+}
+
+/* Keep the complete wordmark and menu accessible on 320px screens. */
+@layer utilities {
+  @media (max-width: 22.49rem) {
+    .header-brand {
+      gap: 0.5rem;
+    }
+
+    .header-brand > img {
+      height: 2.25rem;
+    }
+
+    .header-brand > span[aria-hidden] {
+      font-size: 0.625rem;
+    }
   }
 }

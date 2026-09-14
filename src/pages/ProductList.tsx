@@ -58,7 +58,7 @@ export default function ProductList() {
   // ส่งแบรนด์ที่เลือกไปด้วย เพื่อให้ชิปหมวดเหลือเฉพาะหมวดที่แบรนด์นั้นมีของจริง
   const { data: categories } = useAsyncData(() => getProductCategories(brand), [brand])
   const { data: brands } = useAsyncData(getBrands)
-  const { data: products } = useAsyncData(
+  const { data: products, loading, error, reload } = useAsyncData(
     () => getProducts({ category, brandId: brand, query }),
     [category, brand, query],
   )
@@ -103,6 +103,7 @@ export default function ProductList() {
     if (value) next.set(key, value)
     else next.delete(key)
     if (key !== 'page') next.delete('page')
+    if (key === 'brand') next.delete('category')
     setParams(next, { replace: true })
   }
 
@@ -111,144 +112,139 @@ export default function ProductList() {
     document.getElementById(RESULTS_ID)?.scrollIntoView()
   }
 
-  /**
-   * กดตัวกรองแล้วพาลงไปที่รายการให้เลย — ไม่ปล่อยให้ผู้ใช้เลื่อนหาเองว่าสิ่งที่เพิ่งกด
-   * เปลี่ยนอะไรตรงไหน กดซ้ำที่ตัวเดิมคือยกเลิกตัวกรองนั้น
-   *
-   * เรียก `scrollIntoView()` **โดยไม่ระบุ behavior โดยตั้งใจ** เพื่อให้ตกไปใช้ค่า
-   * `scroll-behavior` ของ CSS ซึ่งสลับเป็น auto ให้เองเมื่อผู้ใช้เปิด
-   * prefers-reduced-motion — ถ้าฮาร์ดโค้ด 'smooth' ตรงนี้ JS จะทับค่านั้น
-   */
+  /** Keep the controls in place while selecting; only pagination scrolls to results. */
   function toggle(key: string, current: string | undefined, value: string) {
     setParam(key, current === value ? undefined : value)
-    document.getElementById(RESULTS_ID)?.scrollIntoView()
   }
 
   return (
     <>
       <Seo title={ui.products.title} description={ui.products.lead} />
 
-      <Section tone="alt" spacing="lg">
-        <Heading level={1} eyebrow="PRODUCTS">
-          {t(ui.products.title)}
-        </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose">{t(ui.products.lead)}</p>
+      <Section tone="alt" spacing="sm" className="page-intro">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between md:gap-12">
+          <Heading level={1} eyebrow="PRODUCTS" className="shrink-0">
+            {t(ui.products.title)}
+          </Heading>
+          <p className="text-ink-muted max-w-2xl">{t(ui.products.lead)}</p>
+        </div>
       </Section>
 
-      {/*
-        แถบสีน้ำเงินกรมของแบรนด์ผู้ผลิต — แยกเป็น section ของตัวเองเพื่อให้สีกินเต็ม
-        ความกว้างจอ ไม่ใช่แค่ในกรอบคอนเทนต์ แถบสีเข้มคั่นตรงนี้ทำให้ "เราเป็นตัวแทนใคร"
-        แยกออกจาก "กดเพื่อกรอง" ที่อยู่ถัดลงไปโดยไม่ต้องมีเส้นคั่นหรือหัวข้อซ้ำ
-
-        ลูกค้าอุตสาหกรรมจำผู้ผลิตจากโลโก้ก่อนจำชื่อ การเห็นโลโก้ตั้งแต่ต้นหน้า
-        จึงตอบคำถามแรกที่เขามีว่า "ที่นี่ขายของยี่ห้ออะไร" ได้ทันที
-      */}
-      {/*
-        สว่างกว่า tone="dark" ปกติหนึ่งขั้น (navy-800) ตามสีที่ลูกค้าเลือก
-        ใส่ ! ทับเพราะ cn ในโปรเจกต์นี้เป็น clsx เปล่า ไม่ได้ merge Tailwind ให้
-        ถ้าไม่บังคับ ผลลัพธ์จะขึ้นกับลำดับ class ใน stylesheet ซึ่งเดายาก
-      */}
-      <Section tone="dark" spacing="md" className="bg-navy-800!">
-        <Heading level={3} align="center">
-          {t(ui.products.distributedBrands)}
-        </Heading>
-        <ul className="mx-auto mt-6 grid max-w-4xl grid-cols-3 gap-3 sm:gap-5">
-          {brands?.map((item) => (
-            <li key={item.id}>
-              {/*
-                การ์ดพื้นขาวบนแถบน้ำเงิน — โลโก้ทั้งสามรายออกแบบมาสำหรับพื้นสว่าง
-                วางลงบนพื้นเข้มตรง ๆ แล้วตัวหนังสือในโลโก้จะจมหายไป
-
-                ช่องไฟบางลงบนจอแคบ ไม่งั้นเหลือที่ให้โลโก้แค่ 43px จนอ่านไม่ออก
-              */}
-              <div className="bg-surface rounded-card shadow-lift flex aspect-3/2 items-center justify-center p-3 sm:p-4">
+      <Section tone="dark" spacing="none" className="py-5">
+        <fieldset id={FILTERS_ID} className="min-w-0 border-0 p-0">
+          <legend className="mb-3 text-sm font-medium text-white/80">
+            {t(ui.products.distributedBrands)}
+          </legend>
+          <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
+            <button
+              type="button"
+              aria-pressed={!brand}
+              onClick={() => toggle('brand', brand, '')}
+              className={cn(
+                'min-h-20 cursor-pointer rounded-card border px-4 py-3 text-left transition-colors',
+                !brand
+                  ? 'border-accent-glow bg-white text-navy-900 ring-2 ring-accent-glow'
+                  : 'border-white/30 text-white hover:bg-white/10',
+              )}
+            >
+              <span className="block text-sm font-semibold">{t(ui.products.allBrands)}</span>
+            </button>
+            {brands?.map((item) => (
+              <button
+                key={item.id}
+                type="button"
+                aria-label={item.name}
+                aria-pressed={brand === item.id}
+                onClick={() => toggle('brand', brand, item.id)}
+                className={cn(
+                  'flex min-h-20 cursor-pointer items-center justify-center gap-3 rounded-card border bg-white px-3 py-3 transition-colors sm:justify-start sm:px-4',
+                  brand === item.id
+                    ? 'border-accent-glow ring-2 ring-accent-glow'
+                    : 'border-white/30 hover:border-accent-glow',
+                )}
+              >
                 <img
                   src={item.logo.src}
                   srcSet={item.logo.srcSet}
-                  alt={t(item.logo.alt)}
+                  alt=""
                   width={item.logo.width}
                   height={item.logo.height}
-                  loading="lazy"
                   decoding="async"
-                  className="max-h-full max-w-full object-contain"
+                  className="h-12 w-24 shrink-0 object-contain"
                 />
-              </div>
-            </li>
-          ))}
-        </ul>
+                <span className="hidden min-w-0 text-left sm:block">
+                  <span className="block text-sm font-semibold text-navy-900">
+                    {item.id === 'fhf' ? 'FHF' : item.name}
+                  </span>
+                  <span className="block text-xs text-ink-muted">{item.country}</span>
+                </span>
+              </button>
+            ))}
+          </div>
+        </fieldset>
       </Section>
 
-      <Section spacing="md">
-        {/*
-          แบรนด์เป็นตัวกรองแรก — ลูกค้าส่วนใหญ่มาด้วยชื่อผู้ผลิตที่สเปกไว้แล้ว
-
-          `id` ที่นี่คือจุดที่ลิงก์จากหน้าอื่นเลื่อนมาหยุด (เช่นกดโลโก้แบรนด์บนหน้าแรก)
-
-          **ไม่ต้องใส่ `scroll-mt-*`** — `html` ตั้ง `scroll-padding-top` ไว้แล้ว (99px มือถือ · 116px จอคอม)
-          สำหรับแถบหัวเว็บที่ลอยอยู่ ถ้าใส่ซ้ำค่าจะบวกกันเป็น 192px แล้วจะหยุดต่ำกว่า
-          จุดหมายไปครึ่งจอ (วัดมาแล้วตอนใส่ซ้ำ: หัวข้อ "แบรนด์" ต่ำจากหัวเว็บ 122px)
-        */}
-        <fieldset id={FILTERS_ID} className="flex flex-wrap items-center gap-2 border-0 p-0">
-          <legend className="text-eyebrow text-ink-muted mb-3 uppercase">
-            {t(ui.labels.brand)}
-          </legend>
-          <Chip active={!brand} onClick={() => toggle('brand', brand, '')}>
-            {t(ui.labels.all)}
-          </Chip>
-          {brands?.map((item) => (
-            <Chip key={item.id} active={brand === item.id} onClick={() => toggle('brand', brand, item.id)}>
-              {item.name}
-            </Chip>
-          ))}
-        </fieldset>
-
-        <fieldset className="mt-8 flex flex-wrap items-center gap-2 border-0 p-0">
-          <legend className="text-eyebrow text-ink-muted mb-3 uppercase">
-            {t(ui.labels.category)}
-          </legend>
-          <Chip active={!category} onClick={() => toggle('category', category, '')}>
-            {t(ui.labels.all)}
-          </Chip>
-          {categories?.map((group) => (
-            <Chip
-              key={group.category}
-              active={category === group.category}
-              onClick={() => toggle('category', category, group.category)}
-            >
-              {t(group.name)}
-              <span className="stat-figure text-ink-muted ml-1.5 text-xs">{group.count}</span>
-            </Chip>
-          ))}
-        </fieldset>
-
-        <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
-          <label className="block w-full max-w-sm">
-            <span className="text-eyebrow text-ink-muted uppercase">{t(ui.labels.search)}</span>
+      <Section spacing="sm">
+        <div className="grid gap-4 rounded-card border border-line bg-surface-alt p-4 sm:grid-cols-2 sm:p-5">
+          <label className="block min-w-0">
+            <span className="text-sm font-medium">{t(ui.labels.search)}</span>
             <input
               type="search"
               value={query}
               onChange={(event) => setParam('q', event.target.value)}
               placeholder={t(ui.products.searchPlaceholder)}
-              className="border-line bg-surface rounded-card focus:border-primary-600 mt-2 block h-11 w-full border px-4 text-base outline-none"
+              className="border-line bg-surface focus:border-primary-600 focus:ring-primary-100 mt-2 block h-12 w-full rounded border px-4 text-sm outline-none focus:ring-3"
             />
           </label>
-          {hasFilter && (
-            <Button variant="ghost" onClick={() => setParams({}, { replace: true })}>
-              {t(ui.actions.clearFilters)}
-            </Button>
-          )}
+          <label className="block min-w-0">
+            <span className="text-sm font-medium">{t(ui.labels.category)}</span>
+            <select
+              value={category ?? ''}
+              onChange={(event) => setParam('category', event.target.value || undefined)}
+              className="border-line bg-surface focus:border-primary-600 focus:ring-primary-100 mt-2 block h-12 w-full min-w-0 rounded border px-3 text-sm outline-none focus:ring-3"
+            >
+              <option value="">{t(ui.products.allCategories)}</option>
+              {categories?.map((group) => {
+                const brandNames = group.brandIds.map((id) => {
+                  const item = brands?.find((entry) => entry.id === id)
+                  return id === 'fhf' ? 'FHF' : (item?.name ?? id)
+                }).join(', ')
+                return (
+                  <option key={group.category} value={group.category}>
+                    {t(group.name)}{!brand && brandNames ? ` — ${brandNames}` : ''} ({group.count})
+                  </option>
+                )
+              })}
+            </select>
+          </label>
         </div>
 
-        <div id={RESULTS_ID} className="scroll-mt-24">
-          <p className="text-ink-muted mt-10 text-sm">
-            {t(ui.products.resultCount).replace('{count}', String(total))}
-          </p>
+        <div id={RESULTS_ID} aria-busy={loading}>
+          <div className="mt-6 flex min-h-11 flex-wrap items-center justify-between gap-3 border-b border-line pb-4">
+            <output className="text-sm font-medium">
+              {loading
+                ? t(ui.states.loading)
+                : t(ui.products.resultCount).replace('{count}', String(total))}
+            </output>
+            {hasFilter && (
+              <Button variant="ghost" size="sm" onClick={() => setParams({}, { replace: true })}>
+                {t(ui.actions.clearFilters)}
+              </Button>
+            )}
+          </div>
 
-          {total === 0 ? (
+          {error ? (
+            <div className="mt-8">
+              <p>{t(ui.states.loadFailedBody)}</p>
+              <Button className="mt-4" onClick={reload}>{t(ui.actions.retry)}</Button>
+            </div>
+          ) : loading && !products ? (
+            <p className="text-ink-muted mt-8">{t(ui.states.loading)}</p>
+          ) : total === 0 ? (
             <p className="text-ink-muted mt-10">{t(ui.states.empty)}</p>
           ) : (
             <>
-              <ul className="mt-6 grid grid-cols-2 gap-x-6 gap-y-9 sm:grid-cols-3 lg:grid-cols-4">
+              <ul className="mt-6 grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4">
                 {visible?.map((product) => (
                   <li key={product.slug}>
                     <ProductCard product={product} />
@@ -310,32 +306,5 @@ export default function ProductList() {
         </div>
       </Section>
     </>
-  )
-}
-
-/** ชิปกรอง — ปุ่มจริง ไม่ใช่ลิงก์ เพราะไม่ได้พาไปหน้าอื่น แค่เปลี่ยนสิ่งที่แสดงบนหน้านี้ */
-function Chip({
-  active,
-  onClick,
-  children,
-}: {
-  active: boolean
-  onClick: () => void
-  children: React.ReactNode
-}) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      aria-pressed={active}
-      className={cn(
-        'inline-flex min-h-9 cursor-pointer items-center rounded-full border px-4 text-sm transition-colors duration-(--duration-ui)',
-        active
-          ? 'border-primary-600 bg-primary-600 text-white'
-          : 'border-line bg-surface text-ink-muted hover:border-primary-300 hover:text-ink',
-      )}
-    >
-      {children}
-    </button>
   )
 }

@@ -236,7 +236,7 @@ export async function getRelatedProducts(product: Product, limit = 4): Promise<P
  * ส่ง `brandId` มาด้วยเมื่อผู้ใช้เลือกแบรนด์อยู่ — ไม่งั้นจะเห็นหมวดของอีกสองแบรนด์
  * ปนมาในรายการ ทั้งที่กดแล้วผลลัพธ์เป็นศูนย์เพราะตัวกรองแบรนด์ยังค้างอยู่
  */
-export async function getProductCategories(brandId?: string): Promise<DatasheetGroup[]> {
+export async function getProductCategories(brandId?: string): Promise<Array<DatasheetGroup & { brandIds: string[] }>> {
   const counts = new Map<string, Product[]>()
   for (const product of await loadProducts()) {
     if (brandId && product.brandId !== brandId) continue
@@ -262,6 +262,7 @@ export async function getProductCategories(brandId?: string): Promise<DatasheetG
       name: datasheetCategories[category] ?? { th: category, en: category },
       items: [],
       count: items.length,
+      brandIds: [...new Set(items.map((item) => item.brandId))],
     }))
 }
 

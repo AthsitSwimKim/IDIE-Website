@@ -74,6 +74,7 @@ export const ui = {
     viewAll: { th: 'ดูทั้งหมด', en: 'View all' },
     viewAllReferences: { th: 'ดูลูกค้าทั้งหมด', en: 'View all references' },
     contactInquiry: { th: 'ติดต่อสอบถาม', en: 'Contact for inquiry' },
+    consultEngineer: { th: 'ปรึกษาวิศวกร', en: 'Talk to an engineer' },
     requestInformation: { th: 'ขอข้อมูลเพิ่มเติม', en: 'Request information' },
     clearFilters: { th: 'ล้างตัวกรอง', en: 'Clear filters' },
     backToTop: { th: 'กลับขึ้นด้านบน', en: 'Back to top' },
@@ -125,9 +126,12 @@ export const ui = {
       en: 'Industrial Communication & Safety Signalling',
     },
     heroLead: {
-      th: 'ออกแบบ จัดหา และติดตั้งระบบสื่อสารของโรงงาน ตั้งแต่อินเตอร์คอมและระบบประกาศ ไปจนถึงระบบโทรศัพท์ ระบบเครือข่าย กล้องวงจรปิด และระบบควบคุมการเข้าออก สำหรับโรงงานปิโตรเคมี น้ำมันและก๊าซ โรงงานเหล็ก โรงไฟฟ้า และพื้นที่อันตราย',
-      en: 'Design, supply and installation of plant communication systems — intercom, public address and warning alarm, telephone, WAN/LAN, CCTV and access control — for petrochemical, oil and gas, steel, power generation and hazardous-area facilities.',
+      th: 'ออกแบบ จัดหา ติดตั้ง และดูแลระบบสื่อสารสำหรับโรงงานและพื้นที่อันตราย ตั้งแต่อินเตอร์คอม ระบบประกาศ และโทรศัพท์ ไปจนถึงเครือข่าย กล้องวงจรปิด และระบบควบคุมการเข้าออก',
+      en: 'Design, supply, installation and support for industrial plants and hazardous areas. From intercom and public address to telephone, networks, CCTV and access control.',
     },
+    viewServices: { th: 'ดูบริการทั้งหมด', en: 'Explore our services' },
+    heroExperience: { th: 'ปีในงานระบบสื่อสารอุตสาหกรรม', en: 'years in industrial communication' },
+    heroLocation: { th: 'ตั้งแต่ พ.ศ. 2549 · ระยอง ประเทศไทย', en: 'Since 2006 · Rayong, Thailand' },
     /** {years} ถูกแทนค่าตอน render จากปีก่อตั้งจริง ไม่ใช่ตัวเลขที่พิมพ์ทิ้งไว้ */
     heroMeta: {
       th: '{years}+ ปีในสายระบบสื่อสารอุตสาหกรรม · ตั้งแต่ พ.ศ. 2549 · ระยอง ประเทศไทย',
@@ -176,8 +180,8 @@ export const ui = {
 
     referencesTitle: { th: 'โรงงานที่ไว้วางใจเรา', en: 'Plants that trust us' },
     referencesLead: {
-      th: 'ตั้งแต่โรงกลั่นและปิโตรเคมี ไปจนถึงโรงไฟฟ้าและผู้รับเหมา EPC ระดับสากล',
-      en: 'From refineries and petrochemical plants to power generation and international EPC contractors.',
+      th: 'ได้รับความไว้วางใจจากกลุ่มโรงกลั่น ปิโตรเคมี โรงไฟฟ้า ตลอดจนกลุ่มบริษัท EPC ชั้นนำ',
+      en: 'Trusted by refineries, petrochemical plants, power stations and leading EPC companies.',
     },
 
     industriesTitle: { th: 'อุตสาหกรรมที่เราให้บริการ', en: 'Industries we serve' },
@@ -221,6 +225,8 @@ export const ui = {
    * ไม่มีคำโปรยรายรุ่นเพราะเอกสารไม่ได้ให้มา และการเขียนเอง 279 ประโยคไม่มีใครตรวจได้
    */
   products: {
+    allBrands: { th: 'ทุกแบรนด์', en: 'All brands' },
+    allCategories: { th: 'ทุกหมวดหมู่', en: 'All categories' },
     title: { th: 'สินค้า', en: 'Products' },
     lead: {
       th: 'อุปกรณ์สื่อสารและสัญญาณเตือนภัยจากผู้ผลิตยุโรปที่ IDIE เป็นตัวแทน ทุกรุ่นมีเอกสารข้อมูลสินค้าของผู้ผลิตให้เปิดดูได้',

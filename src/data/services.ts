@@ -25,12 +25,12 @@ export const services: Service[] = [
     slug: 'intercommunication-system',
     name: { th: 'ระบบอินเตอร์คอมอุตสาหกรรม', en: 'Intercommunication System' },
     shortDescription: {
-      th: 'ระบบสื่อสารภายในโรงงานที่ได้ยินชัดแม้ในพื้นที่เสียงดังและพื้นที่เสี่ยงระเบิด',
-      en: 'Plant‑wide intercom that stays intelligible in high-noise and hazardous areas.',
+      th: 'ระบบสื่อสารภายในโรงงานที่ได้รับการออกแบบสำหรับพื้นที่เสียงดังและพื้นที่เสี่ยงระเบิด',
+      en: 'Plant-wide communication designed for high-noise and hazardous areas.',
     },
     overview: {
-      th: 'ออกแบบ จัดหา และติดตั้งระบบอินเตอร์คอมอุตสาหกรรมสำหรับพื้นที่ผลิต ห้องควบคุม และพื้นที่เสี่ยง โดยเลือกอุปกรณ์ให้เหมาะกับระดับเสียงรบกวนและการจำแนกพื้นที่อันตรายของแต่ละจุด',
-      en: 'Design, supply and installation of industrial intercom systems for process areas, control rooms and classified zones — with equipment selected to match the noise level and area classification of each location.',
+      th: 'ระบบอินเตอร์คอมอุตสาหกรรมเชื่อมการสื่อสารสองทางระหว่างห้องควบคุมกับผู้ปฏิบัติงานในพื้นที่โรงงาน ช่วยให้การส่งคำสั่งและประสานงานเป็นไปอย่างรวดเร็ว ผ่านสถานีแม่และสถานีภาคสนามที่จัดวางตามลักษณะงาน',
+      en: 'Industrial intercom systems provide two-way communication between control rooms and field operators, enabling prompt instructions and coordination through master stations and field stations positioned around the plant.',
     },
     scope: [
       { th: 'สำรวจหน้างานและออกแบบระบบ', en: 'Site survey and system design' },
@@ -72,8 +72,8 @@ export const services: Service[] = [
       en: 'PA/GA and siren systems for plant‑wide announcement and emergency alarm.',
     },
     overview: {
-      th: 'ระบบประกาศและสัญญาณเตือนภัยแบบครบวงจร ครอบคลุมทั้งลำโพง อุปกรณ์ส่งเสียง ไฟสัญญาณ ไซเรน และจุดแจ้งเหตุด้วยมือ ออกแบบให้ครอบคลุมพื้นที่ตามข้อกำหนดด้านความปลอดภัยของโรงงาน',
-      en: 'End-to-end public address and general alarm systems covering loudspeakers, sounders, beacons, sirens and manual call points — engineered for area coverage that meets plant safety requirements.',
+      th: 'ระบบประกาศและสัญญาณเตือนภัย PA/GA ใช้กระจายเสียงประกาศและแจ้งเตือนบุคลากรในโรงงาน ทั้งการสื่อสารระหว่างการปฏิบัติงานและการแจ้งเหตุฉุกเฉิน โดยกำหนดพื้นที่รับฟังและรูปแบบสัญญาณให้เหมาะกับการใช้งาน',
+      en: 'Public Address and General Alarm (PA/GA) systems distribute announcements and warnings to plant personnel for routine operations and emergency notification, with coverage areas and alarm functions configured for the application.',
     },
     scope: [
       { th: 'คำนวณการครอบคลุมเสียงและแสงสัญญาณ', en: 'Acoustic and visual coverage calculation' },
@@ -116,8 +116,8 @@ export const services: Service[] = [
       en: 'Office and plant telephony, from the PABX through to explosion‑proof handsets in the field.',
     },
     overview: {
-      th: 'ออกแบบ จัดหา และติดตั้งระบบโทรศัพท์สำหรับสำนักงานและโรงงาน ทั้งแบบอนาล็อกเดิม แบบ IP และแบบไฮบริดที่รองรับทั้งสองอย่างในระบบเดียว โดยมีตู้สาขา PABX เป็นหัวใจของระบบ ตามด้วยเครื่องปลายทางที่เลือกให้ตรงกับจุดติดตั้ง ตั้งแต่เครื่องในสำนักงานไปจนถึงเครื่องกันสภาพอากาศและเครื่องชนิดกันระเบิด รวมถึงงานตู้กระจายสาย MDF/IDF และการเดินสายทั้งระบบ',
-      en: 'Design, supply and installation of telephone systems for offices and plants — traditional analogue, IP, or hybrid systems supporting both at once. The PABX sits at the heart of the system, followed by handsets selected for where they are mounted: office sets, weatherproof units and explosion‑proof versions — together with the MDF/IDF distribution frames and cabling that tie them together.',
+      th: 'ระบบโทรศัพท์เป็นช่องทางสื่อสารหลักของสำนักงานและโรงงาน สำหรับติดต่อภายในพื้นที่และเชื่อมต่อกับบุคคลภายนอก ครอบคลุมทั้งระบบอนาล็อก ระบบโทรศัพท์ IP และระบบไฮบริดที่ใช้งานอนาล็อกร่วมกับ IP',
+      en: 'Telephone systems provide a principal communication channel for offices and plants, supporting calls within the premises and to external parties. Available configurations include analogue, IP and hybrid systems that combine analogue and IP telephony.',
     },
     scope: [
       { th: 'ออกแบบระบบและเลือกตู้สาขา PABX', en: 'System design and PABX selection' },
@@ -169,8 +169,8 @@ export const services: Service[] = [
       en: 'The communication backbone that carries intercom, PA and CCTV traffic across the plant.',
     },
     overview: {
-      th: 'ออกแบบและวางโครงข่าย LAN และ WAN สำหรับพื้นที่อุตสาหกรรม ทั้งแกนหลักไฟเบอร์ระหว่างอาคาร สวิตช์ระดับอุตสาหกรรมในตู้สนาม และการจ่ายไฟผ่านสาย PoE ให้อุปกรณ์ปลายทาง เลือกผังเครือข่ายแบบ star ring หรือ mesh ตามลักษณะการใช้งานของแต่ละพื้นที่ และแยกภาระข้อมูลของระบบสื่อสารออกจากเครือข่ายที่ระบบควบคุมกระบวนการผลิตใช้อยู่',
-      en: 'Design and installation of LAN and WAN infrastructure for industrial sites — fibre backbone between buildings, industrial-grade switches in field cabinets, and PoE power to end devices. Star, ring or mesh topology is chosen to suit how each area is used, and communication traffic is kept off the network the process control system depends on.',
+      th: 'ระบบเครือข่าย LAN และ WAN เป็นโครงสร้างพื้นฐานสำหรับการรับส่งข้อมูลและการเชื่อมต่อระบบที่ใช้ Internet Protocol (IP) การออกแบบเครือข่ายและเลือกอุปกรณ์ให้เหมาะสมจึงเป็นส่วนสำคัญของระบบสื่อสารโดยรวม',
+      en: 'Local Area Networks (LAN) and Wide Area Networks (WAN) provide the infrastructure for data transfer and systems that use Internet Protocol (IP). Appropriate network design and equipment selection are therefore central to the overall communication infrastructure.',
     },
     scope: [
       { th: 'สำรวจเส้นทางสายและออกแบบผังเครือข่าย', en: 'Cable route survey and network topology design' },
@@ -207,8 +207,8 @@ export const services: Service[] = [
       en: 'CCTV systems for industrial, outdoor and classified areas.',
     },
     overview: {
-      th: 'ออกแบบ จัดหา และติดตั้งระบบกล้องวงจรปิดที่ทนสภาพแวดล้อมโรงงาน รองรับได้ทั้งระบบ IP ดิจิทัล ระบบอนาล็อกเดิม และระบบไฮบริด ตั้งแต่ระบบขนาดเล็กไปจนถึงระบบหลายร้อยกล้อง เลือกชนิดกล้องตามหน้างานจริง ทั้งกล้องในอาคาร กล้องกันสภาพอากาศ กล้องชนิดกันระเบิด กล้องแบบยึดนิ่งและแบบหมุนก้มเงยซูมได้ พร้อมคำนวณพื้นที่จัดเก็บให้ตรงกับระยะเวลาเก็บภาพย้อนหลังที่โรงงานต้องการ',
-      en: 'Design, supply and installation of CCTV built for plant conditions — digital IP, conventional analogue or hybrid, from a handful of cameras to systems supporting several hundred. Camera type is selected against the actual location: indoor, weatherproof, explosion‑proof, fixed or pan-tilt-zoom, with recording storage sized to the retention period the site requires.',
+      th: 'ระบบกล้องวงจรปิด CCTV เป็นส่วนหนึ่งของระบบเฝ้าระวังและรักษาความปลอดภัยในโรงงาน ใช้ติดตามความผิดปกติในพื้นที่ปฏิบัติงานและกระบวนการผลิต รวมถึงเฝ้าระวังการบุกรุกบริเวณแนวรั้วและขอบเขตพื้นที่',
+      en: 'Closed Circuit Television (CCTV) forms part of plant surveillance and security systems. It supports monitoring for abnormalities in operating and process areas, as well as intrusion along fences and site boundaries.',
     },
     scope: [
       { th: 'สำรวจจุดที่ต้องการเห็นภาพและออกแบบมุมกล้อง', en: 'Survey of required views and camera coverage design' },
@@ -245,8 +245,8 @@ export const services: Service[] = [
       en: 'Controlled entry to buildings and process areas, tied into time attendance and fire protection.',
     },
     overview: {
-      th: 'ออกแบบและติดตั้งระบบควบคุมการเข้าออกที่ทำหน้าที่เฝ้าระวัง ป้องกัน และบริหารสิทธิ์การเข้าถึงของพนักงานและผู้รับเหมาในอาคารหรือพื้นที่โรงงาน ใช้เป็นระบบบันทึกเวลาทำงานเพื่อส่งต่อให้ระบบเงินเดือนได้ และเชื่อมกับระบบป้องกันอัคคีภัยเพื่อให้ประตูปลดล็อกเมื่อเกิดเหตุ ซึ่งเป็นเงื่อนไขด้านความปลอดภัยที่ต้องออกแบบไว้ตั้งแต่ต้น ไม่ใช่เพิ่มทีหลัง',
-      en: 'Design and installation of access control that monitors, protects and manages the authorised access of employees and contractors across a building or plant. The same system can serve as time and attendance — feeding payroll — and links to fire protection so that doors release under a fire condition, a safety requirement that has to be designed in from the start rather than added later.',
+      th: 'ระบบควบคุมการเข้าออกช่วยตรวจสอบและบริหารสิทธิ์การเข้าถึงอาคารหรือสถานประกอบการของพนักงานและผู้ปฏิบัติงาน เป็นส่วนหนึ่งของระบบรักษาความปลอดภัยที่กำหนดให้บุคคลเข้าใช้งานพื้นที่ตามสิทธิ์ที่ได้รับ',
+      en: 'Access control systems monitor and manage authorised entry for employees and workers in buildings and facilities. As part of the security system, they regulate access according to assigned permissions.',
     },
     scope: [
       { th: 'กำหนดสิทธิ์การเข้าถึงตามพื้นที่และกลุ่มผู้ใช้', en: 'Access rights by area and user group' },

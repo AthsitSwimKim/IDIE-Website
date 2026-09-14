@@ -42,20 +42,22 @@ export default function Home() {
         }}
       />
 
-      <HomeHero />
-      <CompanyProfile />
-      <EngineeringHighlights />
-      <HomeServices />
-      <BrandPartners />
-      <HomeProducts />
-      <HomeReferences />
-      {/* Featured Projects — รอข้อมูลจาก IDIE */}
-      <IndustriesServed />
-      <WhyIdie />
-      <EngineeringStats />
-      {/* Latest News — รอข้อมูลจาก IDIE */}
-      <CareerCta />
-      <ContactCta />
+      <div className="home-page">
+        <HomeHero />
+        <CompanyProfile />
+        <EngineeringHighlights />
+        <HomeServices />
+        <BrandPartners />
+        <HomeProducts />
+        <HomeReferences />
+        {/* Featured Projects — รอข้อมูลจาก IDIE */}
+        <IndustriesServed />
+        <WhyIdie />
+        <EngineeringStats />
+        {/* Latest News — รอข้อมูลจาก IDIE */}
+        <CareerCta />
+        <ContactCta />
+      </div>
     </>
   )
 }

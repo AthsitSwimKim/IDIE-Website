@@ -4,6 +4,51 @@ import { Seo } from '@/components/layout/Seo'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { useLocale } from '@/hooks/useLocale'
 import { getServices, serviceDepth, ui } from '@/data'
+import type { LocalizedText } from '@/types/content'
+
+const intercomScopeCards: Array<{ title: LocalizedText; detail: LocalizedText }> = [
+  {
+    title: { th: 'สำรวจและออกแบบ', en: 'Survey and design' },
+    detail: { th: 'ออกแบบตามพื้นที่', en: 'Designed for each area' },
+  },
+  {
+    title: { th: 'จัดหาอุปกรณ์', en: 'Equipment supply' },
+    detail: { th: 'ยุโรปและสหรัฐฯ', en: 'Europe and the United States' },
+  },
+  {
+    title: { th: 'ติดตั้งและทดสอบ', en: 'Install and test' },
+    detail: { th: 'ทดสอบก่อนส่งมอบ', en: 'Tested before handover' },
+  },
+  {
+    title: { th: 'บริการหลังการขาย', en: 'After-sales service' },
+    detail: { th: 'ดูแลและจัดหาอะไหล่', en: 'Support and spare parts' },
+  },
+]
+
+const telephoneScopeCards: Array<{ title: LocalizedText; detail: LocalizedText }> = [
+  {
+    title: { th: 'ออกแบบระบบ', en: 'System design' },
+    detail: { th: 'ออกแบบและเลือกตู้สาขา PABX', en: 'System design and PABX selection' },
+  },
+  {
+    title: { th: 'เลือกเครื่องปลายทาง', en: 'Handset selection' },
+    detail: {
+      th: 'ในอาคาร กลางแจ้ง กันสภาพอากาศ และกันระเบิด',
+      en: 'Indoor, outdoor, weatherproof and explosion-proof sets',
+    },
+  },
+  {
+    title: { th: 'เดินสายและเชื่อมต่อ', en: 'Cabling and integration' },
+    detail: {
+      th: 'ตู้ MDF / IDF เชื่อมชุมสายภายนอกและระบบเดิม',
+      en: 'MDF / IDF cabling, external lines and existing systems',
+    },
+  },
+  {
+    title: { th: 'ติดตั้งและดูแล', en: 'Installation and support' },
+    detail: { th: 'ติดตั้ง ทดสอบ และบริการหลังการขาย', en: 'Installation, testing and after-sales service' },
+  },
+]
 
 /**
  * Services — หน้ารวมบริการทุกกลุ่ม
@@ -29,7 +74,7 @@ export default function ServiceList() {
         }}
       />
 
-      <Section tone="alt" spacing="lg">
+      <Section tone="alt" spacing="sm" className="page-intro">
         <Heading level={1} eyebrow="OUR SERVICES">
           {t(ui.pages.servicesTitle)}
         </Heading>
@@ -40,6 +85,12 @@ export default function ServiceList() {
 
       {services?.map((service, index) => {
         const depth = serviceDepth[service.slug]
+        const scopeCards =
+          service.slug === 'intercommunication-system'
+            ? intercomScopeCards
+            : service.slug === 'telephone-system'
+              ? telephoneScopeCards
+              : service.scope.map((title) => ({ title, detail: undefined }))
 
         return (
           <Section
@@ -65,30 +116,44 @@ export default function ServiceList() {
                   <KeepPhrases>{t(service.shortDescription)}</KeepPhrases>
                 </p>
 
-                {/*
-                  ขนาดเท่าเนื้อความ (18px) ไม่ใช่ป้าย 14px — ป้ายนี้กำกับรายการที่อยู่
-                  ใต้มันโดยตรง ถ้าเล็กกว่ารายการจะดูเหมือนหมายเหตุที่หลุดมา
-                  ไม่ใช่หัวข้อของรายการ แยกตัวเองจากเนื้อหาด้วยน้ำหนักและสีเข้มแทน
-                */}
                 <h3 className="text-ink mt-7 text-base font-semibold">
                   {t(ui.serviceDetail.scopeHeading)}
                 </h3>
-                <ul className="mt-4 space-y-2">
-                  {service.scope.map((item) => (
-                    <li key={item.en} className="text-ink-muted flex gap-2.5">
-                      {/*
-                        จุดกลม 6px วางกลางบรรทัดแรกด้วย mt เป็นหน่วย em ไม่ใช่ px
-                        — ระยะที่ถูกต้องคือ (ระยะบรรทัด − ขนาดจุด) ÷ 2 ซึ่งขึ้นกับ
-                        ขนาดตัวอักษร ค่าคงที่ 8px ที่เคยใช้ตอนตัวอักษร 15px
-                        ทำให้จุดลอยสูงจนดูเหมือนดอกจันเมื่อตัวอักษรขึ้นเป็น 18px
-                      */}
-                      <span
-                        aria-hidden="true"
-                        className="bg-primary-600 mt-[0.7em] size-1.5 shrink-0 rounded-full"
-                      />
-                      {t(item)}
-                    </li>
-                  ))}
+                <ul className="mt-4 grid auto-rows-fr gap-3 sm:grid-cols-2">
+                  {scopeCards.map((card) => {
+                    return (
+                      <li
+                        key={card.title.en}
+                        className="service-scope-card corner-bracket border-line bg-surface relative min-h-32 border p-5"
+                      >
+                        <div className="flex items-start gap-3.5">
+                          <span className="border-primary-200 text-primary-600 mt-0.5 flex size-9 shrink-0 items-center justify-center border bg-primary-50">
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="1.8"
+                              aria-hidden="true"
+                              className="size-4"
+                            >
+                              <path d="m12 3 9 9-9 9-9-9 9-9Z" />
+                              <circle cx="12" cy="12" r="1.5" fill="currentColor" stroke="none" />
+                            </svg>
+                          </span>
+                          <div className="min-w-0">
+                            <p className="text-ink font-semibold leading-snug">
+                              {t(card.title)}
+                            </p>
+                            {card.detail && (
+                              <p className="text-ink-muted mt-1 text-sm leading-relaxed">
+                                {t(card.detail)}
+                              </p>
+                            )}
+                          </div>
+                        </div>
+                      </li>
+                    )
+                  })}
                 </ul>
 
                 <div className="mt-7 flex flex-wrap items-center gap-4">
