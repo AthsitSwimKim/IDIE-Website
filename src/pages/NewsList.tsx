@@ -65,7 +65,7 @@ export default function NewsList() {
         <Heading level={1} eyebrow="NEWS">
           {t(ui.news.title)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose">{t(ui.news.lead)}</p>
+        <p className="text-ink-muted mt-4 max-w-prose md:min-h-[3.5em]">{t(ui.news.lead)}</p>
       </Section>
 
       <Section>

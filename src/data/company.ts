@@ -32,9 +32,9 @@ export const company: CompanyInfo = {
       ในบรรทัดถัดมาทำให้ผู้อ่านต้องอ่านชื่อเดียวกันสองรอบก่อนจะได้ข้อมูลจริงข้อแรก
     */
     th:
-      'เราคือผู้เชี่ยวชาญด้านงานวิศวกรรม ออกแบบ จัดหา และติดตั้งระบบสื่อสารความปลอดภัยสำหรับโรงงานอุตสาหกรรมโดยเฉพาะ\n\nครอบคลุมระบบอินเตอร์คอม, ระบบเตือนภัย, ระบบโทรศัพท์, โครงข่าย WAN/LAN, กล้องวงจรปิด และระบบควบคุมการเข้าออก (Access Control) เพื่อรองรับกลุ่มอุตสาหกรรมหนัก ทั้งปิโตรเคมี, น้ำมันและก๊าซ, โรงเหล็ก, โรงไฟฟ้า ตลอดจนเหมืองแร่',
+      'ก่อตั้งในปี พ.ศ. 2549 ดำเนินธุรกิจด้านวิศวกรรมและจัดจำหน่ายอุปกรณ์ระบบสื่อสารสำหรับอุตสาหกรรม ให้บริการออกแบบ จัดหาอุปกรณ์ และบูรณาการระบบสื่อสาร (System Integration) ครอบคลุมระบบอินเตอร์คอม ระบบประกาศและสัญญาณเตือนภัย (PA/GA) ระบบไซเรน ระบบโทรศัพท์ เครือข่าย WAN/LAN กล้องวงจรปิด และระบบควบคุมการเข้าออก\n\nให้บริการแก่กลุ่มอุตสาหกรรมเคมี ปิโตรเคมี น้ำมันและก๊าซ โรงงานเหล็ก โรงไฟฟ้า และเหมืองแร่ โดยมีสำนักงานตั้งอยู่ที่จังหวัดระยอง พร้อมจัดหาอุปกรณ์สื่อสารและสัญญาณเตือนภัยสำหรับงานอุตสาหกรรม ทั้งการใช้งานทั่วไปและพื้นที่เสี่ยงระเบิด',
     en:
-      'We specialise in engineering, design, procurement and installation of safety communication systems built for industrial plants.\n\nCovering intercom, warning alarm, telephone, WAN/LAN networks, CCTV and access control — for heavy industry: petrochemical, oil and gas, steel plants, power generation and mining.',
+      'Established in 2006, we provide engineering services and distribute industrial communication equipment. Our activities include system design, equipment procurement and system integration, covering intercom, Public Address and General Alarm (PA/GA), sirens, telephony, WAN/LAN networks, CCTV and access control.\n\nBased in Rayong, we serve the chemical, petrochemical, oil and gas, steel, power generation and mining industries. Our product offering includes communication and signalling equipment for both general industrial use and explosion-hazardous areas.',
   },
   vision: {
     th: '',

@@ -90,10 +90,10 @@ export const industries: Industry[] = [
   },
   {
     slug: 'epc',
-    name: { th: 'ผู้รับเหมา EPC', en: 'EPC Contractors' },
+    name: { th: 'กลุ่มบริษัท EPC', en: 'EPC Companies' },
     description: {
-      th: 'ผู้รับเหมาออกแบบและก่อสร้างโรงงาน ที่ต้องการคู่ค้าด้านระบบสื่อสารตั้งแต่ขั้นออกแบบ',
-      en: 'Engineering and construction contractors who need a communication systems partner from design stage.',
+      th: 'พันธมิตรด้านระบบสื่อสารสำหรับกลุ่มบริษัท EPC ในโครงการอุตสาหกรรม',
+      en: 'Communication systems partner for EPC companies delivering industrial projects.',
     },
     icon: 'blueprint',
     order: 8,

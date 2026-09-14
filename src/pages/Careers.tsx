@@ -25,7 +25,7 @@ export default function Careers() {
         <Heading level={1} eyebrow="CAREERS">
           {t(ui.careers.title)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose text-lg">
+        <p className="text-ink-muted mt-4 max-w-prose md:min-h-[3.5em]">
           <KeepPhrases>{t(ui.careers.lead)}</KeepPhrases>
         </p>
       </Section>

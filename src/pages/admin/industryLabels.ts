@@ -19,7 +19,7 @@ export const INDUSTRY_LABEL = {
   'steel-plant': 'โรงงานเหล็ก',
   fertilizer: 'ปุ๋ย',
   mining: 'เหมืองแร่',
-  epc: 'ผู้รับเหมา EPC',
+  epc: 'กลุ่มบริษัท EPC',
   manufacturing: 'โรงงานผลิต',
 } satisfies Record<IndustrySlug, string>
 

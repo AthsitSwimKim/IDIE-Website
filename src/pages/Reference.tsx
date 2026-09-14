@@ -38,7 +38,7 @@ export default function Reference() {
         <Heading level={1} eyebrow="REFERENCE">
           {t(ui.pages.referenceTitle)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose">{t(ui.pages.referenceLead)}</p>
+        <p className="text-ink-muted mt-4 max-w-prose md:min-h-[3.5em]">{t(ui.pages.referenceLead)}</p>
       </Section>
 
       <Section spacing="md">

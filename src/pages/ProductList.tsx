@@ -113,8 +113,9 @@ export default function ProductList() {
   }
 
   /** Keep the controls in place while selecting; only pagination scrolls to results. */
-  function toggle(key: string, current: string | undefined, value: string) {
-    setParam(key, current === value ? undefined : value)
+  function selectBrand(value?: string) {
+    if (brand === value) return
+    setParam('brand', value)
   }
 
   return (
@@ -139,7 +140,7 @@ export default function ProductList() {
             <button
               type="button"
               aria-pressed={!brand}
-              onClick={() => toggle('brand', brand, '')}
+              onClick={() => selectBrand()}
               className={cn(
                 'min-h-20 cursor-pointer rounded-card border px-4 py-3 text-left transition-colors',
                 !brand
@@ -155,7 +156,7 @@ export default function ProductList() {
                 type="button"
                 aria-label={item.name}
                 aria-pressed={brand === item.id}
-                onClick={() => toggle('brand', brand, item.id)}
+                onClick={() => selectBrand(item.id)}
                 className={cn(
                   'flex min-h-20 cursor-pointer items-center justify-center gap-3 rounded-card border bg-white px-3 py-3 transition-colors sm:justify-start sm:px-4',
                   brand === item.id
