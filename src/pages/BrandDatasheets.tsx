@@ -71,8 +71,15 @@ export default function BrandDatasheets() {
         <Heading level={1} eyebrow={brand.name}>
           {t(ui.datasheets.title)}
         </Heading>
-        <p className="text-ink-muted mt-4 max-w-prose">{t(ui.datasheets.lead)}</p>
+        {/* จอง 2 บรรทัดเท่าหน้าเกี่ยวกับเรา — บล็อกหัวของสองหน้านี้ต้องสูงเท่ากัน */}
+        <p className="text-ink-muted mt-4 max-w-prose md:min-h-[3.5em]">{t(ui.datasheets.lead)}</p>
+      </Section>
 
+      <Section spacing="md">
+        {/*
+          ปุ่มสองตัวนี้เคยอยู่ในบล็อกหัวสีเทา ทำให้บล็อกสูงกว่าหน้าเกี่ยวกับเรา 48px
+          ย้ายลงมาอยู่ต้นส่วนเนื้อหาแทน บล็อกหัวของทุกหน้าจึงสูงเท่ากัน
+        */}
         {/*
           สองปุ่มนี้เคยเป็น ghost ทั้งคู่ คือตัวหนังสือสีน้ำเงินไม่มีขอบไม่มีพื้น
           วางเรียงกันบนพื้นเทาอ่อน จึงอ่านเหมือนข้อความสองก้อนลอย ๆ มากกว่าปุ่ม
@@ -82,7 +89,7 @@ export default function BrandDatasheets() {
           ไม่ใช่สิ่งที่อยากให้กด ส่วนศูนย์ดาวน์โหลดของผู้ผลิตใส่ขอบ (outline)
           เพราะเป็นปลายทางที่มีประโยชน์จริงเมื่อหาเอกสารในหน้านี้ไม่เจอ
         */}
-        <div className="mt-8 flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {/*
             ลูกศรอยู่หน้าข้อความและหมุน 180° ให้ชี้กลับ — ใช้ไอคอนตัวเดียวกับทั้งเว็บ
             ไม่เพิ่มไอคอนใหม่ เพราะ ArrowRight เป็นเส้นตรงสมมาตร หมุนแล้วได้ลูกศรซ้าย
@@ -105,14 +112,12 @@ export default function BrandDatasheets() {
             </Button>
           )}
         </div>
-      </Section>
 
-      <Section spacing="md">
         {/*
           ช่องค้นหาไม่ได้อยู่ในฟอร์มที่ต้องกดส่ง — กรองทันทีขณะพิมพ์
           เพราะข้อมูลอยู่ในเครื่องแล้ว การบังคับให้กด "ค้นหา" ไม่ได้ทำให้เร็วขึ้น
         */}
-        <div className="flex flex-wrap items-end justify-between gap-4">
+        <div className="mt-8 flex flex-wrap items-end justify-between gap-4">
           <label className="block w-full max-w-sm">
             <span className="text-eyebrow text-ink-muted uppercase">
               {t(ui.datasheets.searchLabel)}
