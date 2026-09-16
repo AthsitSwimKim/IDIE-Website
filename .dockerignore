@@ -1,0 +1,13 @@
+# บริบท build ของ Dockerfile ที่ root (image production)
+# ตัดของที่ไม่ต้องใช้ตอน build ออก เพื่อให้ส่ง context เร็วและไม่มีความลับติดไป
+.git
+node_modules
+server/node_modules
+dist
+docs
+scripts/__pycache__
+# ความลับและข้อมูลที่อยู่บนดิสก์ของเซิร์ฟเวอร์ ไม่ใช่ใน image
+server/.env
+server/uploads
+*.log
+.claude
