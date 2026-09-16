@@ -1,0 +1,97 @@
+# สแต็ค production ของเว็บ IDIE — 3 คอนเทนเนอร์: MySQL · เว็บ+API · Caddy (HTTPS)
+#
+# **คนละไฟล์กับ docker-compose.yml** ซึ่งเป็นชุดพัฒนา (API อย่างเดียว หน้าเว็บรันด้วย Vite)
+# ชุดนี้ build หน้าเว็บเข้า image ด้วย Dockerfile ที่ root แล้วให้ Express เสิร์ฟทั้งหมด
+#
+# รันบนเซิร์ฟเวอร์:
+#   docker compose -f docker-compose.prod.yml --env-file server/.env up -d --build
+#
+# server/.env ชุด production ต้องมี (ดู docs/deploy.md):
+#   DB_USER  ที่ไม่ใช่ root · DB_PASSWORD · SESSION_SECRET ที่สุ่มใหม่ · SMTP_* · MAIL_TO
+#
+# สิ่งที่ต่างจากชุดพัฒนาโดยตั้งใจ:
+#   - MySQL และ API **ไม่เปิดพอร์ตสู่ภายนอก** — คุยกันในเครือข่ายภายในของ compose
+#     ทางเข้าเดียวจากอินเทอร์เน็ตคือ Caddy ที่ 80/443
+#   - ผู้ใช้ MySQL ของแอปสร้างอัตโนมัติจาก DB_USER/DB_PASSWORD และได้สิทธิ์เฉพาะฐาน
+#     idie_website ส่วน root ได้รหัสสุ่มที่ไม่มีใครรู้ (ดูได้ครั้งเดียวใน log ตอนสร้าง)
+#   - ตารางถูกสร้างจาก server/schema.sql เองตอน volume ยังว่าง ไม่ต้องรัน mysql ด้วยมือ
+#   - NODE_ENV=production และ SESSION_COOKIE_SECURE=true ถูกบังคับที่นี่ ทับค่าใน .env
+#     เพราะสองค่านี้ผิดแล้วอาการเงียบ: ค่าแรกทำให้ไม่เสิร์ฟหน้าเว็บ ค่าหลังทำให้ล็อกอินไม่ติด
+
+services:
+  db:
+    image: mysql:8.4
+    container_name: idie-mysql
+    restart: always
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 'yes'
+      MYSQL_DATABASE: ${DB_NAME:-idie_website}
+      MYSQL_USER: ${DB_USER:?ต้องมี DB_USER ใน server/.env และห้ามเป็น root}
+      MYSQL_PASSWORD: ${DB_PASSWORD:?ต้องมี DB_PASSWORD ใน server/.env}
+    volumes:
+      - idie-mysql-data:/var/lib/mysql
+      # รันครั้งเดียวตอนสร้างฐานข้อมูลใหม่ — volume ที่มีข้อมูลแล้วจะไม่ถูกแตะ
+      - ./server/schema.sql:/docker-entrypoint-initdb.d/schema.sql:ro
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', '127.0.0.1', '-u${DB_USER}', '-p${DB_PASSWORD}']
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 40s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: idie-api
+    restart: always
+    env_file: ./server/.env
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+      DB_HOST: db
+      DB_PORT: 3306
+      SESSION_COOKIE_SECURE: 'true'
+    expose:
+      - '3001'
+    volumes:
+      - ./server/uploads:/app/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      # image ไม่มี curl — ใช้ fetch ของ Node เอง
+      test:
+        [
+          'CMD',
+          'node',
+          '-e',
+          "fetch('http://127.0.0.1:3001/api/health').then((r) => process.exit(r.ok ? 0 : 1)).catch(() => process.exit(1))",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 20s
+
+  caddy:
+    image: caddy:2
+    container_name: idie-caddy
+    restart: always
+    ports:
+      - '80:80'
+      - '443:443'
+      - '443:443/udp'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      # ใบรับรอง Let's Encrypt — ต้องคงอยู่ข้าม restart ไม่งั้นขอใหม่ทุกครั้งจนโดนจำกัดโควตา
+      - idie-caddy-data:/data
+      - idie-caddy-config:/config
+    depends_on:
+      api:
+        condition: service_healthy
+
+volumes:
+  idie-mysql-data:
+  idie-caddy-data:
+  idie-caddy-config:

@@ -123,6 +123,11 @@ Vite ที่พอร์ต 5173 จะ proxy `/api` และ `/uploads` ม�
 
 ## ขึ้น production
 
+**ใช้ Docker ตาม [`docs/deploy.md`](../docs/deploy.md)** — `docker-compose.prod.yml` ที่ root
+build หน้าเว็บเข้า image เดียวกับ API, สร้างตารางจาก `schema.sql` เอง, และมี Caddy ทำ HTTPS
+คำสั่งข้างล่างคือวิธีรันมือเปล่าโดยไม่ใช้ Docker ซึ่งยังใช้ได้ แต่ต้องจัดการ MySQL, HTTPS
+และการรีสตาร์ตเองทั้งหมด
+
 ```bash
 npm run build
 ```

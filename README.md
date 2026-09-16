@@ -198,7 +198,12 @@ grep -rn "_placeholder: true" src/data
 > เป็นค่าว่าง หน้า News/Projects จึงแสดง empty state ที่ออกแบบไว้ตามเดิม
 > และเขียนสาเหตุจริงลง console ให้คนที่มาไล่ปัญหาเห็น
 
-### Docker — 2 คอนเทนเนอร์
+### Docker — 2 คอนเทนเนอร์ (ชุดพัฒนา)
+
+ชุด **production** อยู่คนละไฟล์: `docker-compose.prod.yml` + `Dockerfile` (root) + `Caddyfile`
+— 3 คอนเทนเนอร์ (MySQL · เว็บ+API ใน image เดียว · Caddy ทำ HTTPS) ไม่เปิดพอร์ต MySQL/API
+สู่ภายนอก ขั้นตอนทั้งหมดอยู่ใน [`docs/deploy.md`](docs/deploy.md)
+
 
 | คอนเทนเนอร์ | image | หน้าที่ | พอร์ต |
 |---|---|---|---|

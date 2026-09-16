@@ -1,0 +1,18 @@
+# reverse proxy + HTTPS อัตโนมัติ (Let's Encrypt) สำหรับ docker-compose.prod.yml
+#
+# Caddy ขอและต่ออายุใบรับรองให้เองเมื่อ DNS ของทั้งสองชื่อชี้มาที่เซิร์ฟเวอร์นี้แล้ว
+# และเปิดพอร์ต 80/443 ถึงจากอินเทอร์เน็ตได้ — ถ้าชื่อใดยังไม่ชี้มา Caddy จะขอใบรับรอง
+# ชื่อนั้นไม่ได้และพิมพ์ error ใน log แต่ชื่ออื่นยังทำงานปกติ
+#
+# ส่ง X-Forwarded-For / X-Forwarded-Proto ให้ API เอง ซึ่ง Express ตั้ง trust proxy ไว้แล้ว
+# (server/src/index.ts) คุกกี้ secure จึงทำงานถูกต้องหลัง proxy
+
+www.idindustrialengineering.com {
+	encode zstd gzip
+	reverse_proxy api:3001
+}
+
+# ชื่อไม่มี www → ส่งต่อไป www แบบถาวร (SEO ให้นับเป็นเว็บเดียว ตรงกับ canonical)
+idindustrialengineering.com {
+	redir https://www.idindustrialengineering.com{uri} permanent
+}
