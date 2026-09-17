@@ -48,6 +48,8 @@ import { datasheetCategories, datasheetCategoryOrder, loadDatasheets } from '@/d
 import { loadProducts, PRODUCT_ATTRIBUTES } from '@/data/products'
 import { referenceCompanies } from '@/data/references'
 import { careersEmail, jobOpenings } from '@/data/careers'
+import { apiFetch } from '@/utils/apiFetch'
+import { fetchPublishedContent } from '@/utils/publicContent'
 
 export { ui } from '@/data/i18n'
 export { capabilities, companyFax, contactPerson, careersEmail, siteUrl }
@@ -316,9 +318,7 @@ export async function getJobBySlug(slug: string): Promise<JobOpening | null> {
  * ที่ล้มแล้วแค่ไม่ต้องแสดงให้ห่อด้วย `quiet()` ด้านล่าง
  */
 async function fetchContent<T>(path: string): Promise<T> {
-  const response = await fetch(path)
-  if (!response.ok) throw new Error(`${path} ตอบกลับ ${response.status}`)
-  return (await response.json()) as T
+  return fetchPublishedContent<T>(path)
 }
 
 /**
@@ -423,7 +423,7 @@ export interface InquiryPayload {
  */
 export async function getVisitorTotal(): Promise<number | null> {
   try {
-    const response = await fetch('/api/visitors')
+    const response = await apiFetch('/api/visitors')
     if (!response.ok) return null
 
     const body = (await response.json()) as { total?: unknown }
@@ -442,7 +442,7 @@ export async function getVisitorTotal(): Promise<number | null> {
  */
 export async function recordVisit(): Promise<number | null> {
   try {
-    const response = await fetch('/api/visitors', { method: 'POST' })
+    const response = await apiFetch('/api/visitors', { method: 'POST' })
     if (!response.ok) return null
 
     const body = (await response.json()) as { total?: unknown }
@@ -455,7 +455,7 @@ export async function recordVisit(): Promise<number | null> {
 export async function submitInquiry(payload: InquiryPayload): Promise<void> {
   let response: Response
   try {
-    response = await fetch('/api/contact', {
+    response = await apiFetch('/api/contact', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),

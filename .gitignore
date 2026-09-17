@@ -27,3 +27,8 @@ dist-ssr
 server/node_modules
 server/.env
 server/uploads
+php-server/idie-private/config.php
+php-server/idie-private/sessions/
+tmp/
+
+php-server/tests/__pycache__/

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Button } from '@/components/ui'
 import { Logo } from '@/components/layout/Logo'
 import { auth } from '@/admin/api'
+import { usesPhpApi } from '@/utils/apiFetch'
 import { Field, TextInput } from '@/pages/admin/components/fields'
 
 export default function AdminLogin() {
@@ -111,8 +112,12 @@ export default function AdminLogin() {
         */}
         <p className="text-ink-muted mt-6 text-xs">
           ลืมรหัสผ่าน หรือต้องการบัญชีใหม่ — ให้แอดมินอีกคนเข้าไปที่หน้า “บัญชีผู้ใช้”
-          แล้วตั้งรหัสใหม่หรือเพิ่มบัญชีให้ ถ้าไม่มีใครเข้าระบบได้เลย ต้องรัน{' '}
-          <span className="whitespace-nowrap">npm run create-user</span> บนเครื่องเซิร์ฟเวอร์
+          แล้วตั้งรหัสใหม่หรือเพิ่มบัญชีให้
+          {usesPhpApi ? (
+            <> ถ้ายังไม่เคยติดตั้งระบบ ให้เจ้าของเว็บไซต์เปิดหน้าติดตั้งครั้งแรกตามคู่มือที่ได้รับ</>
+          ) : (
+            <> ถ้าไม่มีใครเข้าระบบได้เลย ให้ผู้ดูแลเซิร์ฟเวอร์ใช้คำสั่งสร้างบัญชีตามคู่มือติดตั้ง</>
+          )}
         </p>
       </div>
     </div>

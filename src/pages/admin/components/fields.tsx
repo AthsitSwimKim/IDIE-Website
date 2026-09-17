@@ -5,6 +5,7 @@ import { uploadImage } from '@/admin/api'
 import type { LocalizedText } from '@/types/content'
 import type { UploadedImage } from '@/types/admin'
 import { cn } from '@/utils/cn'
+import { usesPhpApi } from '@/utils/apiFetch'
 
 /**
  * ชุดช่องกรอกของหน้าแอดมิน
@@ -250,6 +251,10 @@ export function ImageField({
 
   async function handleFile(file: File | undefined) {
     if (!file) return
+    if (usesPhpApi && file.size > 3_000_000) {
+      setError('รูปต้องไม่เกิน 3 MB กรุณาย่อรูปก่อนอัปโหลด')
+      return
+    }
     setBusy(true)
     setError(null)
     try {
@@ -309,13 +314,13 @@ export function ImageField({
           <input
             ref={inputRef}
             type="file"
-            accept="image/*"
+            accept={usesPhpApi ? 'image/jpeg,image/png,image/webp' : 'image/*'}
             onChange={(event) => void handleFile(event.target.files?.[0])}
             disabled={busy}
             className="text-ink-muted file:border-line file:bg-surface-alt file:text-ink hover:file:bg-surface block w-full text-sm file:mr-3 file:min-h-11 file:cursor-pointer file:rounded file:border file:px-4 file:text-sm file:font-medium"
           />
           <p className="text-ink-muted mt-1.5 text-xs">
-            {busy ? 'กำลังอัปโหลดและย่อภาพ…' : 'ระบบย่อและแปลงเป็น WebP สองความละเอียดให้อัตโนมัติ'}
+            {busy ? 'กำลังอัปโหลดและย่อภาพ…' : usesPhpApi ? 'JPEG, PNG หรือ WebP ไม่เกิน 3 MB ระบบย่อภาพให้อัตโนมัติ' : 'ระบบย่อและแปลงเป็น WebP สองความละเอียดให้อัตโนมัติ'}
           </p>
           {error && (
             <p role="alert" className="text-danger mt-1 text-xs">
@@ -439,7 +444,7 @@ export function GalleryField({
         <input
           ref={inputRef}
           type="file"
-          accept="image/*"
+          accept={usesPhpApi ? 'image/jpeg,image/png,image/webp' : 'image/*'}
           multiple
           onChange={(event) => void addFiles(event.target.files)}
           disabled={busy}

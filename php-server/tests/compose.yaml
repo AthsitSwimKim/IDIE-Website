@@ -1,0 +1,40 @@
+services:
+  db:
+    image: mariadb:11.4
+    environment:
+      MARIADB_DATABASE: idie_php_test
+      MARIADB_USER: idie_test
+      MARIADB_PASSWORD: local-test-password
+      MARIADB_ROOT_PASSWORD: local-test-root
+    tmpfs:
+      - /var/lib/mysql
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 2s
+      timeout: 3s
+      retries: 45
+  php:
+    build:
+      context: ..
+      dockerfile: tests/Dockerfile
+    command: ["php", "-d", "openssl.cafile=/app/idie-private/mailpit-cert.pem", "-d", "upload_max_filesize=4M", "-d", "post_max_size=5M", "-S", "0.0.0.0:8000", "/app/tests/router.php"]
+    ports: ["127.0.0.1:8099:8000"]
+    volumes:
+      - ../../tmp/rapidcloud-dist:/app/httpdocs:ro
+      - .:/app/tests:ro
+      - ../../tmp/php-test/private:/app/idie-private
+      - ../../tmp/php-test/uploads:/app/httpdocs/uploads
+    depends_on:
+      db:
+        condition: service_healthy
+  mailpit:
+    image: axllent/mailpit:v1.29
+    ports: ["127.0.0.1:8100:8025"]
+    environment:
+      MP_SMTP_TLS_CERT: /tls/mailpit-cert.pem
+      MP_SMTP_TLS_KEY: /tls/mailpit-key.pem
+      MP_SMTP_REQUIRE_STARTTLS: "true"
+      MP_SMTP_AUTH_ACCEPT_ANY: "true"
+    volumes:
+      - ../../tmp/php-test/private/mailpit-cert.pem:/tls/mailpit-cert.pem:ro
+      - ../../tmp/php-test/private/mailpit-key.pem:/tls/mailpit-key.pem:ro

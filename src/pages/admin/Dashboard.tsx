@@ -1,6 +1,7 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge, Button } from '@/components/ui'
-import { adminNews, adminProjects, adminSiteReferences } from '@/admin/api'
+import { adminNews, adminProjects, adminSiteReferences, publicContent } from '@/admin/api'
 import { getVisitorTotal } from '@/data'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { formatDate } from '@/pages/admin/formatDate'
@@ -33,6 +34,17 @@ interface DraftItem {
  * ค่อยย้ายไปนับด้วย SQL แล้วเปลี่ยนแค่ loader ตรงนี้
  */
 export default function AdminDashboard() {
+  const [publishing, setPublishing] = useState(false)
+  const [publishMessage, setPublishMessage] = useState<string | null>(null)
+  async function refreshPublicContent() {
+    setPublishing(true); setPublishMessage(null)
+    try {
+      await publicContent.refresh()
+      setPublishMessage('อัปเดตข้อมูลหน้าเว็บไซต์แล้ว')
+    } catch (cause) {
+      setPublishMessage(cause instanceof Error ? cause.message : 'อัปเดตข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง')
+    } finally { setPublishing(false) }
+  }
   const { data, loading, error, reload } = useAsyncData(() =>
     /*
       ยอดผู้เข้าชมต่อท้ายชุดเดิม และ `getVisitorTotal` คืน null เองเมื่อเรียกไม่สำเร็จ
@@ -54,6 +66,15 @@ export default function AdminDashboard() {
         <p className="text-ink-muted mt-1 text-sm">
           สรุปสิ่งที่อยู่บนเว็บตอนนี้ และสิ่งที่ยังค้างอยู่ในระบบ
         </p>
+      </div>
+
+      <div className="border-line bg-surface rounded-card mt-6 border p-6">
+        <h2 className="text-lg font-semibold">ข้อมูลหน้าเว็บไซต์</h2>
+        <p className="text-ink-muted mt-1 text-sm">การบันทึกรายการจะอัปเดตหน้าเว็บไซต์ให้อัตโนมัติ กดปุ่มนี้หลังอัปโหลดเว็บไซต์เวอร์ชันใหม่</p>
+        <Button variant="outline" size="sm" className="mt-4" disabled={publishing} onClick={() => void refreshPublicContent()}>
+          {publishing ? 'กำลังอัปเดต…' : 'อัปเดตข้อมูลหน้าเว็บไซต์'}
+        </Button>
+        {publishMessage && <p role="status" className="mt-3 text-sm">{publishMessage}</p>}
       </div>
 
       {error && (

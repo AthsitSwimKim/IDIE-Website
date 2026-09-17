@@ -6,6 +6,7 @@ import type {
   AdminUser,
   UploadedImage,
 } from '@/types/admin'
+import { apiFetch } from '@/utils/apiFetch'
 
 /**
  * ตัวกลางเดียวที่คุยกับ API — ไม่มี component ไหนเรียก `fetch` เอง
@@ -19,7 +20,7 @@ import type {
  */
 
 const SERVER_DOWN =
-  'ติดต่อเซิร์ฟเวอร์ไม่ได้ — ตรวจว่าเซิร์ฟเวอร์ใน server/ รันอยู่ (cd server && npm run dev)'
+  'ระบบหลังบ้านยังไม่พร้อมใช้งาน กรุณาตรวจการตั้งค่า API และฐานข้อมูล หรือติดต่อผู้ดูแลเว็บไซต์'
 
 /** โยนเมื่อเซสชันหมดอายุหรือยังไม่ได้ล็อกอิน — หน้าแอดมินใช้แยกว่าควรเด้งไป login ไหม */
 export class UnauthorizedError extends Error {
@@ -51,7 +52,7 @@ export class ApiError extends Error {
 async function request<T>(path: string, init?: RequestInit): Promise<T> {
   let response: Response
   try {
-    response = await fetch(path, {
+    response = await apiFetch(path, {
       ...init,
       // ต้องมี ไม่งั้นคุกกี้เซสชันไม่ถูกแนบไปกับ request และทุกอย่างตอบ 401
       credentials: 'same-origin',
@@ -73,11 +74,15 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
    *
    * สาเหตุเดียวกันนี้เกิดตอน production ได้ด้วยเมื่อ nginx อยู่หน้าเซิร์ฟเวอร์ที่ล่ม
    */
-  if (response.status === 502 || response.status === 503 || response.status === 504) {
+  if (response.status === 503) {
+    const body = await response.json().catch(() => null) as { error?: unknown } | null
+    throw new ApiError(typeof body?.error === 'string' ? body.error : SERVER_DOWN, 503)
+  }
+  if (response.status === 502 || response.status === 504) {
     throw new Error(SERVER_DOWN)
   }
 
-  if (response.status === 401) throw new UnauthorizedError()
+  if (response.status === 401 && path !== '/api/auth/login') throw new UnauthorizedError()
 
   if (!response.ok) {
     const body = (await response.json().catch(() => null)) as {
@@ -106,6 +111,10 @@ export const auth = {
     }).then((r) => r.user),
 
   logout: () => request<{ ok: true }>('/api/auth/logout', { method: 'POST' }),
+}
+
+export const publicContent = {
+  refresh: () => request<{ ok: true; counts: Record<string, number> }>('/api/admin/public-content', { method: 'POST' }),
 }
 
 /* -------------------------------------------------------------------------- */
@@ -201,14 +210,39 @@ export const adminSiteReferences = {
 }
 
 /**
- * อัปโหลดรูปหนึ่งไฟล์ — เซิร์ฟเวอร์ย่อและแปลงเป็น WebP สองความละเอียดให้เอง
+ * อัปโหลดรูปหนึ่งไฟล์ — PHP ใช้เบราว์เซอร์ย่อและแปลง PNG ก่อนส่ง
  *
  * ไม่ตั้ง Content-Type เองเมื่อส่ง FormData — เบราว์เซอร์ต้องเป็นคนใส่พร้อม
  * `boundary` ที่สุ่มขึ้นมา ถ้าเราตั้งทับ multipart จะแยกส่วนไม่ออกและเซิร์ฟเวอร์
  * จะมองไม่เห็นไฟล์เลย
  */
-export function uploadImage(file: File) {
+export async function uploadImage(file: File) {
+  const imageFile = import.meta.env.VITE_API_DRIVER === 'php' ? await preparePhpImage(file) : file
   const body = new FormData()
-  body.append('file', file)
+  body.append('file', imageFile)
   return request<UploadedImage>('/api/admin/uploads', { method: 'POST', body })
+}
+
+async function preparePhpImage(file: File): Promise<File> {
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) throw new Error('รองรับรูป JPEG, PNG และ WebP เท่านั้น')
+  if (file.size > 3_000_000) throw new Error('รูปต้องไม่เกิน 3 MB กรุณาย่อรูปก่อนอัปโหลด')
+  let image: ImageBitmap
+  try { image = await createImageBitmap(file) } catch { throw new Error('อ่านไฟล์รูปไม่ได้ กรุณาเลือกรูป JPEG, PNG หรือ WebP ที่สมบูรณ์') }
+  try {
+    if (image.width < 1 || image.height < 1 || image.width > 10000 || image.height > 10000 || image.width * image.height > 16_000_000) throw new Error('รูปมีความละเอียดสูงเกินไป กรุณาย่อรูปก่อนอัปโหลด')
+    const canvas = document.createElement('canvas')
+    let scale = Math.min(1, 1400 / Math.max(image.width, image.height))
+    for (let attempt = 0; attempt < 8; attempt++) {
+      canvas.width = Math.max(1, Math.round(image.width * scale))
+      canvas.height = Math.max(1, Math.round(image.height * scale))
+      const context = canvas.getContext('2d')
+      if (!context) throw new Error('เบราว์เซอร์ไม่รองรับการจัดการรูป')
+      context.drawImage(image, 0, 0, canvas.width, canvas.height)
+      const blob = await new Promise<Blob | null>(resolve => canvas.toBlob(resolve, 'image/png'))
+      if (!blob) throw new Error('แปลงรูปไม่สำเร็จ กรุณาลองใหม่')
+      if (blob.size <= 2_900_000) return new File([blob], 'image.png', { type: 'image/png' })
+      scale *= 0.8
+    }
+    throw new Error('รูปมีขนาดใหญ่เกินไป กรุณาย่อรูปก่อนอัปโหลด')
+  } finally { image.close() }
 }

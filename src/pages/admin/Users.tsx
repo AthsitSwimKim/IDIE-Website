@@ -116,7 +116,7 @@ function AccountTable({
                   <td className="text-ink-muted px-4 py-3">{formatDate(account.createdAt)}</td>
                   <td className="px-4 py-3 text-right whitespace-nowrap">
                     <div className="flex justify-end gap-1">
-                      <Button variant="ghost" size="sm" onClick={() => setResetting(account)}>
+                      <Button variant="ghost" size="sm" onClick={() => setResetting(account)} disabled={isMe} title={isMe ? 'ใช้ฟอร์มเปลี่ยนรหัสผ่านของคุณด้านล่าง' : undefined}>
                         ตั้งรหัสใหม่
                       </Button>
                       {/*
