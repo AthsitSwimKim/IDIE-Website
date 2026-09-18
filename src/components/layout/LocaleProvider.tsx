@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react'
 import type { Locale, LocalizedText } from '@/types/content'
 import { config } from '@/config'
-import { LocaleContext, pickLocale, readStoredLocale } from '@/hooks/useLocale'
+import { LocaleContext, pickLocale } from '@/hooks/useLocale'
 
 export function LocaleProvider({ children }: { children: ReactNode }) {
-  const [locale, setLocaleState] = useState<Locale>(readStoredLocale)
+  const [locale, setLocaleState] = useState<Locale>(config.defaultLocale)
 
   /**
    * <html lang> ต้องเปลี่ยนตามภาษาจริง ๆ ไม่ใช่แค่ข้อความบนหน้า —
@@ -17,7 +17,6 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
 
   const setLocale = useCallback((next: Locale) => {
     setLocaleState(next)
-    window.localStorage.setItem(config.localeStorageKey, next)
   }, [])
 
   const value = useMemo(

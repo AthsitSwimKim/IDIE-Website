@@ -23,8 +23,7 @@ export const config = {
    */
   foundedYear: 2006,
 
-  defaultLocale: 'th' as const,
-  localeStorageKey: 'idie.locale',
+  defaultLocale: 'en' as const,
 } as const
 
 /** ปีประสบการณ์ที่คำนวณจากปีก่อตั้งจริง — ไม่ใช่ตัวเลขที่แต่งขึ้น */

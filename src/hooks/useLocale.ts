@@ -1,6 +1,5 @@
 import { createContext, useContext } from 'react'
 import type { Locale, LocalizedText } from '@/types/content'
-import { config } from '@/config'
 
 export interface LocaleContextValue {
   locale: Locale
@@ -29,10 +28,4 @@ export function pickLocale(text: LocalizedText | undefined, locale: Locale): str
   if (primary) return primary
   const other: Locale = locale === 'th' ? 'en' : 'th'
   return text[other]?.trim() ?? ''
-}
-
-export function readStoredLocale(): Locale {
-  if (typeof window === 'undefined') return config.defaultLocale
-  const stored = window.localStorage.getItem(config.localeStorageKey)
-  return stored === 'th' || stored === 'en' ? stored : config.defaultLocale
 }

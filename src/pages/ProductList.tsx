@@ -50,9 +50,13 @@ export default function ProductList() {
   const [params, setParams] = useSearchParams()
   const { hash } = useLocation()
 
-  const category = params.get('category') ?? undefined
   const brand = params.get('brand') ?? undefined
   const query = params.get('q') ?? ''
+  // Explicit category/brand/search links keep their filters; the plain page
+  // starts with intercom stations. Empty category explicitly means all.
+  const category = params.has('category')
+    ? params.get('category') || undefined
+    : !brand && !query ? 'intercom-stations' : undefined
   const requestedPage = Number(params.get('page')) || 1
 
   // ส่งแบรนด์ที่เลือกไปด้วย เพื่อให้ชิปหมวดเหลือเฉพาะหมวดที่แบรนด์นั้นมีของจริง
@@ -100,10 +104,14 @@ export default function ProductList() {
   /** เปลี่ยนตัวกรองแล้วต้องกลับไปหน้าแรกเสมอ ไม่งั้นผลลัพธ์ชุดใหม่จะเปิดค้างกลางเล่ม */
   function setParam(key: string, value?: string) {
     const next = new URLSearchParams(params)
-    if (value) next.set(key, value)
+    if (category && !next.has('category')) next.set('category', category)
+    if (value !== undefined) next.set(key, value)
     else next.delete(key)
     if (key !== 'page') next.delete('page')
-    if (key === 'brand') next.delete('category')
+    if (key === 'brand') {
+      next.delete('category')
+      if (!value) next.set('category', '')
+    }
     setParams(next, { replace: true })
   }
 
@@ -201,7 +209,7 @@ export default function ProductList() {
             <span className="text-sm font-medium">{t(ui.labels.category)}</span>
             <select
               value={category ?? ''}
-              onChange={(event) => setParam('category', event.target.value || undefined)}
+              onChange={(event) => setParam('category', event.target.value)}
               className="border-line bg-surface focus:border-primary-600 focus:ring-primary-100 mt-2 block h-12 w-full min-w-0 rounded border px-3 text-sm outline-none focus:ring-3"
             >
               <option value="">{t(ui.products.allCategories)}</option>
@@ -228,7 +236,7 @@ export default function ProductList() {
                 : t(ui.products.resultCount).replace('{count}', String(total))}
             </output>
             {hasFilter && (
-              <Button variant="ghost" size="sm" onClick={() => setParams({}, { replace: true })}>
+              <Button variant="ghost" size="sm" onClick={() => setParams({ category: '' }, { replace: true })}>
                 {t(ui.actions.clearFilters)}
               </Button>
             )}
