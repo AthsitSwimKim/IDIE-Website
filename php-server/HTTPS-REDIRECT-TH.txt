@@ -1,0 +1,21 @@
+ZIP 16 — เปลี่ยน HTTP ไป HTTPS อัตโนมัติ
+สาเหตุ: HTTP เดิมเปิดหน้าเว็บได้โดยไม่เปลี่ยนไป HTTPS ทำให้ Chrome เตือนว่าการเชื่อมต่อไม่ปลอดภัย
+เพิ่มกฎ IIS URL Rewrite ใน httpdocs/web.config ก่อนกฎ API และหน้าบ้าน
+HTTP ของ idindustrial.com และ www.idindustrial.com จะไป https://www.idindustrial.com โดยคง path และ query string
+HTTPS เดิมไม่เปลี่ยนเส้นทางซ้ำ; รักษากฎปิดกั้นไฟล์ส่วนตัวและการทำงานของ API/หน้าบ้านเดิม
+ยกเว้น /.well-known/acme-challenge/ จาก redirect เพื่อคงช่องทางตรวจสอบใบรับรอง
+ไม่ได้แก้ใบรับรองหรือระบบต่ออายุใบรับรอง
+ZIP นี้มีเพียง web.config ของรอบนี้ ไม่รวม ZIP เก่า และไม่มี config.php, ฐานข้อมูล หรือรูปภาพ
+
+สถานะ 18 กันยายน 2026: แก้ web.config บน RapidCloud ผ่าน File Manager แล้ว
+ตรวจจริง HTTP -> 301 HTTPS, URL สินค้าที่มี query string คงเดิม และ HTTPS ของทั้งสองโดเมนตอบ 200
+รีเฟรชแท็บสินค้าที่เดิมเป็น HTTP แล้วได้ https://www.idindustrial.com/products
+ตรวจ login, robots.txt, auth/me และ health ตอบ 200; ไฟล์ api/lib และ idie-private ยังคง 404
+ระหว่างตรวจ PHP มีช่วง timeout 20 วินาที แล้วตรวจใหม่ auth/me ตอบ 0.96 วินาที และ health 0.49 วินาที
+การแก้ HTTPS นี้ไม่ได้แก้การหน่วงของ PHP ที่เกิดเป็นบางช่วง
+ZIP นี้เก็บไว้สำหรับ Deploy ครั้งถัดไป ไม่จำเป็นต้องอัปโหลดซ้ำในครั้งนี้
+
+หากต้องติดตั้งซ้ำ: สำรอง web.config เดิมก่อน แล้วอัปโหลด ZIP 16 ลง httpdocs
+Extract เขียนทับ web.config แล้วรีเฟรชเว็บ; เก็บ assets และไฟล์อื่นทั้งหมดไว้
+หากตั้งค่าเดิมของโฮสติ้งเปลี่ยนแล้ว ให้นำเฉพาะกฎ IDIE HTTPS redirect ไปเพิ่มใน web.config ล่าสุด
+เอกสาร IIS: https://learn.microsoft.com/en-us/iis/extensions/url-rewrite-module/url-rewrite-module-configuration-reference
