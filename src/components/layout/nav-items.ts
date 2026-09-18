@@ -4,6 +4,7 @@ import { ui } from '@/data'
 export interface NavItem {
   to: string
   label: LocalizedText
+  desktopLabel?: LocalizedText
   end?: boolean
   children?: NavItem[]
 }
@@ -34,8 +35,8 @@ export const navItems: NavItem[] = [
     to: '/reference',
     label: ui.nav.reference,
     children: [
-      { to: '/reference', label: ui.nav.reference, end: true },
-      { to: '/projects', label: ui.nav.projects },
+      { to: '/reference', label: ui.nav.reference, desktopLabel: { th: 'โครงการที่ผ่านมา', en: 'Reference Project' }, end: true },
+      { to: '/projects', label: ui.nav.projects, desktopLabel: { th: 'โครงการหลัก', en: 'Major Project' } },
     ],
   },
   { to: '/news', label: ui.nav.news },

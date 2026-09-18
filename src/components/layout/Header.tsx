@@ -217,7 +217,7 @@ function DesktopNavItem({ item }: { item: NavItem }) {
                   )
                 }
               >
-                {t(child.label)}
+                {t(child.desktopLabel ?? child.label)}
               </NavLink>
             </li>
           ))}

@@ -1,0 +1,7 @@
+ZIP 12 — เปลี่ยนชื่อเฉพาะสองรายการในเมนูย่อยที่วง
+ไทย: โครงการที่ผ่านมา / โครงการหลัก
+อังกฤษ: Reference Project / Major Project
+หัวข้อเมนูหลัก ชื่อหน้า เมนูมือถือ และ Footer คงเดิม
+มีเฉพาะไฟล์หน้าบ้านที่เปลี่ยนจาก ZIP 11: assets ที่ build ใหม่ และ index.html
+อัปโหลด 12-reference-dropdown-labels.zip ลง httpdocs แล้ว Extract เขียนทับ จากนั้น Ctrl + F5
+เก็บ assets เดิมไว้ ไม่ต้องแก้ PHP, Config หรือ Database
