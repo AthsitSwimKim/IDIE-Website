@@ -125,7 +125,7 @@ CREATE TABLE IF NOT EXISTS site_references (
   customer_en   VARCHAR(300)  NOT NULL,
   location_th   VARCHAR(300)  NOT NULL,
   location_en   VARCHAR(300)  NOT NULL,
-
+  year          SMALLINT UNSIGNED NULL,
 
   position      SMALLINT UNSIGNED NOT NULL DEFAULT 0,
   status        ENUM('draft','published') NOT NULL DEFAULT 'draft',

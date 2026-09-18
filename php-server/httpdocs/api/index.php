@@ -19,6 +19,7 @@ try {
     if ($parts[0]==='auth' && count($parts)===2) auth_route($parts[1],$method);
     if ($route==='contact' && $method==='POST') contact_route();
     if ($route==='admin/public-content' && $method==='POST') {
+        ensure_site_reference_year();
         $counts=[];
         foreach (['news','projects','site-references'] as $kind) $counts[$kind]=count(refresh_public_content($kind)['items']);
         json_response(['ok'=>true,'counts'=>$counts]);

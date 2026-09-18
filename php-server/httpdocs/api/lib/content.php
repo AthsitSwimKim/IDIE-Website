@@ -1,6 +1,7 @@
 <?php
 declare(strict_types=1);
 require_once __DIR__.'/content-cache.php';
+require_once __DIR__.'/migrations.php';
 function pair(array $r,string $key): array { return ['th'=>$r[$key.'_th'],'en'=>$r[$key.'_en']]; }
 function row_image(array $r,string $prefix): ?array {
     if (empty($r[$prefix.'src'])) return null;
@@ -11,7 +12,7 @@ function row_image(array $r,string $prefix): ?array {
 }
 function map_content(string $kind,array $r,bool $admin,?array $children=null): array {
     if ($kind==='news') $out=['slug'=>$r['slug'],'title'=>pair($r,'title'),'excerpt'=>pair($r,'excerpt'),'body'=>pair($r,'body'),'category'=>$r['category'],'publishedAt'=>(new DateTimeImmutable($r['published_at'],new DateTimeZone('UTC')))->format('Y-m-d\TH:i:s.000\Z'),'featured'=>(bool)$r['featured']];
-    elseif ($kind==='site-references') $out=['id'=>(int)$r['id'],'name'=>pair($r,'name'),'customer'=>pair($r,'customer'),'location'=>pair($r,'location'),'image'=>row_image($r,'image_')];
+    elseif ($kind==='site-references') $out=['id'=>(int)$r['id'],'name'=>pair($r,'name'),'customer'=>pair($r,'customer'),'location'=>pair($r,'location'),'year'=>isset($r['year'])?(int)$r['year']:null,'image'=>row_image($r,'image_')];
     else {
         $out=['slug'=>$r['slug'],'name'=>pair($r,'name'),'client'=>pair($r,'client'),'location'=>pair($r,'location'),'industry'=>$r['industry'],'year'=>$r['year']===null?null:(int)$r['year'],'overview'=>pair($r,'overview'),'engineeringSolution'=>pair($r,'engineering_solution'),'featured'=>(bool)$r['featured']];
         $scope=$children===null?query('SELECT text_th,text_en FROM project_scope_items WHERE project_id=? ORDER BY position',[$r['id']])->fetchAll():($children['scope'][$r['id']] ?? []);
@@ -71,7 +72,9 @@ function content_route(string $kind,?string $rawId,bool $admin,string $method): 
         json_response(['ok'=>true]);
     }
     if (($method==='POST' && $id===null) || ($method==='PUT' && $id!==null)) {
-        $data=json_input(); $values=content_values($kind,$data); $cacheLock=public_content_lock($kind); $temp=null; $pdo=db(); $pdo->beginTransaction();
+        $data=json_input(); $values=content_values($kind,$data);
+        if ($kind==='site-references') ensure_site_reference_year();
+        $cacheLock=public_content_lock($kind); $temp=null; $pdo=db(); $pdo->beginTransaction();
         try {
             if ($id===null) {
                 $columns=implode(',',array_keys($values)); $holders=implode(',',array_fill(0,count($values),'?'));

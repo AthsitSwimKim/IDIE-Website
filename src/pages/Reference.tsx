@@ -199,6 +199,7 @@ function ReferenceRow({ item }: { item: SiteReference }) {
 
         <Row label={t(ui.labels.customer)}>{t(item.customer)}</Row>
         <Row label={t(ui.labels.location)}>{t(item.location)}</Row>
+        {item.year != null && <Row label={t(ui.labels.year)}>{item.year}</Row>}
       </dl>
     </article>
   )

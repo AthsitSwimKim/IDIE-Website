@@ -269,6 +269,7 @@ export interface SiteReference {
   /** ใส่ "ไม่เปิดเผย / Confidential" ได้ เมื่อลูกค้าไม่อนุญาตให้เอ่ยชื่อ */
   customer: LocalizedText;
   location: LocalizedText;
+  year: number | null;
   image: ImageAsset | null;
 }
 

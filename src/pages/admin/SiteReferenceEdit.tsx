@@ -18,6 +18,7 @@ interface FormState {
   name: LocalizedText
   customer: LocalizedText
   location: LocalizedText
+  year: string
   /** เก็บเป็นสตริงเพราะช่องตัวเลขที่ว่างอยู่ต้องพิมพ์ทับได้ ไม่ใช่เด้งเป็น 0 ทันที */
   position: string
   status: PublishStatus
@@ -28,6 +29,7 @@ const empty = (): FormState => ({
   name: { th: '', en: '' },
   customer: { th: '', en: '' },
   location: { th: '', en: '' },
+  year: '',
   position: '0',
   status: 'draft',
   image: null,
@@ -77,6 +79,7 @@ export default function AdminSiteReferenceEdit() {
           name: item.name,
           customer: item.customer,
           location: item.location,
+          year: item.year == null ? '' : String(item.year),
           position: String(item.position),
           status: item.status,
           image: item.image,
@@ -119,6 +122,7 @@ export default function AdminSiteReferenceEdit() {
       name: form.name,
       customer: form.customer,
       location: form.location,
+      year: form.year.trim() === '' ? null : Number(form.year.trim()),
       position: Number(form.position.trim()) || 0,
       status: form.status,
       image: form.image,
@@ -195,6 +199,18 @@ export default function AdminSiteReferenceEdit() {
           onChange={(value) => set('location', value)}
           errors={fieldErrors}
         />
+
+        <Field label="ปี (Year)" hint="ปี ค.ศ. เช่น 2026 เว้นว่างเพื่อไม่แสดงปี" htmlFor="year" error={fieldErrors.year}>
+          <TextInput
+            id="year"
+            type="number"
+            min={1900}
+            max={2200}
+            step={1}
+            value={form.year}
+            onChange={(value) => set('year', value)}
+          />
+        </Field>
 
         <div className="grid gap-6 sm:grid-cols-2">
           <Field

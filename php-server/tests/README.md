@@ -8,6 +8,9 @@ node scripts/build-rapidcloud.mjs
 python php-server/tests/prepare.py
 docker compose -p idie-php-validation -f php-server/tests/compose.yaml up -d --build
 python php-server/tests/integration.py
+python php-server/tests/public-content.py
+python php-server/tests/site-reference-year.py
+node php-server/tests/public-content-client.mjs
 python php-server/tests/smtp.py
 python php-server/tests/edge.py
 python php-server/tests/small-upload.py

@@ -480,6 +480,7 @@ export const ui = {
     projectName: { th: 'ชื่อโครงการ', en: 'PROJECT NAME' },
     customer: { th: 'ลูกค้า', en: 'CUSTOMER' },
     location: { th: 'สถานที่', en: 'LOCATION' },
+    year: { th: 'ปี', en: 'YEAR' },
     category: { th: 'หมวดหมู่', en: 'Category' },
     menu: { th: 'เมนู', en: 'Menu' },
     closeMenu: { th: 'ปิดเมนู', en: 'Close menu' },

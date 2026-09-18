@@ -39,7 +39,11 @@ function content_values(string $kind,array $data): array {
     $fields=$kind==='news' ? ['title'=>300,'excerpt'=>1000,'body'=>60000] : ($kind==='site-references' ? ['name'=>300,'customer'=>300,'location'=>300] : ['name'=>300,'client'=>300,'location'=>300,'overview'=>5000,'engineeringSolution'=>5000]);
     foreach ($fields as $field=>$max) { $pair=localized($data[$field] ?? null,$field,$max); $column=$field==='engineeringSolution'?'engineering_solution':$field; $values[$column.'_th']=$pair['th']; $values[$column.'_en']=$pair['en']; }
     $values['status']=enum_value($data['status'] ?? null,'status',['draft','published']);
-    if ($kind==='site-references') $values['position']=int_value($data['position'] ?? null,'position',0,9999);
+    if ($kind==='site-references') {
+        $values['position']=int_value($data['position'] ?? null,'position',0,9999);
+        // Old browser builds omit year: preserve the current value on update.
+        if (array_key_exists('year',$data)) $values['year']=$data['year']===null ? null : int_value($data['year'],'year',1900,2200);
+    }
     else {
         $slug=text_value($data['slug'] ?? null,'slug',160); if (!preg_match('/^[a-z0-9]+(?:-[a-z0-9]+)*$/D',$slug)) fail(400,'slug ใช้ a-z, 0-9 และขีดกลางเท่านั้น'); $values['slug']=$slug;
         if (!isset($data['featured']) || !is_bool($data['featured'])) fail(400,'featured ไม่ถูกต้อง'); $values['featured']=$data['featured']?1:0;
