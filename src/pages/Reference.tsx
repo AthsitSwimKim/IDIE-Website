@@ -147,7 +147,7 @@ function ReferenceRow({ item }: { item: SiteReference }) {
   const { t } = useLocale()
 
   return (
-    <article className="mx-auto flex w-full max-w-4xl flex-col gap-5 py-7 sm:flex-row sm:items-center sm:gap-9">
+    <article className="mx-auto flex w-full max-w-5xl flex-col gap-5 py-7 sm:flex-row sm:items-center sm:gap-9">
       {/*
         ภาพเป็นตัวกำหนดความสูงของแถวด้วยสัดส่วน 4:3 ส่วนข้อความจัดกึ่งกลางแนวตั้งเทียบ
         กับภาพ (`items-center`) — รายละเอียดมีแค่สามบรรทัดซึ่งสั้นกว่าภาพเกือบทุกครั้ง
