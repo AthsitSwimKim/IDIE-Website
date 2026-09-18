@@ -1,3 +1,4 @@
+import { CompanyProfileText } from '@/components/ui/CompanyProfileText'
 import {
   Badge,
   Button,
@@ -69,11 +70,7 @@ export default function About() {
                   การตัดบรรทัดปกติได้ 502/517/380 ซึ่งไล่จากยาวไปสั้นตามธรรมชาติ
                   ส่วน balance ได้ 417/460/522 ที่ไล่จากสั้นไปยาวจนดูเหมือนบันไดกลับหัว
                 */}
-                {t(company.about).split('\n\n').map((paragraph) => (
-                  <p key={paragraph}>
-                    <KeepPhrases>{paragraph}</KeepPhrases>
-                  </p>
-                ))}
+                <CompanyProfileText>{t(company.about)}</CompanyProfileText>
               </div>
 
               {/*

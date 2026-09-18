@@ -181,6 +181,8 @@ const PATTERN = new RegExp(
 export interface KeepPhrasesProps {
   /** ข้อความล้วน — ห้ามส่ง element เข้ามาเพราะต้องค้นหาวลีในสตริงจริง */
   children: string
+  /** วลีเพิ่มเติมเฉพาะส่วนนี้ โดยไม่เปลี่ยนการตัดคำในหน้าอื่น */
+  phrases?: readonly string[]
 }
 
 /**
@@ -198,8 +200,20 @@ export interface KeepPhrasesProps {
  * ใช้กับข้อความที่เป็นสตริงเดียวเท่านั้น ไม่รองรับ element ซ้อน —
  * ถ้าวันหนึ่งต้องใส่ตัวหนาหรือลิงก์ในประโยคเดียวกัน ต้องแยกเป็นหลายชิ้นแล้วครอบทีละชิ้น
  */
-export function KeepPhrases({ children }: KeepPhrasesProps) {
-  const parts = children.split(PATTERN)
+export function KeepPhrases({ children, phrases }: KeepPhrasesProps) {
+  const phrasePattern = phrases?.length
+    ? [...KEEP_TOGETHER, ...phrases]
+        .sort((a, b) => b.length - a.length)
+        .map((phrase) => phrase.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'))
+        .join('|')
+    : null
+  const pattern = phrasePattern
+    ? new RegExp(
+        '((?:' + LEADING_CONJUNCTIONS.join('|') + ')?(?:' + phrasePattern + '))',
+        'g',
+      )
+    : PATTERN
+  const parts = children.split(pattern)
 
   return (
     <>
