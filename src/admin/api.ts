@@ -1,5 +1,6 @@
 import type {
   AdminAccount,
+  AdminJob,
   AdminNews,
   AdminProject,
   AdminSiteReference,
@@ -245,4 +246,13 @@ async function preparePhpImage(file: File): Promise<File> {
     }
     throw new Error('รูปมีขนาดใหญ่เกินไป กรุณาย่อรูปก่อนอัปโหลด')
   } finally { image.close() }
+}
+
+export type JobPayload = Omit<AdminJob, 'id'>
+export const adminJobs = {
+  list: () => request<AdminJob[]>('/api/admin/jobs'),
+  get: (id: number) => request<AdminJob>('/api/admin/jobs/' + id),
+  create: (payload: JobPayload) => request<{ id: number }>('/api/admin/jobs', { method: 'POST', body: JSON.stringify(payload) }),
+  update: (id: number, payload: JobPayload) => request<{ ok: true }>('/api/admin/jobs/' + id, { method: 'PUT', body: JSON.stringify(payload) }),
+  remove: (id: number) => request<{ ok: true }>('/api/admin/jobs/' + id, { method: 'DELETE' }),
 }

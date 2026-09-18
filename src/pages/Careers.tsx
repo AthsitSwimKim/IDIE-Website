@@ -8,14 +8,14 @@ import { careersEmail, getJobOpenings, ui } from '@/data'
  * Careers — Phase 4
  *
  * ประกาศทั้งสองตำแหน่งเป็นของจริงจากหน้า Job ของเว็บบริษัท
- * ปุ่มสมัครเป็น mailto: ที่เติมหัวข้ออีเมลให้แล้ว เพราะเว็บนี้ไม่มี backend
+ * ปุ่มสมัครเป็น mailto: ที่เติมหัวข้ออีเมลให้แล้ว โดยส่งผ่านโปรแกรมอีเมลของผู้สมัคร
  * การส่งใบสมัครจึงต้องผ่านอีเมลจริงตามที่บริษัทระบุไว้เอง
  *
  * ไม่แสดงจำนวนอัตราเพราะเว็บเดิมไม่ได้ระบุ — ข้อมูลที่ไม่มีดีกว่าตัวเลขที่เดา
  */
 export default function Careers() {
   const { t } = useLocale()
-  const { data: jobs } = useAsyncData(getJobOpenings)
+  const { data: jobs, loading, error, reload } = useAsyncData(getJobOpenings)
 
   return (
     <>
@@ -33,6 +33,15 @@ export default function Careers() {
       <Section>
         <Heading level={2}>{t(ui.careers.openPositions)}</Heading>
 
+         {loading && !jobs && <output className="text-ink-muted mt-8 block">{t({ th: 'กำลังโหลดตำแหน่งที่เปิดรับ…', en: 'Loading open positions…' })}</output>}
+        {error && <div role="alert" className="border-line rounded-card mt-8 border p-7">
+          <p>{t({ th: 'โหลดตำแหน่งที่เปิดรับไม่สำเร็จ กรุณาลองอีกครั้ง', en: 'Unable to load open positions. Please try again.' })}</p>
+          <Button variant="outline" className="mt-4" onClick={reload}>{t({ th: 'ลองใหม่', en: 'Try again' })}</Button>
+        </div>}
+        {!loading && !error && jobs?.length === 0 && <section aria-live="polite" className="border-line bg-surface rounded-card mt-8 border p-7 md:p-9">
+          <h3 className="text-h3 font-semibold">{t({ th: 'ขณะนี้ยังไม่มีตำแหน่งที่เปิดรับสมัคร', en: 'There are currently no open positions.' })}</h3>
+          <p className="text-ink-muted mt-3">{t({ th: 'ขอบคุณที่สนใจร่วมงานกับเรา กรุณากลับมาตรวจสอบตำแหน่งที่เปิดรับอีกครั้ง', en: 'Thank you for your interest in joining us. Please check back for future openings.' })}</p>
+        </section>}
         <ul className="mt-8 space-y-6">
           {jobs?.map((job) => (
             <li key={job.slug}>
@@ -43,7 +52,12 @@ export default function Careers() {
                     <p className="text-ink-muted mt-1 text-sm">{t(job.department)}</p>
                   </div>
                   <div className="flex flex-wrap gap-2">
-                    <Badge tone="brand">{t(ui.careers.fullTime)}</Badge>
+                    <Badge tone="brand">{t({
+                      'full-time': ui.careers.fullTime,
+                      'part-time': { th: 'งานพาร์ตไทม์', en: 'Part-time' },
+                      contract: { th: 'งานสัญญาจ้าง', en: 'Contract' },
+                      internship: { th: 'ฝึกงาน', en: 'Internship' },
+                    }[job.employmentType])}</Badge>
                     <Badge>
                       {t(ui.careers.basedIn)} {t(job.location)}
                     </Badge>

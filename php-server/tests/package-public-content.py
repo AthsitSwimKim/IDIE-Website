@@ -7,7 +7,9 @@ stage=Path(manifest['stage'])
 out=root/'tmp/public-content-package';out.mkdir(exist_ok=True)
 files=sorted((stage/'api').rglob('*'))+sorted((stage/'assets').rglob('*'))
 files=[p for p in files if p.is_file()]
-files += [stage/'uploads/web.config',stage/'uploads/content-cache/web.config',stage/'index.html']
+files += [stage/'uploads/web.config',stage/'uploads/content-cache/web.config']
+files += sorted(p for p in stage.iterdir() if p.is_file() and p.name!='index.html')
+files += [stage/'index.html']
 name=sys.argv[1] if len(sys.argv)>1 else '06-fast-public-content.zip'
 assert re.fullmatch(r'[0-9]{2}-[a-z0-9-]+\.zip',name),'Invalid archive name'
 target=out/name

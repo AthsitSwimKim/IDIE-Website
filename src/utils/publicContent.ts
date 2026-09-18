@@ -1,6 +1,6 @@
 import { apiFetch, usesPhpApi } from './apiFetch'
 
-type Kind = 'news' | 'projects' | 'site-references'
+type Kind = 'news' | 'projects' | 'site-references' | 'jobs'
 type Item = { slug?: string; id?: number }
 const pending = new Map<Kind, Promise<Item[]>>()
 
@@ -34,7 +34,7 @@ async function loadCollection(kind: Kind): Promise<Item[]> {
 }
 
 export async function fetchPublishedContent<T>(path: string): Promise<T> {
-  const match = path.match(/^\/api\/(news|projects|site-references)(?:\/([^/]+))?$/)
+  const match = path.match(/^\/api\/(news|projects|site-references|jobs)(?:\/([^/]+))?$/)
   if (!usesPhpApi || !match) {
     const response = await apiFetch(path)
     if (!response.ok) throw new Error(`${path} ตอบกลับ ${response.status}`)

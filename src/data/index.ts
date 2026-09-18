@@ -48,7 +48,7 @@ import { datasheetCategories, datasheetCategoryOrder, loadDatasheets } from '@/d
 import { loadProducts, PRODUCT_ATTRIBUTES } from '@/data/products'
 import { referenceCompanies } from '@/data/references'
 import { careersEmail, jobOpenings } from '@/data/careers'
-import { apiFetch } from '@/utils/apiFetch'
+import { apiFetch, usesPhpApi } from '@/utils/apiFetch'
 import { fetchPublishedContent } from '@/utils/publicContent'
 
 export { ui } from '@/data/i18n'
@@ -287,11 +287,11 @@ export async function getFeaturedReferenceCompanies(limit = 12): Promise<Referen
 /* -------------------------------------------------------------------------- */
 
 export async function getJobOpenings(): Promise<JobOpening[]> {
-  return jobOpenings.filter((j) => j.isOpen)
+  return usesPhpApi ? fetchPublishedContent<JobOpening[]>('/api/jobs') : jobOpenings.filter((j) => j.isOpen)
 }
 
 export async function getJobBySlug(slug: string): Promise<JobOpening | null> {
-  return jobOpenings.find((j) => j.slug === slug) ?? null
+  return usesPhpApi ? fetchPublishedContent<JobOpening | null>('/api/jobs/' + encodeURIComponent(slug)) : jobOpenings.find((j) => j.slug === slug && j.isOpen) ?? null
 }
 
 /* -------------------------------------------------------------------------- */

@@ -4,7 +4,9 @@ import concurrent.futures
 c=Client(); guest=Client()
 check('Guest cannot rebuild public files',guest.call('admin/public-content','POST')[0]==401)
 check('Owner login',c.call('auth/login','POST',{'username':'owner','password':'New-Owner-Password-2026'})[0]==200)
-check('Initial snapshots generated',c.call('admin/public-content','POST')==(200,{'ok':True,'counts':{'news':0,'projects':0,'site-references':0}}))
+check('Jobs before migration return actionable error instead of false empty list',guest.call('jobs')[0]==503 and 'อัปเดตข้อมูลหน้าเว็บไซต์' in guest.call('jobs')[1]['error'])
+check('Publish initialization requires CSRF',c.call('admin/public-content','POST',csrf=False)[0]==403 and guest.call('jobs')[0]==503)
+check('Initial snapshots generated',c.call('admin/public-content','POST')==(200,{'ok':True,'counts':{'news':0,'projects':0,'site-references':0,'jobs':2}}))
 def snapshot(kind):
     with urllib.request.urlopen(BASE+'/uploads/content-cache/'+kind+'.json') as res:
         return json.loads(res.read())

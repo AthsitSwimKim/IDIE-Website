@@ -2,7 +2,7 @@
 declare(strict_types=1);
 
 function public_content_kind(string $kind): string {
-    if (!in_array($kind,['news','projects','site-references'],true)) fail(404,'ไม่พบรายการข้อมูลนี้');
+    if (!in_array($kind,['news','projects','site-references','jobs'],true)) fail(404,'ไม่พบรายการข้อมูลนี้');
     return $kind;
 }
 function public_content_directory(): string {
@@ -24,9 +24,10 @@ function invalidate_public_content(string $kind): void {
 }
 function public_content_snapshot(string $kind): array {
     $kind=public_content_kind($kind);
-    $table=['news'=>'news','projects'=>'projects','site-references'=>'site_references'][$kind];
+    $table=['news'=>'news','projects'=>'projects','site-references'=>'site_references','jobs'=>'job_openings'][$kind];
     $order=$kind==='news'?'published_at DESC,id DESC':($kind==='projects'?'year DESC,id DESC':'position,id');
     $where="status='published'";
+    if ($kind==='jobs') $where.=' AND is_open=1';
     $params=[]; $now=null;
     if ($kind==='news') {
         $now=query('SELECT UTC_TIMESTAMP()')->fetchColumn();

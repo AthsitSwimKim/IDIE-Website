@@ -74,6 +74,7 @@ export default function AdminDashboard() {
         <Button variant="outline" size="sm" className="mt-4" disabled={publishing} onClick={() => void refreshPublicContent()}>
           {publishing ? 'กำลังอัปเดต…' : 'อัปเดตข้อมูลหน้าเว็บไซต์'}
         </Button>
+        <div className="mt-4 flex flex-wrap gap-2"><Button variant="outline" size="sm" to="/admin/jobs">จัดการตำแหน่งที่เปิดรับ</Button><Button variant="ghost" size="sm" to="/admin/jobs/new">เพิ่มตำแหน่งใหม่</Button></div>
         {publishMessage && <p role="status" className="mt-3 text-sm">{publishMessage}</p>}
       </div>
 

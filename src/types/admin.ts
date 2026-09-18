@@ -1,4 +1,4 @@
-import type { ImageAsset, NewsArticle, Project, SiteReference } from '@/types/content'
+import type { ImageAsset, NewsArticle, Project, SiteReference, JobOpening } from '@/types/content'
 
 /**
  * รูปร่างข้อมูลฝั่งแอดมิน — ต่างจากฝั่งสาธารณะสองจุด
@@ -55,6 +55,12 @@ export interface UploadedImage {
  * หวงห้ามถ่ายรูปไม่ได้ — ดูเหตุผลเต็มใน server/src/mappers.ts
  */
 export interface AdminSiteReference extends SiteReference {
+  position: number
+  status: PublishStatus
+}
+
+export interface AdminJob extends JobOpening {
+  id: number
   position: number
   status: PublishStatus
 }

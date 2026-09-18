@@ -35,6 +35,7 @@ function password_value($v,string $field='password'): string {
 }
 function username_value($v): string { $v=text_value($v,'username',64); if (!preg_match('/^[a-z0-9._-]{3,64}$/D',$v)) fail(400,'ชื่อผู้ใช้ใช้ a-z 0-9 จุด ขีดล่าง ขีดกลาง ยาว 3–64 ตัว'); return $v; }
 function content_values(string $kind,array $data): array {
+    if ($kind==='jobs') return job_values($data);
     $values=[];
     $fields=$kind==='news' ? ['title'=>300,'excerpt'=>1000,'body'=>60000] : ($kind==='site-references' ? ['name'=>300,'customer'=>300,'location'=>300] : ['name'=>300,'client'=>300,'location'=>300,'overview'=>5000,'engineeringSolution'=>5000]);
     foreach ($fields as $field=>$max) { $pair=localized($data[$field] ?? null,$field,$max); $column=$field==='engineeringSolution'?'engineering_solution':$field; $values[$column.'_th']=$pair['th']; $values[$column.'_en']=$pair['en']; }

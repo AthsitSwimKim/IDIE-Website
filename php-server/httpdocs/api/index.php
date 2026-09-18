@@ -20,8 +20,9 @@ try {
     if ($route==='contact' && $method==='POST') contact_route();
     if ($route==='admin/public-content' && $method==='POST') {
         ensure_site_reference_year();
+        ensure_jobs();
         $counts=[];
-        foreach (['news','projects','site-references'] as $kind) $counts[$kind]=count(refresh_public_content($kind)['items']);
+        foreach (['news','projects','site-references','jobs'] as $kind) $counts[$kind]=count(refresh_public_content($kind)['items']);
         json_response(['ok'=>true,'counts'=>$counts]);
     }
     if ($route==='visitors' && in_array($method,['GET','POST'],true)) {
@@ -35,6 +36,6 @@ try {
     $admin=$parts[0]==='admin'; if ($admin) array_shift($parts);
     if ($admin && $parts[0]==='users') { array_shift($parts); users_route($parts,$method,$actor); }
     if ($admin && $parts===['uploads'] && $method==='POST') save_uploaded_image();
-    if (in_array($parts[0],['news','projects','site-references'],true) && count($parts)<=2) content_route($parts[0],$parts[1] ?? null,$admin,$method);
+    if (in_array($parts[0],['news','projects','site-references','jobs'],true) && count($parts)<=2) content_route($parts[0],$parts[1] ?? null,$admin,$method);
     fail(404,'ไม่พบ endpoint นี้');
 } catch (Throwable $e) { public_error($e); }

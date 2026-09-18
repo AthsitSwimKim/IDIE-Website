@@ -27,6 +27,7 @@ const NAV = [
     ถ้าไม่กำกับไว้ NavLink จะขึ้นสถานะ active ค้างตลอดไม่ว่าจะอยู่หน้าไหน
   */
   { to: '/admin', label: 'ภาพรวม', end: true },
+  { to: '/admin/jobs', label: 'ตำแหน่งที่เปิดรับ' },
   { to: '/admin/news', label: 'ข่าวสาร' },
   { to: '/admin/projects', label: 'ผลงาน' },
   { to: '/admin/site-references', label: 'อ้างอิงหน้างาน' },
@@ -99,7 +100,7 @@ export default function AdminShell() {
               <p className="text-eyebrow text-primary-600 uppercase">IDIE Administrator</p>
             </div>
 
-            <nav aria-label="เมนูหลังบ้าน" className="flex gap-1">
+            <nav aria-label="เมนูหลังบ้าน" className="flex flex-wrap gap-1">
               {NAV.map((item) => (
                 <NavLink
                   key={item.to}

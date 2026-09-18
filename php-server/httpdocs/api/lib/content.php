@@ -2,6 +2,7 @@
 declare(strict_types=1);
 require_once __DIR__.'/content-cache.php';
 require_once __DIR__.'/migrations.php';
+require_once __DIR__.'/jobs.php';
 function pair(array $r,string $key): array { return ['th'=>$r[$key.'_th'],'en'=>$r[$key.'_en']]; }
 function row_image(array $r,string $prefix): ?array {
     if (empty($r[$prefix.'src'])) return null;
@@ -11,6 +12,7 @@ function row_image(array $r,string $prefix): ?array {
     return $image;
 }
 function map_content(string $kind,array $r,bool $admin,?array $children=null): array {
+    if ($kind==='jobs') return map_job($r,$admin);
     if ($kind==='news') $out=['slug'=>$r['slug'],'title'=>pair($r,'title'),'excerpt'=>pair($r,'excerpt'),'body'=>pair($r,'body'),'category'=>$r['category'],'publishedAt'=>(new DateTimeImmutable($r['published_at'],new DateTimeZone('UTC')))->format('Y-m-d\TH:i:s.000\Z'),'featured'=>(bool)$r['featured']];
     elseif ($kind==='site-references') $out=['id'=>(int)$r['id'],'name'=>pair($r,'name'),'customer'=>pair($r,'customer'),'location'=>pair($r,'location'),'year'=>isset($r['year'])?(int)$r['year']:null,'image'=>row_image($r,'image_')];
     else {
@@ -46,20 +48,23 @@ function replace_project_children(int $id,array $data): void {
 }
 function array_is_list_compat(array $a): bool { return $a===[] || array_keys($a)===range(0,count($a)-1); }
 function content_route(string $kind,?string $rawId,bool $admin,string $method): void {
-    $table=['news'=>'news','projects'=>'projects','site-references'=>'site_references'][$kind];
+    $table=['news'=>'news','projects'=>'projects','site-references'=>'site_references','jobs'=>'job_openings'][$kind];
     $order=$kind==='news'?'published_at DESC,id DESC':($kind==='projects'?'year DESC,id DESC':'position,id');
     $id=null;
     if ($admin && $rawId!==null) { if (!ctype_digit($rawId) || (int)$rawId<1) fail(400,'รหัสรายการไม่ถูกต้อง'); $id=(int)$rawId; }
     if ($method==='GET') {
+        if ($kind==='jobs' && !jobs_initialized()) fail(503,'กรุณากดอัปเดตข้อมูลหน้าเว็บไซต์ในหน้าภาพรวม เพื่อเริ่มใช้ฐานข้อมูลตำแหน่งงาน');
         if (!$admin && $rawId===null) { $snapshot=refresh_public_content($kind); json_response($snapshot['items']); }
         $where=$admin?'1=1':"status='published'"; $params=[];
         if (!$admin && $kind==='news') $where.=' AND published_at <= UTC_TIMESTAMP()';
+        if (!$admin && $kind==='jobs') $where.=' AND is_open=1';
         if ($rawId!==null) { $where.=$admin?' AND id=?':($kind==='site-references'?' AND id=?':' AND slug=?'); $params[]=$admin?$id:$rawId; }
         $rows=query("SELECT * FROM $table WHERE $where ORDER BY $order",$params)->fetchAll();
         if ($rawId!==null) { if (!$rows) fail(404,'ไม่พบรายการนี้'); json_response(map_content($kind,$rows[0],$admin)); }
         json_response(map_content_rows($kind,$rows,$admin));
     }
     if (!$admin) fail(405,'ไม่รองรับคำขอนี้');
+    if ($kind==='jobs' && !jobs_initialized()) fail(503,'กรุณากดอัปเดตข้อมูลหน้าเว็บไซต์ในหน้าภาพรวม เพื่อเริ่มใช้ฐานข้อมูลตำแหน่งงาน');
     if ($method==='DELETE' && $id!==null) {
         $cacheLock=public_content_lock($kind); $temp=null; $pdo=db(); $pdo->beginTransaction();
         try {

@@ -10,6 +10,7 @@ docker compose -p idie-php-validation -f php-server/tests/compose.yaml up -d --b
 python php-server/tests/integration.py
 python php-server/tests/public-content.py
 python php-server/tests/site-reference-year.py
+python php-server/tests/careers.py
 node php-server/tests/public-content-client.mjs
 python php-server/tests/smtp.py
 python php-server/tests/edge.py

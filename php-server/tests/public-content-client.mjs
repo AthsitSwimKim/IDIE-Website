@@ -12,7 +12,7 @@ let calls=[]; let staticStatus=200; let expiresAt=null; let apiStatus=200; let s
 const items=[{slug:'published',title:{th:'News',en:'News'}}]
 globalThis.fetch=async(url,options)=>{
   calls.push({url,options})
-  if(url.startsWith('/uploads/')) return new Response(JSON.stringify({version:1,kind:'news',expiresAt,items}),{status:staticStatus,headers:{Date:serverDate}})
+  if(url.startsWith('/uploads/')) return new Response(JSON.stringify({version:1,kind:url.split('/').at(-1).replace('.json',''),expiresAt,items}),{status:staticStatus,headers:{Date:serverDate}})
   return new Response(JSON.stringify(items),{status:apiStatus})
 }
 const [list,detail]=await Promise.all([fetchPublishedContent('/api/news'),fetchPublishedContent('/api/news/published')])
@@ -36,6 +36,10 @@ await assert.rejects(fetchPublishedContent('/api/news'))
 apiStatus=200;calls=[]
 await fetchPublishedContent('/api/news')
 check('Failed API request is retried on next navigation',calls.length===2)
+staticStatus=200;expiresAt=null;calls=[]
+const jobs=await fetchPublishedContent('/api/jobs')
+check('Jobs use static snapshot without PHP',jobs.length===1 && calls.length===1 && calls[0].url==='/uploads/content-cache/jobs.json')
+check('Job detail uses the same public collection',(await fetchPublishedContent('/api/jobs/published')).slug==='published')
 for(const label of passed)console.log('PASS',label)
 writeFileSync(resolve('tmp/php-test/public-content-client-results.json'),JSON.stringify(passed,null,2))
 console.log(`${passed.length} client checks passed`)
