@@ -38,6 +38,12 @@ function start_session(): void {
     $_SESSION['csrf'] ??= bin2hex(random_bytes(32));
 }
 function csrf_token(): string { start_session(); return $_SESSION['csrf']; }
+function release_read_session(): void {
+    if (session_status() !== PHP_SESSION_ACTIVE) return;
+    // Keep the CSRF response header without reopening the session during JSON output.
+    header('X-CSRF-Token: '.($_SESSION['csrf'] ?? ''));
+    session_write_close();
+}
 function check_mutation(): void {
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '';
     if ($origin !== '') {

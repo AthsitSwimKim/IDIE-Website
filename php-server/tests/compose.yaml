@@ -14,6 +14,8 @@ services:
       timeout: 3s
       retries: 45
   php:
+    environment:
+      PHP_CLI_SERVER_WORKERS: 4
     build:
       context: ..
       dockerfile: tests/Dockerfile

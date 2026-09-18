@@ -1,38 +1,12 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Badge, Button } from '@/components/ui'
-import { adminNews, adminProjects, adminSiteReferences, publicContent } from '@/admin/api'
-import { getVisitorTotal } from '@/data'
+import { adminDashboard, publicContent } from '@/admin/api'
 import { useAsyncData } from '@/hooks/useAsyncData'
 import { formatDate } from '@/pages/admin/formatDate'
-import type { AdminNews, AdminProject, AdminSiteReference, PublishStatus } from '@/types/admin'
+import type { AdminContentCount, AdminDashboardData } from '@/types/admin'
 
-/** จำนวนข่าวล่าสุดที่แสดง — พอให้เห็นว่าอัปเดตล่าสุดเมื่อไร ไม่ใช่แทนหน้ารายการ */
-const RECENT_NEWS = 5
-
-interface Countable {
-  status: PublishStatus
-}
-
-interface DraftItem {
-  key: string
-  kind: string
-  title: string
-  to: string
-}
-
-/**
- * หน้าแรกของหลังบ้าน — `/admin`
- *
- * **ทำไมต้องมี ทั้งที่เมนูพาไปหน้ารายการได้อยู่แล้ว** — เดิม `/admin` เด้งไปหน้าข่าวทันที
- * ทีมงานจึงไม่มีที่ไหนตอบคำถามว่า "ตอนนี้เว็บมีอะไรอยู่บ้าง" และ "มีอะไรค้างที่ยังไม่ได้
- * เผยแพร่" ต้องเปิดทีละหน้าแล้วไล่ดูป้ายสถานะเอง ของที่เป็นร่างค้างจึงถูกลืมได้ง่าย
- *
- * **ไม่ได้เพิ่ม API ใหม่** — นับจากรายการที่ endpoint เดิมส่งมาอยู่แล้วทั้งสามชุด
- * ข้อมูลของเว็บนี้มีระดับหลักสิบแถว การนับฝั่งเบราว์เซอร์จึงถูกกว่าการเพิ่ม endpoint
- * สำหรับสถิติแล้วต้องดูแลให้ตรงกับตารางจริงไปอีกที่หนึ่ง วันไหนข้อมูลโตถึงหลักพัน
- * ค่อยย้ายไปนับด้วย SQL แล้วเปลี่ยนแค่ loader ตรงนี้
- */
+/** PHP returns only the counts, draft labels and five recent headlines used here. */
 export default function AdminDashboard() {
   const [publishing, setPublishing] = useState(false)
   const [publishMessage, setPublishMessage] = useState<string | null>(null)
@@ -45,19 +19,7 @@ export default function AdminDashboard() {
       setPublishMessage(cause instanceof Error ? cause.message : 'อัปเดตข้อมูลไม่สำเร็จ กรุณาลองอีกครั้ง')
     } finally { setPublishing(false) }
   }
-  const { data, loading, error, reload } = useAsyncData(() =>
-    /*
-      ยอดผู้เข้าชมต่อท้ายชุดเดิม และ `getVisitorTotal` คืน null เองเมื่อเรียกไม่สำเร็จ
-      ไม่โยน error — ตัวเลขประกอบตัวเดียวต้องไม่ทำให้ทั้งแดชบอร์ดขึ้นหน้าผิดพลาด
-      ทั้งที่ข่าวและผลงานโหลดมาได้ครบ
-    */
-    Promise.all([
-      adminNews.list(),
-      adminProjects.list(),
-      adminSiteReferences.list(),
-      getVisitorTotal(),
-    ]),
-  )
+  const { data, loading, error, reload } = useAsyncData(adminDashboard.get)
 
   return (
     <>
@@ -75,7 +37,7 @@ export default function AdminDashboard() {
           {publishing ? 'กำลังอัปเดต…' : 'อัปเดตข้อมูลหน้าเว็บไซต์'}
         </Button>
         <div className="mt-4 flex flex-wrap gap-2"><Button variant="outline" size="sm" to="/admin/jobs">จัดการตำแหน่งที่เปิดรับ</Button><Button variant="ghost" size="sm" to="/admin/jobs/new">เพิ่มตำแหน่งใหม่</Button></div>
-        {publishMessage && <p role="status" className="mt-3 text-sm">{publishMessage}</p>}
+        {publishMessage && <output className="mt-3 block text-sm">{publishMessage}</output>}
       </div>
 
       {error && (
@@ -89,81 +51,27 @@ export default function AdminDashboard() {
 
       {loading && !data && <p className="text-ink-muted mt-6 text-sm">กำลังโหลด…</p>}
 
-      {data && (
-        <DashboardBody
-          news={data[0]}
-          projects={data[1]}
-          references={data[2]}
-          visitors={data[3]}
-        />
-      )}
+      {data && <DashboardBody data={data} />}
     </>
   )
 }
 
-function DashboardBody({
-  news,
-  projects,
-  references,
-  visitors,
-}: {
-  news: AdminNews[]
-  projects: AdminProject[]
-  references: AdminSiteReference[]
-  /** `null` = เรียก API ไม่สำเร็จ — ซ่อนกล่องไปเลย ไม่แสดงเลข 0 ที่ทำให้เข้าใจผิด */
-  visitors: number | null
-}) {
-  /*
-    รวมร่างจากทั้งสามชุดเป็นรายการเดียว — คนที่เปิดหลังบ้านอยากรู้ว่า "มีอะไรค้าง"
-    ไม่ได้อยากรู้ว่าของค้างอยู่ในตารางไหน การแยกเป็นสามกล่องจะบังคับให้กวาดตาสามรอบ
-    เพื่อตอบคำถามเดียว
-  */
-  const drafts: DraftItem[] = [
-    ...news
-      .filter((item) => item.status === 'draft')
-      .map((item) => ({
-        key: `news-${item.id}`,
-        kind: 'ข่าวสาร',
-        title: item.title.th,
-        to: `/admin/news/${item.id}`,
-      })),
-    ...projects
-      .filter((item) => item.status === 'draft')
-      .map((item) => ({
-        key: `project-${item.id}`,
-        kind: 'ผลงาน',
-        title: item.name.th,
-        to: `/admin/projects/${item.id}`,
-      })),
-    ...references
-      .filter((item) => item.status === 'draft')
-      .map((item) => ({
-        key: `reference-${item.id}`,
-        kind: 'อ้างอิงหน้างาน',
-        title: item.name.th,
-        to: `/admin/site-references/${item.id}`,
-      })),
-  ]
-
-  // คัดลอกก่อน sort — `sort` แก้ array เดิมในที่ ถ้าเรียงทับ props จะทำให้ลำดับของ
-  // ข้อมูลที่ component อื่นถืออยู่เปลี่ยนตามไปด้วยโดยไม่มีอะไรบอก
-  const recentNews = [...news]
-    .sort((a, b) => b.publishedAt.localeCompare(a.publishedAt))
-    .slice(0, RECENT_NEWS)
+function DashboardBody({ data }: { data: AdminDashboardData }) {
+  const { stats, drafts, recentNews, visitors } = data
 
   return (
     <>
       <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        <StatCard label="ข่าวสาร" items={news} listTo="/admin/news" newTo="/admin/news/new" />
+        <StatCard label="ข่าวสาร" counts={stats.news} listTo="/admin/news" newTo="/admin/news/new" />
         <StatCard
           label="ผลงาน"
-          items={projects}
+          counts={stats.projects}
           listTo="/admin/projects"
           newTo="/admin/projects/new"
         />
         <StatCard
           label="อ้างอิงหน้างาน"
-          items={references}
+          counts={stats['site-references']}
           listTo="/admin/site-references"
           newTo="/admin/site-references/new"
         />
@@ -213,7 +121,7 @@ function DashboardBody({
                   to={`/admin/news/${item.id}`}
                   className="text-primary-600 min-w-0 text-sm font-medium hover:underline"
                 >
-                  {item.title.th}
+                  {item.title}
                 </Link>
                 <span className="text-ink-muted text-xs whitespace-nowrap">
                   {formatDate(item.publishedAt)}
@@ -265,17 +173,16 @@ function VisitorPanel({ total }: { total: number }) {
  */
 function StatCard({
   label,
-  items,
+  counts,
   listTo,
   newTo,
 }: {
   label: string
-  items: Countable[]
+  counts: AdminContentCount
   listTo: string
   newTo: string
 }) {
-  const published = items.filter((item) => item.status === 'published').length
-  const draft = items.length - published
+  const { published, draft } = counts
 
   return (
     <div className="border-line bg-surface rounded-card flex flex-col border p-6">

@@ -1,7 +1,10 @@
 <?php
 declare(strict_types=1);
 function auth_route(string $action,string $method): void {
-    if ($action==='me' && $method==='GET') json_response(['user'=>current_user(),'csrfToken'=>csrf_token()]);
+    if ($action==='me' && $method==='GET') {
+        $body=['user'=>current_user(),'csrfToken'=>csrf_token()];
+        release_read_session(); json_response($body);
+    }
     if ($action==='login' && $method==='POST') {
         require_https(); rate_limit('login-ip:'.request_ip(),10,900); $input=json_input();
         $username=text_value($input['username'] ?? null,'username',64); $password=$input['password'] ?? null;

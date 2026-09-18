@@ -64,3 +64,14 @@ export interface AdminJob extends JobOpening {
   position: number
   status: PublishStatus
 }
+
+export interface AdminContentCount {
+  published: number
+  draft: number
+}
+export interface AdminDashboardData {
+  stats: Record<'news' | 'projects' | 'site-references', AdminContentCount>
+  drafts: { key: string; kind: string; title: string; to: string }[]
+  recentNews: { id: number; title: string; publishedAt: string }[]
+  visitors: number | null
+}

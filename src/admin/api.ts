@@ -1,5 +1,6 @@
 import type {
   AdminAccount,
+  AdminDashboardData,
   AdminJob,
   AdminNews,
   AdminProject,
@@ -7,7 +8,7 @@ import type {
   AdminUser,
   UploadedImage,
 } from '@/types/admin'
-import { apiFetch } from '@/utils/apiFetch'
+import { apiFetch, usesPhpApi } from '@/utils/apiFetch'
 
 /**
  * ตัวกลางเดียวที่คุยกับ API — ไม่มี component ไหนเรียก `fetch` เอง
@@ -255,4 +256,28 @@ export const adminJobs = {
   create: (payload: JobPayload) => request<{ id: number }>('/api/admin/jobs', { method: 'POST', body: JSON.stringify(payload) }),
   update: (id: number, payload: JobPayload) => request<{ ok: true }>('/api/admin/jobs/' + id, { method: 'PUT', body: JSON.stringify(payload) }),
   remove: (id: number) => request<{ ok: true }>('/api/admin/jobs/' + id, { method: 'DELETE' }),
+}
+
+export const adminDashboard = {
+  async get(): Promise<AdminDashboardData> {
+    if (usesPhpApi) return request<AdminDashboardData>('/api/admin/dashboard')
+    const [news, projects, references, visitors] = await Promise.all([
+      adminNews.list(), adminProjects.list(), adminSiteReferences.list(),
+      request<{ total: number }>('/api/visitors').then((r) => r.total).catch(() => null),
+    ])
+    const count = (items: { status: string }[]) => ({
+      published: items.filter((item) => item.status === 'published').length,
+      draft: items.filter((item) => item.status === 'draft').length,
+    })
+    return {
+      stats: { news: count(news), projects: count(projects), 'site-references': count(references) },
+      drafts: [
+        ...news.filter((item) => item.status === 'draft').map((item) => ({ key: 'news-' + item.id, kind: 'ข่าวสาร', title: item.title.th, to: '/admin/news/' + item.id })),
+        ...projects.filter((item) => item.status === 'draft').map((item) => ({ key: 'projects-' + item.id, kind: 'ผลงาน', title: item.name.th, to: '/admin/projects/' + item.id })),
+        ...references.filter((item) => item.status === 'draft').map((item) => ({ key: 'site-references-' + item.id, kind: 'อ้างอิงหน้างาน', title: item.name.th, to: '/admin/site-references/' + item.id })),
+      ],
+      recentNews: [...news].sort((a, b) => b.publishedAt.localeCompare(a.publishedAt)).slice(0, 5).map((item) => ({ id: item.id, title: item.title.th, publishedAt: item.publishedAt })),
+      visitors,
+    }
+  },
 }

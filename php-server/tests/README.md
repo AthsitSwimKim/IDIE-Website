@@ -11,7 +11,9 @@ python php-server/tests/integration.py
 python php-server/tests/public-content.py
 python php-server/tests/site-reference-year.py
 python php-server/tests/careers.py
+python php-server/tests/admin-performance.py
 node php-server/tests/public-content-client.mjs
+node php-server/tests/admin-performance-client.mjs
 python php-server/tests/smtp.py
 python php-server/tests/edge.py
 python php-server/tests/small-upload.py
@@ -27,3 +29,5 @@ API and frontend are served at http://127.0.0.1:8099. Mailpit is on http://127.0
 Mailpit captures mail locally and has no forwarding configuration. SMTP requires authenticated STARTTLS and the PHP test runtime trusts only its generated certificate in addition to configured local test behavior.
 HTTP and fixed test passwords are allowed exclusively in generated tmp/php-test/private/config.php for localhost. Deployment config requires HTTPS and has no preset admin password.
 IIS web.config handling requires verification on the real Windows host; the test PHP router approximates protected paths and SPA fallback, but does not execute IIS rules.
+
+PHP_CLI_SERVER_WORKERS=4 enables real concurrent requests. The admin performance test briefly locks only the disposable visitor table to verify that another GET with the same session remains responsive.

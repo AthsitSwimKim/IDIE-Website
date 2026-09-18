@@ -4,6 +4,7 @@ ini_set('display_errors','0');
 require_once __DIR__.'/lib/bootstrap.php';
 require_once __DIR__.'/lib/validation.php';
 require_once __DIR__.'/lib/content.php';
+require_once __DIR__.'/lib/dashboard.php';
 require_once __DIR__.'/lib/accounts.php';
 require_once __DIR__.'/lib/uploads.php';
 require_once __DIR__.'/lib/contact.php';
@@ -13,7 +14,8 @@ try {
     $parts=explode('/',trim($route,'/')); $method=strtoupper($_SERVER['REQUEST_METHOD'] ?? 'GET');
     if ($method==='POST' && isset($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'])) $method=enum_value($_SERVER['HTTP_X_HTTP_METHOD_OVERRIDE'],'method',['PUT','DELETE']);
     if (!in_array($method,['GET','POST','PUT','DELETE'],true)) fail(405,'ไม่รองรับคำขอนี้');
-    if ($parts[0]==='admin') $actor=require_user();
+    if ($parts[0]==='admin') { $actor=require_user(); if ($method==='GET') release_read_session(); }
+    if ($route==='admin/dashboard' && $method==='GET') dashboard_route();
     if ($method!=='GET') { require_https(); check_mutation(); }
     if ($route==='health' && $method==='GET') { query('SELECT 1'); json_response(['ok'=>true,'backend'=>'php']); }
     if ($parts[0]==='auth' && count($parts)===2) auth_route($parts[1],$method);
