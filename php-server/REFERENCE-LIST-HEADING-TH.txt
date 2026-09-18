@@ -1,0 +1,5 @@
+ZIP 13 — เปลี่ยนหัวข้อรายการภาษาไทยเป็น รายชื่อโครงการที่ผ่านมา
+แก้เฉพาะหัวข้อที่วงในหน้า /reference ภาษาไทย ภาษาอังกฤษยังเป็น Site Reference
+มีเฉพาะไฟล์หน้าบ้านที่เปลี่ยนจาก ZIP 12: assets ที่ build ใหม่ และ index.html
+อัปโหลด 13-reference-list-heading.zip ลง httpdocs แล้ว Extract เขียนทับ จากนั้น Ctrl + F5
+เก็บ assets เดิมไว้ ไม่ต้องแก้ PHP, Config หรือ Database

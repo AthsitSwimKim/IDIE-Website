@@ -466,7 +466,7 @@ export const ui = {
       en: 'Send us a site layout or project details and our engineers will assess which systems and equipment suit it.',
     },
     referenceTitle: { th: 'องค์กรชั้นนำที่ร่วมงานกับเรา', en: 'Leading organisations we work with' },
-    referenceProjectsHeading: { th: 'อ้างอิงหน้างาน', en: 'Site Reference' },
+    referenceProjectsHeading: { th: 'รายชื่อโครงการที่ผ่านมา', en: 'Site Reference' },
     referenceLogosHeading: { th: 'ผลงานลูกค้าที่ไว้วางใจเรา', en: 'Client References' },
     referenceLead: {
       th: 'ได้รับความไว้วางใจจากองค์กรชั้นนำในภาคอุตสาหกรรม ทั้งกลุ่มโรงกลั่น ปิโตรเคมี โรงไฟฟ้า ตลอดจนกลุ่มบริษัท EPC ระดับสากล',
