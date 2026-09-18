@@ -76,7 +76,7 @@ export default function Reference() {
             ใช้ `steel/40` หนา 2px แทน `border-line` ที่เป็นค่ามาตรฐานของระบบ เพราะเส้น
             #e2e8f2 หนา 1px จางเกินกว่าจะคุมจังหวะสายตาในรายการที่แถวสูงราว 220px
 
-            รายการกว้างเต็มคอนเทนเนอร์ ภาพและเส้นคั่นชิดแนวเดียวกับหัวข้อของหมวด
+            เส้นคั่นกว้างเต็มคอนเทนเนอร์ ส่วนกลุ่มภาพกับรายละเอียดจัดกึ่งกลางในแต่ละแถว
           */
           <ul className="divide-steel/40 border-steel/40 mt-7 w-full divide-y-2 border-b-2">
             {references.map((item) => (
@@ -147,7 +147,7 @@ function ReferenceRow({ item }: { item: SiteReference }) {
   const { t } = useLocale()
 
   return (
-    <article className="flex flex-col gap-5 py-7 sm:flex-row sm:items-center sm:gap-9">
+    <article className="mx-auto flex w-full max-w-4xl flex-col gap-5 py-7 sm:flex-row sm:items-center sm:gap-9">
       {/*
         ภาพเป็นตัวกำหนดความสูงของแถวด้วยสัดส่วน 4:3 ส่วนข้อความจัดกึ่งกลางแนวตั้งเทียบ
         กับภาพ (`items-center`) — รายละเอียดมีแค่สามบรรทัดซึ่งสั้นกว่าภาพเกือบทุกครั้ง
