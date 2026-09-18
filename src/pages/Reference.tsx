@@ -76,10 +76,9 @@ export default function Reference() {
             ใช้ `steel/40` หนา 2px แทน `border-line` ที่เป็นค่ามาตรฐานของระบบ เพราะเส้น
             #e2e8f2 หนา 1px จางเกินกว่าจะคุมจังหวะสายตาในรายการที่แถวสูงราว 220px
 
-            จำกัดความกว้างแล้วจัดกึ่งกลางหน้า ไม่ปล่อยให้ยาวเต็มคอนเทนเนอร์ — หัวข้อของหมวด
-            ยังชิดซ้ายตามหัวข้ออื่นทั้งหน้า มีเฉพาะรายการที่อยู่ตรงกลาง ตามแบบที่เจ้าของระบบวาดมา
+            รายการกว้างเต็มคอนเทนเนอร์ ภาพและเส้นคั่นชิดแนวเดียวกับหัวข้อของหมวด
           */
-          <ul className="divide-steel/40 border-steel/40 mx-auto mt-7 max-w-4xl divide-y-2 border-b-2">
+          <ul className="divide-steel/40 border-steel/40 mt-7 w-full divide-y-2 border-b-2">
             {references.map((item) => (
               <li key={item.id}>
                 <ReferenceRow item={item} />

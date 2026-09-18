@@ -12,7 +12,12 @@ column=fixture('column')
 check('Fresh schema has nullable unsigned year',column['Null']=='YES' and column['Type'].startswith('smallint') and 'unsigned' in column['Type'])
 pair=lambda v:{'th':v,'en':v}
 files=[p for p in Path('tmp/php-test/uploads').iterdir() if re.fullmatch(r'[a-f0-9]{32}\.(png|jpg|webp)',p.name)]
-assert files,'Run core integration upload checks first'
+if not files:
+    # Image lifecycle now removes the core test cover after deletion.
+    import uuid
+    fixture_image=Path('tmp/php-test/uploads')/(uuid.uuid4().hex+'.png')
+    fixture_image.write_bytes(b'disposable year migration image fixture')
+    files=[fixture_image]
 image={'src':'/uploads/'+files[0].name,'alt':pair('Existing image')}
 legacy=dict(name=pair('Existing reference'),customer=pair('Customer'),location=pair('Rayong'),position=7,status='published',image=image)
 code,body=c.call('admin/site-references','POST',legacy); rid=body.get('id')

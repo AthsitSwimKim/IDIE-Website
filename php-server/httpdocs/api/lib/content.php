@@ -3,6 +3,7 @@ declare(strict_types=1);
 require_once __DIR__.'/content-cache.php';
 require_once __DIR__.'/migrations.php';
 require_once __DIR__.'/jobs.php';
+require_once __DIR__.'/image-cleanup.php';
 function pair(array $r,string $key): array { return ['th'=>$r[$key.'_th'],'en'=>$r[$key.'_en']]; }
 function row_image(array $r,string $prefix): ?array {
     if (empty($r[$prefix.'src'])) return null;
@@ -66,35 +67,55 @@ function content_route(string $kind,?string $rawId,bool $admin,string $method): 
     if (!$admin) fail(405,'ไม่รองรับคำขอนี้');
     if ($kind==='jobs' && !jobs_initialized()) fail(503,'กรุณากดอัปเดตข้อมูลหน้าเว็บไซต์ในหน้าภาพรวม เพื่อเริ่มใช้ฐานข้อมูลตำแหน่งงาน');
     if ($method==='DELETE' && $id!==null) {
-        $cacheLock=public_content_lock($kind); $temp=null; $pdo=db(); $pdo->beginTransaction();
+        $imageLock=$kind==='jobs'?null:content_image_lock(); $cacheLock=null; $temp=null; $oldImages=[]; $committed=false; $pdo=db();
         try {
+            $cacheLock=public_content_lock($kind); $pdo->beginTransaction();
+            $row=query("SELECT * FROM $table WHERE id=? FOR UPDATE",[$id])->fetch();
+            if (!$row) fail(404,'ไม่พบรายการนี้');
+            $oldImages=old_content_images($kind,$id,$row);
             $s=query("DELETE FROM $table WHERE id=?",[$id]); if (!$s->rowCount()) fail(404,'ไม่พบรายการนี้');
             [$temp,$snapshot]=prepare_public_content($kind);
-            invalidate_public_content($kind); $pdo->commit();
+            invalidate_public_content($kind); $pdo->commit(); $committed=true;
             install_public_content($kind,$temp); $temp=null;
         } catch (Throwable $e) { if ($pdo->inTransaction()) $pdo->rollBack(); throw $e; }
-        finally { if ($temp && is_file($temp)) @unlink($temp); flock($cacheLock,LOCK_UN); fclose($cacheLock); }
+        finally {
+            if ($temp && is_file($temp)) @unlink($temp);
+            if ($committed) cleanup_content_images($oldImages);
+            if ($cacheLock) { flock($cacheLock,LOCK_UN); fclose($cacheLock); }
+            if ($imageLock) { flock($imageLock,LOCK_UN); fclose($imageLock); }
+        }
         json_response(['ok'=>true]);
     }
     if (($method==='POST' && $id===null) || ($method==='PUT' && $id!==null)) {
-        $data=json_input(); $values=content_values($kind,$data);
+        $data=json_input();
         if ($kind==='site-references') ensure_site_reference_year();
-        $cacheLock=public_content_lock($kind); $temp=null; $pdo=db(); $pdo->beginTransaction();
+        $imageLock=$kind==='jobs'?null:content_image_lock(); $cacheLock=null; $temp=null; $oldImages=[]; $committed=false; $pdo=db();
         try {
+            $values=content_values($kind,$data);
+            $cacheLock=public_content_lock($kind); $pdo->beginTransaction();
             if ($id===null) {
                 $columns=implode(',',array_keys($values)); $holders=implode(',',array_fill(0,count($values),'?'));
                 query("INSERT INTO $table ($columns) VALUES ($holders)",array_values($values)); $id=(int)$pdo->lastInsertId();
             } else {
-                if (!query("SELECT id FROM $table WHERE id=? FOR UPDATE",[$id])->fetch()) fail(404,'ไม่พบรายการนี้');
+                $row=query("SELECT * FROM $table WHERE id=? FOR UPDATE",[$id])->fetch();
+                if (!$row) fail(404,'ไม่พบรายการนี้');
+                $oldImages=old_content_images($kind,$id,$row);
                 $set=implode(',',array_map(fn($col)=>"$col=?",array_keys($values)));
                 query("UPDATE $table SET $set WHERE id=?",array_merge(array_values($values),[$id]));
             }
             if ($kind==='projects') replace_project_children($id,$data);
+            // Unchanged images need no cleanup scan; only removed references are candidates.
+            $oldImages=array_values(array_diff($oldImages,managed_image_paths([$values,$data])));
             [$temp,$snapshot]=prepare_public_content($kind);
-            invalidate_public_content($kind); $pdo->commit();
+            invalidate_public_content($kind); $pdo->commit(); $committed=true;
             install_public_content($kind,$temp); $temp=null;
         } catch (Throwable $e) { if ($pdo->inTransaction()) $pdo->rollBack(); throw $e; }
-        finally { if ($temp && is_file($temp)) @unlink($temp); flock($cacheLock,LOCK_UN); fclose($cacheLock); }
+        finally {
+            if ($temp && is_file($temp)) @unlink($temp);
+            if ($committed) cleanup_content_images($oldImages);
+            if ($cacheLock) { flock($cacheLock,LOCK_UN); fclose($cacheLock); }
+            if ($imageLock) { flock($imageLock,LOCK_UN); fclose($imageLock); }
+        }
         json_response($method==='POST'?['id'=>$id]:['ok'=>true],$method==='POST'?201:200);
     }
     fail(405,'ไม่รองรับคำขอนี้');
