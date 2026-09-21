@@ -86,11 +86,11 @@ export const company: CompanyInfo = {
 export const companyFax = '+66 38 623001'
 
 /**
- * โดเมนจริงของเว็บ (ยืนยันโดยเจ้าของ 14 ก.ย. 2569) — ไม่มี / ปิดท้าย
+ * โดเมนจริงของเว็บบน RapidCloud — ไม่มี / ปิดท้าย
  *
  * เป็นต้นทางเดียวของ canonical, og:url และ sitemap ถ้าย้ายโดเมนแก้ที่นี่ที่เดียว
  */
-export const siteUrl = 'https://www.idindustrialengineering.com'
+export const siteUrl = 'https://idindustrial.com'
 
 /** ผู้ติดต่อหลักตามที่ระบุบนเว็บเดิม */
 export const contactPerson = {

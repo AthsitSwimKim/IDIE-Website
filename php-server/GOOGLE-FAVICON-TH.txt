@@ -1,0 +1,31 @@
+ZIP 18 — เตรียม favicon สำหรับผลค้นหา Google และใช้โดเมนหลักแบบไม่มี www
+สาเหตุที่พบ: favicon ของ IDIE มีอยู่แล้วและ Googlebot เปิดได้ แต่ canonical, Open Graph, robots.txt และ sitemap ยังชี้ไปโดเมนเก่า idindustrialengineering.com
+จึงเปลี่ยน SEO ทุกจุดเป็น https://idindustrial.com และให้ http/www เปลี่ยนทางแบบ 301 มาที่ https://idindustrial.com
+คงข้อยกเว้น /.well-known/acme-challenge/ เพื่อไม่รบกวนการตรวจสอบใบรับรอง SSL
+
+favicon ที่ใช้อยู่:
+- /favicon.png ขนาด 32x32
+- /favicon-48.png ขนาด 48x48 เป็นโลโก้ IDIE และประกาศด้วย link rel=icon
+- /apple-touch-icon.png ขนาด 180x180
+Googlebot-Image เปิดไฟล์ทั้งสามจากเว็บจริงได้ด้วย HTTP 200 และ Content-Type image/png ก่อนแก้รอบนี้ จึงไม่สร้างไอคอนซ้ำหรือเปลี่ยน URL
+
+ไฟล์ ZIP นี้เป็นส่วนต่างต่อจาก ZIP 17 เท่านั้น ไม่รวม ZIP เก่า
+มี assets/index.html ที่เปลี่ยน, robots.txt, sitemap.xml และ web.config
+ไม่มี config.php, Database, รูปสินค้า หรือเอกสาร
+อัปโหลด 18-google-favicon-seo.zip ลง httpdocs แล้ว Extract เขียนทับ โดยเก็บ assets เดิมไว้ จากนั้น Ctrl + F5
+
+หลังอัปโหลด:
+1. เปิด https://idindustrial.com และ https://idindustrial.com/favicon-48.png
+2. เปิด Google Search Console ของ idindustrial.com
+3. ใช้ URL Inspection กับ https://idindustrial.com/ แล้วกด Test live URL และ Request indexing
+4. ใน Sitemaps ส่ง https://idindustrial.com/sitemap.xml
+5. รอ Google crawl ใหม่ ซึ่งอาจใช้เวลาหลายวันถึงหลายสัปดาห์ และ Google ไม่รับประกันว่าจะแสดง favicon เสมอ
+ไม่ควรเปลี่ยน URL favicon บ่อย
+
+เอกสาร Google:
+https://developers.google.com/search/docs/appearance/favicon-in-search
+https://support.google.com/webmasters/answer/9012289
+https://support.google.com/webmasters/answer/7451001
+
+ตรวจ TypeScript, lint, build ด้วย PHP driver, XML, sitemap 210 URL, favicon PNG 48x48, robots และ ZIP ผ่าน
+ครั้งนี้ยังไม่ได้อัปโหลด ZIP 18 ขึ้น RapidCloud
