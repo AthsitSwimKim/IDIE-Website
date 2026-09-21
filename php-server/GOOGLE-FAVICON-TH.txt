@@ -1,3 +1,5 @@
+ยกเลิก ZIP 18: เจ้าของเว็บไซต์เลือกใช้ https://www.idindustrial.com/ เป็นโดเมนหลัก กรุณาใช้ ZIP 19 แทน ZIP 18
+
 ZIP 18 — เตรียม favicon สำหรับผลค้นหา Google และใช้โดเมนหลักแบบไม่มี www
 สาเหตุที่พบ: favicon ของ IDIE มีอยู่แล้วและ Googlebot เปิดได้ แต่ canonical, Open Graph, robots.txt และ sitemap ยังชี้ไปโดเมนเก่า idindustrialengineering.com
 จึงเปลี่ยน SEO ทุกจุดเป็น https://idindustrial.com และให้ http/www เปลี่ยนทางแบบ 301 มาที่ https://idindustrial.com

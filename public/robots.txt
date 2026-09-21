@@ -1,8 +1,8 @@
-# https://idindustrial.com
+# https://www.idindustrial.com
 User-agent: *
 Allow: /
 # หลังบ้านและ API ไม่ควรโผล่ในผลค้นหา
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://idindustrial.com/sitemap.xml
+Sitemap: https://www.idindustrial.com/sitemap.xml

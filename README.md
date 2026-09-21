@@ -293,7 +293,7 @@ Lighthouse จำลองเครือข่ายช้าจนเห็น
   คำบรรยายหน้าแรก ตอนนี้แต่ละหน้ามี title/description/og:*/canonical/robots อย่างละหนึ่ง
   และ `index.html` เก็บค่าเริ่มต้นไว้ให้ crawler ที่ไม่รัน JavaScript (Facebook, LINE)
 * **โดเมนจริง** อยู่ที่เดียวคือ `siteUrl` ใน `src/data/company.ts`
-  (`https://idindustrial.com`) — canonical, og:url และ sitemap ใช้ค่านี้
+  (`https://www.idindustrial.com`) — canonical, og:url และ sitemap ใช้ค่านี้
 * **`public/robots.txt`** กัน `/admin` และ `/api/` ชี้ไป sitemap
 * **`public/sitemap.xml`** สร้างอัตโนมัติก่อน build (`prebuild` → `scripts/build-sitemap.mjs`)
   จากข้อมูลจริง: หน้าคงที่ 10 + บริการ 6 + แบรนด์ 3 + สินค้า 191 = 210 URL

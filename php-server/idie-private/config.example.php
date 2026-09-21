@@ -1,7 +1,7 @@
 <?php
 // Upload this folder NEXT TO httpdocs, never inside it. Copy to config.php.
 return [
-    'public_url' => 'https://idindustrial.com',
+    'public_url' => 'https://www.idindustrial.com',
     'require_https' => true,
     'app_key' => 'REPLACE_WITH_RANDOM_APP_KEY_FROM_LOCAL_KEYS_FILE',
     'setup_token_hash' => 'REPLACE_WITH_SHA256_FROM_LOCAL_KEYS_FILE',

@@ -90,7 +90,7 @@ export const companyFax = '+66 38 623001'
  *
  * เป็นต้นทางเดียวของ canonical, og:url และ sitemap ถ้าย้ายโดเมนแก้ที่นี่ที่เดียว
  */
-export const siteUrl = 'https://idindustrial.com'
+export const siteUrl = 'https://www.idindustrial.com'
 
 /** ผู้ติดต่อหลักตามที่ระบุบนเว็บเดิม */
 export const contactPerson = {

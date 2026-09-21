@@ -1,0 +1,27 @@
+ZIP 19 — เตรียม favicon สำหรับ Google โดยใช้ https://www.idindustrial.com/
+ชุดนี้ใช้แทน ZIP 18 ไม่ต้องอัปโหลด ZIP 18 ก่อน หากเคยลง ZIP 18 แล้วสามารถลง ZIP 19 ทับได้
+ชุดนี้เป็นส่วนต่างต่อจาก ZIP 17 และไม่รวม ZIP เก่า
+
+กำหนด canonical, Open Graph, robots.txt และ sitemap ทั้งหมดเป็น https://www.idindustrial.com
+ให้ http://idindustrial.com, http://www.idindustrial.com และ https://idindustrial.com เปลี่ยนทางแบบ 301 ไป https://www.idindustrial.com
+คงช่องทาง /.well-known/acme-challenge/ สำหรับตรวจสอบใบรับรอง SSL
+favicon-48.png เดิมเป็นโลโก้ IDIE ขนาด 48x48 ที่ Googlebot เปิดได้ด้วย HTTP 200 และ image/png จึงไม่เปลี่ยนไฟล์หรือ URL
+
+ZIP มีเฉพาะ assets/index.html ที่เปลี่ยน, robots.txt, sitemap.xml และ web.config
+ไม่มี config.php, Database, รูปสินค้า หรือเอกสาร
+อัปโหลด 19-google-favicon-www-seo.zip ลง httpdocs แล้ว Extract เขียนทับ โดยเก็บ assets เดิมไว้ จากนั้น Ctrl + F5
+
+หลังอัปโหลด:
+1. เปิด https://www.idindustrial.com และ https://www.idindustrial.com/favicon-48.png
+2. ใน Google Search Console ใช้ URL Inspection กับ https://www.idindustrial.com/
+3. กด Test live URL แล้ว Request indexing
+4. ส่ง Sitemap: https://www.idindustrial.com/sitemap.xml
+5. รอ Google crawl ใหม่หลายวันถึงหลายสัปดาห์ Google ไม่รับประกันการแสดง favicon ทันที
+
+เอกสาร Google:
+https://developers.google.com/search/docs/appearance/favicon-in-search
+https://support.google.com/webmasters/answer/9012289
+https://support.google.com/webmasters/answer/7451001
+
+ตรวจ TypeScript, lint, build PHP frontend, XML, sitemap 210 URL, favicon PNG 48x48, robots และ ZIP ผ่าน
+ครั้งนี้ยังไม่ได้อัปโหลด ZIP 19 ขึ้น RapidCloud

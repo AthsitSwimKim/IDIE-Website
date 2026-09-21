@@ -42,7 +42,7 @@ idindustrial.com/
 2. เข้า RapidCloud > MariaDB สร้างฐานข้อมูลใหม่สำหรับเว็บไซต์นี้ สร้างผู้ใช้ฐานข้อมูล และผูกผู้ใช้กับฐานข้อมูลนั้น ให้มีสิทธิ์ CREATE, SELECT, INSERT, UPDATE, DELETE และ INDEX สำหรับติดตั้งตาราง
 3. จด Server/Host, Database name, Username ที่แผงแสดง ชื่อฐานข้อมูลอาจมี prefix บัญชี hosting ให้ใช้ชื่อเต็มจริง ห้ามเดาว่าเป็น localhost
 4. เปิด PHP ใน Web Sites > idindustrial.com > Extensions เลือกรุ่นที่ผู้ให้บริการรองรับอยู่ โค้ดใช้ไวยากรณ์ PHP 8.0 ขึ้นไป
-5. เปิด SSL certificate ของโดเมนและตรวจว่า https://idindustrial.com เปิดได้ก่อนสร้างแอดมิน ระบบจะปฏิเสธ Login, อัปโหลด และส่งแบบฟอร์มผ่าน HTTP
+5. เปิด SSL certificate ของโดเมนและตรวจว่า https://www.idindustrial.com เปิดได้ก่อนสร้างแอดมิน ระบบจะปฏิเสธ Login, อัปโหลด และส่งแบบฟอร์มผ่าน HTTP
 6. Hosting ต้องมี PHP pdo_mysql, mbstring, gd, fileinfo, openssl และ IIS URL Rewrite หน้าติดตั้งตรวจส่วน PHP ให้ ถ้าขาดให้ผู้ให้บริการเปิดให้
 7. uploads และ idie-private ต้องให้ PHP เขียนได้ ภายใน uploads ต้องมี web.config จากชุดนี้เพื่อปิดการรันสคริปต์
 
@@ -52,7 +52,7 @@ PHP 8.0 ที่เห็นในแผงเดิมเป็นรุ่น
 
 แก้ PRIVATE-OUTSIDE-HTTPDOCS/idie-private/config.php ในเครื่องก่อนอัปโหลด หรือแก้ด้วย File Manager หลังวางถูกตำแหน่งแล้ว
 
-- public_url: URL ที่เปิดเว็บจริง เช่น https://idindustrial.com ใช้ host และ scheme ตรงกัน กำหนด www/non-www ให้เป็น URL เดียวในแผง hosting
+- public_url: URL ที่เปิดเว็บจริง เช่น https://www.idindustrial.com ใช้ host และ scheme ตรงกัน กำหนด www/non-www ให้เป็น URL เดียวในแผง hosting
 - require_https: คง true
 - app_key, setup_token_hash: ชุดติดตั้งสร้างค่าให้แล้ว เก็บไว้เหมือนเดิม
 - db.host, db.port, db.name, db.user, db.password: ใช้ข้อมูล MariaDB จากขั้นก่อน
@@ -74,10 +74,10 @@ PHP 8.0 ที่เห็นในแผงเดิมเป็นรุ่น
 1. วาง config ที่ /idindustrial.com/idie-private/config.php ถ้า File Manager ไม่ให้เขียนระดับนี้ ให้ผู้ให้บริการจัดโฟลเดอร์ private และสิทธิ์ให้ อย่าย้าย config เข้า httpdocs
 2. อัปโหลดและ Extract ZIP 3 ไฟล์ตามตาราง ยืนยันว่าอยู่ใน httpdocs จริง
 3. ลบ ZIP หลัง Extract สำเร็จ
-4. เปิด https://idindustrial.com/api/setup.php
+4. เปิด https://www.idindustrial.com/api/setup.php
 5. ถ้าทุกรายการขึ้น “พร้อม” ใส่รหัสจาก LOCAL-SETUP-KEY.txt ตั้งชื่อผู้ใช้ ชื่อที่แสดง และรหัสผ่านอย่างน้อย 12 ตัวอักษร
 6. หน้านี้สร้างตารางและบัญชีแรกให้ ไม่ต้องรัน SQL ใน CMD หรือมีบัญชีแอดมินเดิม
-7. เมื่อขึ้น “สร้างบัญชีเรียบร้อยแล้ว” เปิด https://idindustrial.com/admin/login แล้วใช้บัญชีที่เพิ่งตั้ง
+7. เมื่อขึ้น “สร้างบัญชีเรียบร้อยแล้ว” เปิด https://www.idindustrial.com/admin/login แล้วใช้บัญชีที่เพิ่งตั้ง
 8. ลบ api/setup.php ผ่าน File Manager หลังสำเร็จ การติดตั้งซ้ำถูกปิดในฐานข้อมูลแล้วอยู่ดี
 
 บัญชี PHP ใช้ password hash คนละรูปแบบกับ Node เดิม ให้ใช้ฐานข้อมูลใหม่ หากมีข่าว/ผลงานจริงในฐานข้อมูล Node ต้องวางแผนย้ายข้อมูลก่อน ห้ามชี้ฐานข้อมูลเดิมแล้วติดตั้งซ้ำ
